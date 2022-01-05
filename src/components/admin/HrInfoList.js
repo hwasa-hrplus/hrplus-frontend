@@ -113,6 +113,8 @@ export default class HrInfoList extends PureComponent {
         <div>
           {this.findTableByBtn(this.state.clickedBtnName)}
         </div>
+        
+
       </div>
     );
   }
