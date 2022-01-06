@@ -75,6 +75,10 @@ const Styles = () => {
             .nav-link.active{
                 background-color:white;
             }
+            .MuiTable-root{
+                width:1300px;
+               
+            }            
         `}
   </style>
     );
