@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import HrInfoList from '../components/admin/HrInfoList';
 import RegistHrInfo from '../components/admin/RegistHrInfo';
 import ConfirmBizTrip from '../components/admin/ConfirmBizTrip';
+import { Route, Routes } from 'react-router-dom';
+import Detail from '../components/admin/Detail';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,7 +68,11 @@ export default function AdminRouter() {
         <Tab label="출장 결재" {...a11yProps(2)} />   
       </Tabs>
       <TabPanel value={value} index={0}>
-        <HrInfoList/>
+      <Routes>
+        <Route path='/' element={<HrInfoList/>} />
+        <Route path='/detail/:id' element={<Detail/>} />
+ 
+      </Routes>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <RegistHrInfo/>

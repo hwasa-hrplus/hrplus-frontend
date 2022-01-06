@@ -1,0 +1,11 @@
+.ChartWrapper {
+    display: flex;
+    flex-direction: row;
+  }
+
+.LegendButtonWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}

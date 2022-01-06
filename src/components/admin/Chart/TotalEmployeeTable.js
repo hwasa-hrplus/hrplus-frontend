@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 
-function getData(props){
-    console.log(`${props.buttonName}, ${props.data}`);
-    console.log(props);
-    
-}
-
 class TotalEmployeeTable extends Component {
-    
     render() {
-        console.log('TotalEmployeeTable.js');
+        const {dataName, dataValue} = this.props;
+        
         return (
             <div>
                 <p>TotalEmployeeTable.js</p>
-                <p>{getData}</p>
+                <p>dataName: {dataName}</p>
+                <p>dataValue: {dataValue}</p>
             </div>
         );
     }

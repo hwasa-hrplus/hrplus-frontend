@@ -97,12 +97,15 @@ export default class HrInfoList extends PureComponent {
     }
   }
   
-
   render() {
     return (
       <div className="ContentWrapper">
         <div align="center" className='buttonWrapper'>
-          <ButtonGroup variant="contained" aria-label="chartButtonGroup" sx={{ alignContent: 'center' }}>
+          <ButtonGroup variant="contained" 
+            style={{ 
+              display: 'flex',
+
+              }}>
               <Button onClick={this.findTotalEmployee} variant={this.state.BtnVariantTotalEmployee}> 전체 </Button> 
               <Button onClick={this.findByProject} variant={this.state.BtnVariantProject}> 프로젝트 </Button> 
               <Button onClick={this.findByDepartment} variant={this.state.BtnVariantDepartment}> 부서 </Button> 
@@ -112,20 +115,6 @@ export default class HrInfoList extends PureComponent {
         <div>
           {this.findChartByBtn(this.state.clickedBtnName)}
         </div>
-        <div>
-          {
-          /* 함수 실행
-          -> 전체 조회 버튼 외 타 버튼이 클릭된 경우 여부 확인
-            -> 전체 조회버튼일 경우 null 반환
-            -> 타 버튼일 경우 테이블 반환 
-          -> 차트 내 조각 클릭한 이벤트 기반으로 테이블 조회
-            -> 차트 컴포넌트에서 클릭한 조각 정보 가져오기
-            -> 클릭된 조각별로 데이터 조회
-          */}
-          
-        </div>
-
-
       </div>
     );
   }

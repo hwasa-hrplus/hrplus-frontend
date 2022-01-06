@@ -1,13 +1,11 @@
+import { Button } from '@mui/material';
 import React, { Component } from 'react';
-import { PieChart, Pie, Tooltip, Cell} from 'recharts';
+import { PieChart, Pie, Tooltip, Cell, Legend} from 'recharts';
 import TotalEmployeeTable from './TotalEmployeeTable';
+import {ProjectData} from './data';
+import './ChartCSS.css';
 
-const data = [
-    { chartName: 'Project', name: 'Project A', value: 400 },
-    { chartName: 'Project', name: 'Project B', value: 300 },
-    { chartName: 'Project', name: 'Project C', value: 100 },
-    { chartName: 'Project', name: 'Project D', value: 200 },
-];
+
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -21,7 +19,6 @@ const CustomTooltip = ({ active, payload, name }) => {
     }
     return null;
 };
-
 
 class ProjectChart extends Component {
     constructor(){
@@ -40,24 +37,25 @@ class ProjectChart extends Component {
             dataValue: data.value,
         })
     }
+
     
     render() {
         return (
             <div>
-                <div className='pieChartWrapper'>
-                    <PieChart width={1000} height={400} onMouseEnter={this.onPieEnter}>
+                <div className='ChartWrapper'>
+                    <PieChart width={1000} height={600} onMouseEnter={this.onPieEnter}>
                         <Pie
-                            data={data}
+                            data={ProjectData}
                             cx={500}
-                            cy={200}
+                            cy={250}
                             innerRadius={120}
-                            outerRadius={180}
+                            outerRadius={200}
                             fill="#8884d8"
                             paddingAngle={5}
                             dataKey="value"
                             onClick={this.findTableByChartClick}
                         >   
-                        {data.map((entry, index) => (
+                        {ProjectData.map((entry, index) => (
                             <Cell 
                                 key={`cell-${index}`} 
                                 fill={COLORS[index % COLORS.length]}
@@ -65,12 +63,33 @@ class ProjectChart extends Component {
                             />
                         ))}
                         </Pie>
+                        <Legend verticalAlign='middle' align='right' width={150}/>
                         <Tooltip content={<CustomTooltip />} />
+                        <Legend/>
                     </PieChart>
+                    <div className='LegendButtonWrapper'>
+                        {
+                        ProjectData.map((entry, index) => (
+                            <Button className='LegendButton'
+                                    style={{
+                                        fontSize: "medium",
+                                        margin: "5%"
+                                        }}>
+                                {entry.name} ({entry.value}명)
+                            </Button>
+                        ))}
+
+                    </div>
+                    
+                </div>
+                <div>
+                    
                 </div>
                 <div>
                     {/* Table */}
-                    {this.state.isDataClick ?  <h1>{this.state.dataName}</h1> : ""}
+                    {this.state.isDataClick ? 
+                    <TotalEmployeeTable dataName={this.state.dataName} dataValue={this.state.dataValue} /> : 
+                    ""}
                 </div>
 
             </div>
