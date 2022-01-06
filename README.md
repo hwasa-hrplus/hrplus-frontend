@@ -7,9 +7,8 @@
 - [x] (Update) 차트 조회 버튼 그룹 가운데 정렬
 
 ### In afternoon
-- [ ] (Add) 프로젝트, 부서 차트 내 범례 표시(legend)
-- [ ] (Add) 범례 내 데이터에 onMouse 하이라이팅 이벤트
-- [ ] (Add) 차트 조각에 onMouse 하이라이팅 이벤트 추가
+- [x] (Add) 프로젝트, 부서 차트 내 범례 표시(legend)
+- [ ] (Add) 차트별 사원 정보 직접 불러오기(API 활용)
 - [ ] (Refactor) 공통 코드 모듈화
 
 # Done
