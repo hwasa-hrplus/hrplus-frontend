@@ -66,7 +66,6 @@ export default class HrInfoList extends PureComponent {
     console.log('직급별 조회 버튼 클릭');
     this.setState({
       clickedBtnName : 'StaffLevel',
-
       BtnVariantTotalEmployee: 'outlined',
       BtnVariantProject: 'outlined',
       BtnVariantDepartment: 'outlined',
