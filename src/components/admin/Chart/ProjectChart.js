@@ -30,6 +30,7 @@ class ProjectChart extends Component {
           dataValue: "",
           hrFixedData: [],
           hrBasicData: [],
+          departmentName: "",
         });
     }
 
@@ -38,16 +39,21 @@ class ProjectChart extends Component {
         let hrBasicData = await axios.get('/api/v1/hrbasic/1');
         console.log('getMyData function!');
         
+        
         hrFixedData = hrFixedData.data;
         hrBasicData = hrBasicData.data;
+        
         console.log('hrFixedData is ' + JSON.stringify(hrFixedData));
         console.log('hrBasicData is ' + JSON.stringify(hrBasicData));
+        //console.log('hrFixedData: ' + hrFixedData["department"]["name"]);
         this.setState({
             hrFixedData: hrFixedData,
             hrBasicData: hrBasicData,
+            departmentName :hrFixedData.department["name"],
         });
+        
     };
-
+    
     findTableByChartClick = (data) => {
         this.setState({
             isDataClick: true,
@@ -58,6 +64,10 @@ class ProjectChart extends Component {
 
     
     render() {
+        const filteredDepartment = this.state.hrFixedData.department["name"].filter(data => {
+            return data.includes('포스코Intl사업추진반');
+          });
+      
         return (
             
             <div>
@@ -115,20 +125,25 @@ class ProjectChart extends Component {
                                 <TableCell align='center'>사번</TableCell>
                                 <TableCell align='center'>이름</TableCell>
                                 <TableCell align='center'>연령</TableCell>
+                                <TableCell align='center'>부서</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {
-                                // this.state.hrFixedData.map( (EmployeeData, index) =>
+                                this.state.hrFixedData.map( (EmployeeData, index) =>
                                 <TableRow>
-                                    <TableCell align='center'>{this.state.hrFixedData.id}</TableCell>
+                                    <TableCell align='center'>{EmployeeData.id}</TableCell>
                                     <TableCell align='center'>{this.state.hrFixedData.korName}</TableCell>
                                     <TableCell align='center'>{this.state.hrFixedData.age}</TableCell>
+                                    <TableCell align='center'>{this.state.departmentName}</TableCell>
                                 </TableRow>
-                                // )
+                                )
                             }
                         </TableBody>
                     </Table>
+                </div>
+                <div>
+                    {/* {filteredDepartment} */}
                 </div>
             </div>
         );
