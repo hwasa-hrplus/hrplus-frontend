@@ -12,7 +12,7 @@ const data = [
     { name: 'RPA사업추진반', value: 27 },
     { name: 'B&C합리화섹션', value: 33 },
 ];
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AB6512', '#CC1234', '#GG5789'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AB6512', '#CC1234', '#GG5789', '#AC9876'];
 
 const findTableByClick = (args) => {
     // @경빈
@@ -46,7 +46,7 @@ class DepartmentChart extends Component {
                     fill="#8884d8"
                     paddingAngle={5}
                     dataKey="value"
-                    onClick={findTableByClick}
+                    onClick={console.log("부서 조각 클릭!")}
                     >   
                     {data.map((entry, index) => (
                         <Cell 

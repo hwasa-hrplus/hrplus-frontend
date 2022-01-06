@@ -6,6 +6,7 @@ import ProjectChart from './Chart/ProjectChart';
 import StaffLevelChart from './Chart/StaffLevelChart';
 import TotalEmployeeTable from './Chart/TotalEmployeeTable';
 
+
 export default class HrInfoList extends PureComponent {
 
   constructor(){
@@ -23,12 +24,12 @@ export default class HrInfoList extends PureComponent {
     console.log('전체 조회 버튼 클릭!');
     this.setState({
       clickedBtnName : 'TotalEmployee',
-
       BtnVariantTotalEmployee: 'contained',
       BtnVariantProject: 'outlined',
       BtnVariantDepartment: 'outlined',
       BtnVariantStaffLevel: 'outlined',
     });
+    
     return ("");
   }
 
@@ -36,12 +37,12 @@ export default class HrInfoList extends PureComponent {
     console.log('프로젝트별 조회 버튼 클릭!');
     this.setState({
       clickedBtnName : 'Project',
-
       BtnVariantTotalEmployee: 'outlined',
       BtnVariantProject: 'contained',
       BtnVariantDepartment: 'outlined',
       BtnVariantStaffLevel: 'outlined',
     });
+    
     return (
       ""
     );
@@ -51,7 +52,6 @@ export default class HrInfoList extends PureComponent {
     console.log('부서별 조회 버튼 클릭!');
     this.setState({
       clickedBtnName : 'Department',
-
       BtnVariantTotalEmployee: 'outlined',
       BtnVariantProject: 'outlined',
       BtnVariantDepartment: 'contained',
@@ -76,8 +76,8 @@ export default class HrInfoList extends PureComponent {
     );
   }
 
-  findTableByBtn = (clickedBtnName) =>{
-    console.log('findTableByBtn 함수 실행!');
+  findChartByBtn = (clickedBtnName) =>{
+    console.log('findChartByBtn 함수 실행!');
     
     switch (clickedBtnName){
       case 'TotalEmployee':
@@ -101,7 +101,7 @@ export default class HrInfoList extends PureComponent {
   render() {
     return (
       <div className="ContentWrapper">
-        <div align="left" className='buttonWrapper'>
+        <div align="center" className='buttonWrapper'>
           <ButtonGroup variant="contained" aria-label="chartButtonGroup" sx={{ alignContent: 'center' }}>
               <Button onClick={this.findTotalEmployee} variant={this.state.BtnVariantTotalEmployee}> 전체 </Button> 
               <Button onClick={this.findByProject} variant={this.state.BtnVariantProject}> 프로젝트 </Button> 
@@ -110,9 +110,21 @@ export default class HrInfoList extends PureComponent {
           </ButtonGroup>
         </div>
         <div>
-          {this.findTableByBtn(this.state.clickedBtnName)}
+          {this.findChartByBtn(this.state.clickedBtnName)}
         </div>
-        
+        <div>
+          {
+          /* 함수 실행
+          -> 전체 조회 버튼 외 타 버튼이 클릭된 경우 여부 확인
+            -> 전체 조회버튼일 경우 null 반환
+            -> 타 버튼일 경우 테이블 반환 
+          -> 차트 내 조각 클릭한 이벤트 기반으로 테이블 조회
+            -> 차트 컴포넌트에서 클릭한 조각 정보 가져오기
+            -> 클릭된 조각별로 데이터 조회
+          */}
+          
+        </div>
+
 
       </div>
     );
