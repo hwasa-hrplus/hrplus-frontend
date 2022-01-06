@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import HrInfoList from '../components/admin/HrInfoList';
 import RegistHrInfo from '../components/admin/RegistHrInfo';
 import ConfirmBizTrip from '../components/admin/ConfirmBizTrip';
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Detail from '../components/admin/Detail';
 
 function TabPanel(props) {
