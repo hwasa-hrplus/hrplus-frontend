@@ -6,14 +6,14 @@ export const ProjectData = [
 ];
 
 export const DepartmentData = [
-    { name: 'Smart융합사업기획그룹', value: 123 },
-    { name: 'Smart융합사업부', value: 90 },
-    { name: 'Smart Logistics사업부', value: 56 },
-    { name: 'Smart Construction사업부', value: 35 },
-    { name: '포스코Intl사업추진반', value: 77 },
-    { name: '공항BHS사업추진반', value: 88 },
-    { name: 'RPA사업추진반', value: 27 },
-    { name: 'B&C합리화섹션', value: 33 },
+    { name: 'SmartIT사업실 정보보안사업부 정보보안서비스', value: 123 },
+    { name: 'Smart융합사업실 포스코Intl사업부 포스코IntlSM', value: 90 },
+    { name: 'SmartIT사업실 IT인프라사업부 통신서비스', value: 56 },
+    { name: 'SmartIT사업실 IT인프라사업부 서울IT인프라', value: 35 },
+    { name: 'Smart융합사업실 SmartConstruction사업부 플랜트사업', value: 77 },
+    { name: 'Smart융합사업실 SmartConstruction사업부 Smart현장솔루션개발', value: 88 },
+    { name: 'Smart융합사업실 SmartConstruction사업부 Construction사업SM', value: 27 },
+    { name: 'B&Smart융합사업실 SmartConstruction사업부 포스코건설SM', value: 33 },
 ];
 
 export const StaffLevelData = [

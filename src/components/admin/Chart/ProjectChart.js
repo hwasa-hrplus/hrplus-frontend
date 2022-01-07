@@ -28,29 +28,20 @@ class ProjectChart extends Component {
           isDataClick : false,
           dataName: "",
           dataValue: "",
-          hrFixedData: [],
-          hrBasicData: [],
+          employeeData: [],
           departmentName: "",
         });
     }
 
     getMyData = async () => {
-        let hrFixedData = await axios.get('/api/v1/hrfixed/1');
-        let hrBasicData = await axios.get('/api/v1/hrbasic/1');
+        let employeeData = await axios.get('/api/v1/hradmin/admin/list');
         console.log('getMyData function!');
+        employeeData = employeeData.data;
         
-        
-        hrFixedData = hrFixedData.data;
-        hrBasicData = hrBasicData.data;
-        
-        console.log('hrFixedData is ' + JSON.stringify(hrFixedData));
-        console.log('hrBasicData is ' + JSON.stringify(hrBasicData));
-        //console.log('hrFixedData: ' + hrFixedData["department"]["name"]);
+        console.log('employeeData is ' + JSON.stringify(employeeData));
         this.setState({
-            hrFixedData: hrFixedData,
-            hrBasicData: hrBasicData,
-            departmentName :hrFixedData.department["name"],
-        });
+            employeeData: employeeData,
+        }); 
         
     };
     
@@ -64,9 +55,6 @@ class ProjectChart extends Component {
 
     
     render() {
-        const filteredDepartment = this.state.hrFixedData.department["name"].filter(data => {
-            return data.includes('포스코Intl사업추진반');
-          });
       
         return (
             
@@ -110,7 +98,7 @@ class ProjectChart extends Component {
                     </div>
                 </div>
                 <div>
-                    <Button onClick={this.getMyData} variant='contained'>API 테스트용 API</Button>
+                    <Button onClick={this.getMyData} variant='contained'>데이터 불러오기</Button>
                 </div>
                 <div>
                     {/* Table */}
@@ -130,12 +118,12 @@ class ProjectChart extends Component {
                         </TableHead>
                         <TableBody>
                             {
-                                this.state.hrFixedData.map( (EmployeeData, index) =>
+                                this.state.employeeData.map( (data, index) =>
                                 <TableRow>
-                                    <TableCell align='center'>{EmployeeData.id}</TableCell>
-                                    <TableCell align='center'>{this.state.hrFixedData.korName}</TableCell>
-                                    <TableCell align='center'>{this.state.hrFixedData.age}</TableCell>
-                                    <TableCell align='center'>{this.state.departmentName}</TableCell>
+                                    <TableCell align='center'>{data.id}</TableCell>
+                                    <TableCell align='center'>{data.korName}</TableCell>
+                                    <TableCell align='center'>{data.age}</TableCell>
+                                    <TableCell align='center'>{data.department.name}</TableCell>
                                 </TableRow>
                                 )
                             }
