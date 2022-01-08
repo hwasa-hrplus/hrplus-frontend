@@ -3,7 +3,7 @@
     flex-direction: row;
   }
 
-.LegendButtonWrapper{
+.LegendWrapper{
     display: flex;
     flex-direction: column;
     justify-content: center;

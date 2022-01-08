@@ -1,10 +1,7 @@
 import { PieChart, Pie, Tooltip, Cell, Legend} from 'recharts';
 import React, { Component } from 'react';
-import TotalEmployeeTable from './TotalEmployeeTable';
-import {DepartmentData} from './data';
-import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Table, TableHead, TableBody, TableRow, TableCell, Button } from '@material-ui/core';
 import axios from 'axios';
-import { Button } from '@mui/material';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', 
                 '#FF8042', '#AB6512', '#CC1234', 
@@ -31,7 +28,7 @@ class DepartmentChart extends Component {
           dataName: "",
           dataValue: "",
           employeeData: [],
-          uniqueDatasetState: [],
+          uniqueDataState: [],
         });
     }
 
@@ -74,9 +71,9 @@ class DepartmentChart extends Component {
             uniqueObj.value = cnt;
             uniqueDataset.push(uniqueObj);
         }
-        console.log("uniqueDataset: ", uniqueDataset); 
-        
-        
+        console.log("uniqueDataset: ", uniqueDataset);
+        this.setState({uniqueDataState: uniqueDataset});
+        console.log("uniqueDataState: ", this.state.uniqueDataState);
     };
 
 
@@ -89,37 +86,36 @@ class DepartmentChart extends Component {
         } 
         
         return (
-            <div>
-                <div className='pieChartWrapper'>
-                    <PieChart width={1000} height={600} onMouseEnter={this.onPieEnter}>
-                        <Pie
-                        data={DepartmentData}
-                        cx={300}
-                        cy={250}
-                        innerRadius={120}
-                        outerRadius={200}
-                        fill="#8884d8"
-                        paddingAngle={5}
-                        dataKey="value"
-                        onClick={this.findTableByChartClick}
-                        >   
-                        {DepartmentData.map((entry, index) => (
-                            <Cell 
-                                key={`cell-${index}`} 
-                                fill={COLORS[index % COLORS.length]}
-                                dataKey
-                            />
-                        ))}
-                        </Pie>
-                        <Tooltip content={<CustomTooltip/>} />
-                        <Legend verticalAlign='middle' align='right' width={550} st/>
-                    </PieChart>
+            <div className="ContentWrapper">
+                <div className='ChartWrapper'>
+                    <div>
+                        <PieChart width={1000} height={600} onMouseEnter={this.onPieEnter} style = {{flexDirection: 'row'}}>
+                            <Pie 
+                            data={this.state.uniqueDataState}
+                            cx={300}
+                            cy={250}
+                            innerRadius={120}
+                            outerRadius={200}
+                            fill="#8884d8"
+                            paddingAngle={5}
+                            dataKey="value"
+                            onClick={this.findTableByChartClick}
+                            >   
+                            {this.state.uniqueDataState.map((entry, index) => (
+                                <Cell 
+                                    key={`cell-${index}`} 
+                                    fill={COLORS[index % COLORS.length]}
+                                    dataKey
+                                />
+                            ))}
+                            </Pie>
+                            <Tooltip content={<CustomTooltip/>} />
+                            <Legend verticalAlign='middle' align='right' width={550}/>
+                        </PieChart>
+                    </div>
+
                 </div>
-                <div>
-                    
-                    {/* <Button onClick={this.getMyData} variant='contained'>데이터 불러오기</Button> */}
-                </div>
-                <div>
+                <div className="TableWrapper">
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -149,18 +145,6 @@ class DepartmentChart extends Component {
                                     );
                                 })
                             }
-
-                            {/* {
-                                
-                                this.state.employeeData.map( (data, index) =>
-                                <TableRow>
-                                    <TableCell align='center'>{data.id}</TableCell>
-                                    <TableCell align='center'>{data.department.name}</TableCell>
-                                    <TableCell align='center'>{data.stafflevel.level}</TableCell>
-                                    <TableCell align='center'>{data.jobCategory.name}</TableCell>
-                                </TableRow>
-                                )
-                            } */}
                         </TableBody>
                     </Table>
                 </div>
