@@ -5,7 +5,8 @@ import { Nav } from 'react-bootstrap';
 import { Link, Route, Routes } from 'react-router-dom';
 import EmployeeList from '../components/EmployeeList';
 import RegistEmployee from '../components/RegistEmployee';
-import Detail from '../components/Detail'
+import EmployeeDetail from '../components/EmployeeDetail'
+
 const AdminRouter = () => {
     return (
         <div className='sideMenuContent'>            
@@ -23,7 +24,7 @@ const AdminRouter = () => {
            
                 <Routes>
                     <Route path="/list" element={<EmployeeList />} />
-                    <Route path='/detail/:id' element={<Detail/>} />
+                    <Route path='/detail/:id' element={<EmployeeDetail/>}  />
 
                 </Routes>
                 <Routes>

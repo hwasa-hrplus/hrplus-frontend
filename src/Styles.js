@@ -22,9 +22,9 @@ const Styles = () => {
                 color: white;
             }
             
-            a{ color: white; text-decoration: none;}
-            a:visited { color: white; text-decoration: none;}
-            a:hover { color: white; text-decoration: none;}
+            a{ color: black; text-decoration: none;}
+            a:visited { color: black; text-decoration: none;}
+            a:hover { color: black; text-decoration: none;}
             .nav {
                 background:#006399;
             }            
@@ -78,7 +78,8 @@ const Styles = () => {
             .MuiTable-root{
                 width:1300px;
                
-            }            
+            }
+                
         `}
   </style>
     );
