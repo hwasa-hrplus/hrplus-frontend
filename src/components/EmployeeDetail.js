@@ -24,7 +24,6 @@ class EmployeeDetail extends Component {
 
         this.state = {
             modalOpen: false,
-            uploadImage: {fileName:"",  fillPath: ""},
             id: id,
             isFile : false,    
             data: []
@@ -34,7 +33,6 @@ class EmployeeDetail extends Component {
     }
 
     getMyData = async () => {
-        console.log(this.state.employeeId);
         let data = await axios.get('/api/v1/hradmin/admin/list/'+this.state.id);
         data = data.data;
 
@@ -49,6 +47,9 @@ class EmployeeDetail extends Component {
         this.updateBirthDate(data);
         this.updateStartDate(data)
         this.updateDepartment(data);
+        this.searchAdmin(data);
+        this.getImage()
+    
 
         //우편번호
         this.setState({
@@ -59,10 +60,6 @@ class EmployeeDetail extends Component {
         })
         //state 저장
         this.setState({data});
-
-        if(this.state.isFile === true){
-            this.getImage();
-        }
 
         if(this.state.content!==undefined){
             this.postImage();
@@ -110,37 +107,46 @@ class EmployeeDetail extends Component {
             .then(res =>{
                 console.log(res);
             })
+ 
     }
 
-    // getImage = async () =>{
-    //     const fileName = this.state.content.name;
-    //     console.log(fileName);
-        
-    //     await axios({
-    //         method:'GET',
-    //         url:'/api/v1/hradmin/image?fileName='+fileName,
-    //         responseType:'blob',
-    //     })
-    //     .then((res) => {
-    //         const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
-    //         this.setState({setUrl:url})
+    getImage = async () =>{
+      
+        await axios({
+            method:'GET',
+            url:'/api/v1/hradmin/image/'+this.state.id,
+            responseType:'blob',
+        })
+        .then((res) => {
+            const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
+            this.setState({setUrl:url})
            
-    //     })
-    //     .catch(e => {
-    //         console.log(`error === ${e}`)
-    //     })
+        })
+        .catch(e => {
+            console.log(`error === ${e}`)
+        })
         
-    //     console.log(this.state.setUrl);
+        console.log(this.state.setUrl);
         
         
-    // }
+    }
+
+    //결재권자 가져오기
+    searchAdmin = async (data)=>{
+        const admin = data.map((updateData) => updateData.bossId);
+        let bossData = await axios.get('/api/v1/hradmin/admin/list/'+admin[0]);
+        bossData = bossData.data
+        console.log(bossData);
+
+        const adminName = bossData.map((updateData) => updateData.korName);
+        this.setState({adminName:adminName})
+    }
  
     componentDidMount() {
         this.getMyData();
     }
 
     render() {
-        console.log(this.props);
         return (
             <div>
                 {
@@ -155,17 +161,12 @@ class EmployeeDetail extends Component {
                                         <TableCell align='center'>사진</TableCell>
                                         <TableCell align='right'>사번</TableCell>
                                         <TableCell key={i}><TextField label={employeeData.id} variant="outlined" size="small"/></TableCell>
-                                        <TableCell align='right'>부서</TableCell>
-                                        <TableCell key={employeeData.department.name}><TextField
-                                            label={employeeData.department.name}
-                                            variant="outlined"
-                                            fullWidth ={true}
-                                            size="small"/></TableCell>
+                                        <TableCell align='right'>성별</TableCell>
+                                        <TableCell key={employeeData.gender}><TextField label={employeeData.gender} variant="outlined" size="small"/></TableCell>
                                     </TableRow>
 
-                                    <TableRow >
-                                    
-                                        <TableCell rowSpan='4'><img src={this.state.setUrl} alt="" style={{height:"300px"}}></img></TableCell>                                     
+                                    <TableRow >     
+                                        <TableCell align='center' rowSpan='4'><img src={this.state.setUrl} alt="" style={{height:"300px", width:"250px"}}></img></TableCell>                                     
                                         <TableCell align='right'>성명</TableCell>
                                         <TableCell key={employeeData.korName}><TextField label={employeeData.korName} variant="outlined" size="small"/></TableCell>
                                         <TableCell align='right'>입사일</TableCell>
@@ -205,10 +206,16 @@ class EmployeeDetail extends Component {
                                         <TableCell align='center'>
                                             <Input type = "file" acept="img/*" onChange={this.postImage}/>
                                             {/* <IconButton aria-label="upload picture" component="span"></IconButton> */}
+                                            
                                         </TableCell>
-                                        <TableCell align='right'>성별</TableCell>
-                                        <TableCell key={employeeData.gender}><TextField label={employeeData.gender} variant="outlined" size="small"/></TableCell>
-                                        <TableCell align='right'></TableCell>
+                                        <TableCell align='right'>부서</TableCell>
+                                        <TableCell colSpan='3' key={employeeData.department.name}>
+                                            <TextField
+                                                style ={{width: '70%'}}
+                                                label={employeeData.department.name}
+                                                variant="outlined"
+                                                fullWidth ={true}
+                                                size="small"/></TableCell>
                                     </TableRow>
 
                                 </TableBody>
@@ -265,7 +272,7 @@ class EmployeeDetail extends Component {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell align='right'>결재권자</TableCell>
-                                        <TableCell key={employeeData.bossId}><TextField label={employeeData.bossId} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={this.state.adminName}><TextField label={this.state.adminName} variant="outlined" size="small"/></TableCell>
                                         <TableCell align='right'>근무형태</TableCell>
                                         <TableCell key={employeeData.workType}><TextField label={employeeData.workType} variant="outlined" size="small"/></TableCell>
                                         <TableCell align='right'>주재지</TableCell>
