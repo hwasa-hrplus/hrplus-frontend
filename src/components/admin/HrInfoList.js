@@ -100,11 +100,10 @@ export default class HrInfoList extends PureComponent {
   render() {
     return (
       <div className="ContentWrapper">
-        <div align="center" className='buttonWrapper'>
+        <div align="center" className='buttonWrapper' >
           <ButtonGroup variant="contained" 
             style={{ 
               display: 'flex',
-              
               }}>
               <Button onClick={this.findTotalEmployee} variant={this.state.BtnVariantTotalEmployee}> 전체 </Button> 
               <Button onClick={this.findByProject} variant={this.state.BtnVariantProject}> 프로젝트 </Button> 

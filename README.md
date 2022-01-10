@@ -1,10 +1,16 @@
 # To Do List
-## 1/10 월요일
-- [ ] (Add) [부서] 버튼식 범례 새로 제작
-- [ ] (Add) [직급] 사원 검색 기능 추가
-- [ ] (Add) [부서] 사업실 제목화
-- [ ] (Add) [부서] 부 단위 범례 표시
+## 1/11 화요일
+- [ ] (Update) [직급] 사원명 및 직급 동시 활용한 사원 검색
+- [ ] (Add) [부서] Pie Chart Legend Button 이벤트 효과(Fading & Highlighting)
+- [ ] (Add) [부서] 사원명 기준 검색 기능 추가
 - [ ] (Update) [직급] 직급별 사원수 조정(e.g., 상무보 가장 적게)
+
+## 1/10 월요일
+- [x] (Add) [부서] Smart융합사업실 내 부서만 필터링 및 차트 타이틀 추가
+- [x] (Add) [부서] Pie Chart Legend UI 추가
+- [x] (Add) [부서] Pie Chart Legend Button 이벤트 추가(테이블 출력)
+- [x] (Add) [직급] 사원명 기준 검색 기능 추가
+
 
 ## 1/8 토요일
 - [x] (Add) [부서] 전체 DB 데이터 기반 차트 시각화

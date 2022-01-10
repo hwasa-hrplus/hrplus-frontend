@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, Legend, Tooltip, XAxis, YAxis } from 'recharts';
-import { Table, TableHead, TableBody, TableRow, TableCell, TextField, Input, FormControl } from '@material-ui/core';
+import { Table, TableHead, TableBody, TableRow, TableCell, TextField, Input, FormControl, InputLabel, InputAdornment } from '@material-ui/core';
 import axios from 'axios';
-
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AB6512', '#CC1234', '#8884d8'];
 
@@ -16,19 +16,19 @@ const CustomTooltip = ({ active, payload, name }) => {
     }
     return null;
 };
-
+let checker = true;
 
 class StaffLevelChart extends Component {
     constructor(props){
         super(props);
         this.state=({
           isLoaded : true,
-          isDataClick : false,
           dataName: "",
           dataValue: "",
           employeeData: [],
           uniqueDataState: [],
-          searchData: ""
+          searchingKeyword: "사원명을 입력하세요.",
+          tableShowType: false
         });
     }
 
@@ -36,11 +36,12 @@ class StaffLevelChart extends Component {
         console.log('차트 클릭 함수 내 data: ', data);
         
         this.setState({
-            isDataClick: true,
             dataName: data.name,
             dataValue: data.value,
+            searchingKeyword: "사원명을 입력하세요.",
         })
         console.log(`${this.state.dataName} 차트 조각 클릭!`);
+        
         
     }
 
@@ -79,26 +80,20 @@ class StaffLevelChart extends Component {
         for (let idx = 0; idx < uniqueDataNameArr.length; idx++){
             let cnt = this.state.employeeData.filter(data =>
                 uniqueDataNameArr[idx] === data.stafflevel.name).length;
-            console.log(`${uniqueDataNameArr[idx]} 직급: ${cnt}명`);
+
             let uniqueObj = {};
             uniqueObj.name = uniqueDataNameArr[idx];
             uniqueObj.value = cnt;
             uniqueDataset.push(uniqueObj);
         }
-        console.log("uniqueDataset: ", uniqueDataset);
+        
         this.setState({uniqueDataState: uniqueDataset});
-        console.log("uniqueDataState: ", this.state.uniqueDataState);
+        
     };
 
-    searchEmployee = (searchInputData) =>{
-        console.log('searchInputData: ', searchInputData);
-        
-    }
-
-    handleChange = (event) => {
-        this.setState({searchData: event.target.value});
-        console.log(`searchData: ${this.state.searchData}`);
-        
+    searchingKeywordInput = (prop) => (event) => {
+        this.setState({searchingKeyword : event.target.value});
+        console.log('searchingKeyword: ', this.state.searchingKeyword);
     };
     
 
@@ -128,44 +123,64 @@ class StaffLevelChart extends Component {
                         </Bar>
                     </BarChart>
                 </div>
-                <div className="SearchBarWrapper">
-                    {/* /onClick={} */}
-                    <TextField id="searchBox" label="사원 조회" variant="outlined" onClick={this.searchEmployee}/>
-                    <FormControl variant="standard">
-                        <Input
-                            id="component-helper"
-                            value={this.state.searchData}
-                            onChange={this.handleChange}
-                            aria-describedby="component-helper-text"
-                            />
-                    </FormControl>
-                    
+                    <div>
+                    <div className="SearchBarWrapper" align="center" style={{padding: "20px"}}>
+                        <FormControl variant="standard">
+                            <InputLabel htmlFor="input-with-icon-adornment">
+                            사원 이름으로 조회
+                            </InputLabel>
+                            <Input
+                                id="input-with-icon-adornment"
+                                value={this.state.searchingKeyword}
+                                onChange={this.searchingKeywordInput('searchingKeyword')}
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <AccountCircle />
+                                    </InputAdornment>
+                                }
+                                />
+                        </FormControl>
+                    </div>
+                    <div>
+                        <h3>선택한 직급: {this.state.dataName}</h3>
+                    </div>
                 </div>
                 <div className="TableWrapper">
                     <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell align='center'>사번</TableCell>
+                                <TableCell align='center'>성명</TableCell>
                                 <TableCell align='center'>부서</TableCell>
                                 <TableCell align='center'>직급</TableCell>
                                 <TableCell align='center'>직무</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {
+                            {   
                                 this.state.employeeData.filter((data) =>{
-                                    if (data.stafflevel.name.includes(this.state.dataName) && this.state.dataName){
+                                    
+                                    if (this.state.searchingKeyword === "사원명을 입력하세요." && data.stafflevel.name === this.state.dataName && this.state.dataName){
+                                        console.log('클릭로직');
+                                        console.log('data.stafflevel.name: ', data.stafflevel.name);
                                         return data;
                                     }
-                                    else{
+                                    else if (data.stafflevel.name.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+                                        console.log('검색로직');
+                                        return data;
+                                    }
+                                    else {
                                         return "";
                                     }
                                 }).map((filteredData) => { 
+                                    console.log('filteredData: ', filteredData);
+                                    
                                     return (
                                         <TableRow>
                                             <TableCell align='center'>{filteredData.id}</TableCell>
+                                            <TableCell align='center'>{filteredData.korName}</TableCell>
                                             <TableCell align='center'>{filteredData.department.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.stafflevel.level}</TableCell>
+                                            <TableCell align='center'>{filteredData.stafflevel.name}</TableCell>
                                             <TableCell align='center'>{filteredData.jobCategory.name}</TableCell>
                                         </TableRow>
                                     );
