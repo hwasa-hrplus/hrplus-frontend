@@ -1,10 +1,11 @@
-import { FormControl, Input, InputAdornment, InputLabel, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import axios from 'axios';
+import { PieChart, Pie, Tooltip, Cell, Legend} from 'recharts';
 import React, { Component } from 'react';
-import { Cell, Pie, PieChart } from 'recharts';
+import { Table, TableHead, TableBody, TableRow, TableCell, Button, ButtonGroup, FormControl, InputLabel, Input, InputAdornment } from '@material-ui/core';
+import axios from 'axios';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const departmentHead = "Smart융합사업실";
+
 const COLORS = ['#4f07eb', '#00C49F', '#ffea28', 
                 '#f78d59', '#eb0eca', '#ff0a2b', 
                 '#00ba25', '#DD8438', '#BB1213', 
@@ -12,11 +13,11 @@ const COLORS = ['#4f07eb', '#00C49F', '#ffea28',
 
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {
-        return (
+      return (
         <div className="customTooltip">
-            <p className="info">{`${payload[0].name.replace(departmentHead, "")} 인원: ${payload[0].value}명`}</p>
+          <p className="info">{`${payload[0].name.replace(departmentHead, "")} 인원: ${payload[0].value}명`}</p>
         </div>
-        );
+      );
     }
     return null;
 };
@@ -35,6 +36,7 @@ class DepartmentChart extends Component {
           searchingKeyword: "",
         });
     }
+
     findTableByChartClick = (data) => {
         console.log('차트 클릭 함수 내 data: ', data);
         this.setState({
@@ -96,13 +98,27 @@ class DepartmentChart extends Component {
         console.log('searchingKeyword: ', this.state.searchingKeyword);
     };
 
+    // getRandomColor = () =>{
+    //     console.log('uniqueDataState: ', this.state.uniqueDataState);
+        
+    //     let randomColors = [];
+    //     for (let index = 0; index < this.state.uniqueDataState.length; index++) {
+    //         console.log('getRandomColor!');
+            
+    //         let randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    //         randomColors.push(randomColor);
+    //     }
+    //     this.setState({COLORS: randomColors});
+    // }
+
+
     render() {
         if (this.state.isLoaded){
             console.log('getMyData!');
             this.getMyData();
             this.setState({isLoaded : false});
-        }
-
+        } 
+        
         return (
             <div>
                 <div >
@@ -111,7 +127,7 @@ class DepartmentChart extends Component {
                 <div className="ContentWrapper">
                     <div className='ChartWrapper'>
                         <div>
-                            <PieChart width={700} height={530} onMouseEnter={this.onPieEnter} style = {{flexDirection: 'row'}}>
+                            <PieChart width={700} height={600} onMouseEnter={this.onPieEnter} style = {{flexDirection: 'row'}}>
                                 <Pie 
                                 data={this.state.uniqueDataState}
                                 cx={300}
@@ -141,9 +157,7 @@ class DepartmentChart extends Component {
                                         <div style={{ 
                                             display: 'flex',
                                             alignContent: 'left',
-                                            width: 700,
-                                            height: 30
-                                            
+                                            width: 700
                                             }}>
                                                 
                                             <button style={{ backgroundColor: COLORS[index],
@@ -177,8 +191,6 @@ class DepartmentChart extends Component {
                             <Input
                                 id="input-with-icon-adornment"
                                 onChange={this.searchingKeywordInput('searchingKeyword')}
-                                placeholder='사원 이름을 입력하세요.'
-                                onFocus={this.placeholder=""}
                                 startAdornment={
                                     <InputAdornment position="start">
                                         <AccountCircle />
@@ -187,53 +199,45 @@ class DepartmentChart extends Component {
                                 />
                         </FormControl>
                     </div>
-                    <div>
-                        <h3>선택 부서: {this.state.dataName.replace(departmentHead+" ", "")}</h3>
+                    <div className="TableWrapper">
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align='center'>사번</TableCell>
+                                    <TableCell align='center'>부서</TableCell>
+                                    <TableCell align='center'>직급</TableCell>
+                                    <TableCell align='center'>직무</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {
+                                    this.state.employeeData.filter((data) =>{
+                                        if (data.department.name.includes(this.state.dataName) && this.state.dataName){
+                                            console.log('클릭로직');
+                                            return data;
+                                        }
+                                        else if (data.department.name.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+                                            console.log('검색로직');
+                                            return data;
+                                        }
+                                        else {
+                                            console.log('else로직');
+                                            return "";
+                                        }
+                                    }).map((filteredData) => { 
+                                        return (
+                                            <TableRow>
+                                                <TableCell align='center' width={100}>{filteredData.id}</TableCell>
+                                                <TableCell align='center' width={300}>{filteredData.department.name.replace(departmentHead, "")}</TableCell>
+                                                <TableCell align='center'>{filteredData.stafflevel.level}</TableCell>
+                                                <TableCell align='center'>{filteredData.jobCategory.name}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })
+                                }
+                            </TableBody>
+                        </Table>
                     </div>
-                </div>
-                <div className="TableWrapper">
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align='center'>사번</TableCell>
-                                <TableCell align='center'>성명</TableCell>
-                                <TableCell align='center'>부서</TableCell>
-                                <TableCell align='center'>직급</TableCell>
-                                <TableCell align='center'>직무</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {   
-                                this.state.employeeData.filter((data) =>{
-                                    
-                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.department.name === this.state.dataName && this.state.dataName){
-                                        console.log('클릭로직');
-                                        console.log('data.department.name: ', data.department.name);
-                                        return data;
-                                    }
-                                    else if (data.department.name.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
-                                        console.log('검색로직');
-                                        return data;
-                                    }
-                                    else {
-                                        return "";
-                                    }
-                                }).map((filteredData) => { 
-                                    console.log('filteredData: ', filteredData);
-                                    
-                                    return (
-                                        <TableRow>
-                                            <TableCell align='center'>{filteredData.id}</TableCell>
-                                            <TableCell align='center'>{filteredData.korName}</TableCell>
-                                            <TableCell align='center'>{filteredData.department.name.replace(departmentHead+" ", "")}</TableCell>
-                                            <TableCell align='center'>{filteredData.stafflevel.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.jobCategory.name}</TableCell>
-                                        </TableRow>
-                                    );
-                                })
-                            }
-                        </TableBody>
-                    </Table>
                 </div>
             </div>
         );

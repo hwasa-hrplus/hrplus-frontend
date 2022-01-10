@@ -1,7 +1,6 @@
 import { Button } from '@mui/material';
 import React, { Component } from 'react';
 import { PieChart, Pie, Tooltip, Cell, Legend} from 'recharts';
-import TotalEmployeeTable from './TotalEmployeeTable';
 import {ProjectData} from './data';
 import './ChartCSS.css';
 import axios from 'axios';
@@ -35,14 +34,10 @@ class ProjectChart extends Component {
 
     getMyData = async () => {
         let employeeData = await axios.get('/api/v1/hradmin/admin/list');
-        console.log('getMyData function!');
         employeeData = employeeData.data;
-        
-        console.log('employeeData is ' + JSON.stringify(employeeData));
         this.setState({
             employeeData: employeeData,
         }); 
-        
     };
     
     findTableByChartClick = (data) => {
@@ -99,12 +94,6 @@ class ProjectChart extends Component {
                 </div>
                 <div>
                     <Button onClick={this.getMyData} variant='contained'>데이터 불러오기</Button>
-                </div>
-                <div>
-                    {/* Table */}
-                    {this.state.isDataClick ? 
-                    <TotalEmployeeTable dataName={this.state.dataName} dataValue={this.state.dataValue} /> : 
-                    ""}
                 </div>
                 <div>
                     <Table>

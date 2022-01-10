@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import DepartmentChart from './Chart/DepartmentChart';
 import ProjectChart from './Chart/ProjectChart';
 import StaffLevelChart from './Chart/StaffLevelChart';
-import TotalEmployeeTable from './Chart/TotalEmployeeTable';
+import EmployeeTable from './Chart/EmployeeTable';
 
 
 export default class HrInfoList extends PureComponent {
@@ -81,7 +81,7 @@ export default class HrInfoList extends PureComponent {
     
     switch (clickedBtnName){
       case 'TotalEmployee':
-        return (<TotalEmployeeTable/>);
+        return (<EmployeeTable/>);
 
       case 'Project':
         return (<ProjectChart/>);
@@ -114,20 +114,6 @@ export default class HrInfoList extends PureComponent {
         <div>
           {this.findChartByBtn(this.state.clickedBtnName)}
         </div>
-        <div>
-          {
-          /* 함수 실행
-          -> 전체 조회 버튼 외 타 버튼이 클릭된 경우 여부 확인
-            -> 전체 조회버튼일 경우 null 반환
-            -> 타 버튼일 경우 테이블 반환 
-          -> 차트 내 조각 클릭한 이벤트 기반으로 테이블 조회
-            -> 차트 컴포넌트에서 클릭한 조각 정보 가져오기
-            -> 클릭된 조각별로 데이터 조회
-          */}
-          
-        </div>
-
-
       </div>
     );
   }
