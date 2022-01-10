@@ -33,7 +33,7 @@ class EmployeeDetail extends Component {
     }
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hradmin/admin/list/'+this.state.id);
+        let data = await axios.get('/hradmin/admin/list/'+this.state.id);
         data = data.data;
 
         //workType 구현
@@ -103,7 +103,7 @@ class EmployeeDetail extends Component {
         const file = e.target.files[0];
         formData.append("img", file);
         
-        await axios.post('/api/v1/hradmin/image', formData)
+        await axios.post('/hradmin/image', formData)
             .then(res =>{
                 console.log(res);
             })
@@ -114,7 +114,7 @@ class EmployeeDetail extends Component {
       
         await axios({
             method:'GET',
-            url:'/api/v1/hradmin/image/'+this.state.id,
+            url:'/hradmin/image/'+this.state.id,
             responseType:'blob',
         })
         .then((res) => {
@@ -134,7 +134,7 @@ class EmployeeDetail extends Component {
     //결재권자 가져오기
     searchAdmin = async (data)=>{
         const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get('/api/v1/hradmin/admin/list/'+admin[0]);
+        let bossData = await axios.get('/hradmin/admin/list/'+admin[0]);
         bossData = bossData.data
         console.log(bossData);
 

@@ -1,4 +1,4 @@
-import { Input, Table, TableBody, TableCell, TableRow, TextField, Button } from '@material-ui/core';
+import { Input, Table, TableBody, TableCell, TableRow, TextField, Button, Select, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 import React, { Component } from 'react';
 import PopupPostCode from './PopupPostCode';
@@ -11,10 +11,39 @@ class RegistEmployee extends Component{
 
         this.state = {
             modalOpen: false,
+            staffLevel: [],
+            department: [],
+            stafflevelCode: ""
         }
 
+        this.getStaffLevel();
     }
 
+    // select할 테이블 가져오기
+    getStaffLevel = async () =>{
+        let staffLevel = await axios.get('/hradmin/admin/stafflevel');
+        const data = staffLevel.data;
+
+        let department = await axios.get('/hradmin/admin/department');
+        const departmentData = department.data;
+        console.log(departmentData);
+
+        this.setState({staffLevel:data, department:departmentData})
+    }
+
+
+    onChange = (e, type) =>{
+        const value = e.target.value;
+
+        if(type==='staffLevel'){
+            this.setState({selectValue:value})
+            this.dataChanger(value)
+        }else if(type==='department'){
+            console.log(value);
+            this.setState({selectValue:value})
+        }
+        
+    }
 
         //사진 업로드 구현
     postImage = async(e) =>{
@@ -22,7 +51,7 @@ class RegistEmployee extends Component{
             const file = e.target.files[0];
             formData.append("img", file);
             
-            await axios.post('/api/v1/hradmin/image', formData)
+            await axios.post('/hradmin/image', formData)
                 .then(res =>{
                     console.log(res);
                 })
@@ -37,24 +66,39 @@ class RegistEmployee extends Component{
     }
 
     //화면 데이터 전송
-    onClick = ()=>{
-       
-        console.log(this.state.data);
+    //dataChanger
+    dataChanger =  (changeData) =>{
+
+        const staffList = this.state.staffLevel
+        let code = "";
+        for(let i =0; i<staffList.length; i++){
+            if(JSON.stringify(staffList[i].name).includes(changeData)){
+                 code = staffList[i].code;
+            }
+        }
+        console.log(code);
+        this.setState({stafflevelCode:code})
     }
 
     onSubmit = async (e)=>{
         e.preventDefault();
         console.log("onSubmit event 발생");
+
+        console.log(this.state);
+
         const sendData ={
-                id:e.target.password.value, 
+                id:e.target.id.value, 
                 korName:e.target.korName.value,
                 email:e.target.email.value,
                 password:e.target.password.value,
                 role:e.target.role.value,
+                stafflevel: {
+                    code: this.state.stafflevelCode,
+                    name: this.state.selectValue
+                },
             } 
             console.log(sendData);
-        
-            axios.post('/api/v1/hradmin/admin', sendData)
+            axios.post('/hradmin/admin', sendData)
             .then((res) => {
                 console.log(res)
             })
@@ -73,9 +117,9 @@ class RegistEmployee extends Component{
                     <TableRow>
                         <TableCell align='center'>사진</TableCell>
                         <TableCell align='right'>사번</TableCell>
-                        <TableCell key='1'><TextField name='id' variant="outlined" size="small"/></TableCell>
+                        <TableCell key='id'><TextField name='id' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>성별</TableCell>
-                        <TableCell key='11'><TextField name='gender' variant="outlined" size="small"/></TableCell>
+                        <TableCell key='gender'><TextField name='gender' variant="outlined" size="small"/></TableCell>
 
                     </TableRow>
 
@@ -109,10 +153,19 @@ class RegistEmployee extends Component{
                     <TableRow>
 
                         <TableCell align='right'>직급</TableCell>
-                        <TableCell key='stafflevel'><TextField
-                            name='stafflevel'
-                            variant="outlined"
-                            size="small"/></TableCell>
+                        <TableCell key='stafflevel'>
+                            <Select 
+                                value={this.state.selectValue}
+                                label="직급"
+                                onChange={e => this.onChange(e,'staffLevel')}
+                            >
+                        {this.state.staffLevel.map((staffLevelData, i) => {
+                            return(
+                                <MenuItem value={staffLevelData.name}>{staffLevelData.name}</MenuItem>
+                        )})}
+                            </Select>
+
+                            </TableCell>
                         <TableCell align='right'>직무</TableCell>
                         <TableCell key='8'><TextField
                             label=''
@@ -132,12 +185,16 @@ class RegistEmployee extends Component{
                         </TableCell>
                         <TableCell align='right'>부서</TableCell>
                         <TableCell colSpan='3' key='2'>
-                            <TextField
-                                style ={{width: '70%'}}
-                                label=''
-                                variant="outlined"
-                                fullWidth={true}
-                                size="small"/>
+                            <Select 
+                                value={this.state.selectValue}
+                                label="부서"
+                                onChange={e => this.onChange(e,'department')}
+                            >
+                        {this.state.department.map((departmentData, i) => {
+                            return(
+                                <MenuItem value={departmentData.name}>{departmentData.name}</MenuItem>
+                        )})}
+                            </Select>
                         </TableCell>
                     </TableRow>
 
