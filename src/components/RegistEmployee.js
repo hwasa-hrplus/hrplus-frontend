@@ -2,6 +2,9 @@ import { Input, Table, TableBody, TableCell, TableRow, TextField, Button, Select
 import axios from 'axios';
 import React, { Component } from 'react';
 import PopupPostCode from './PopupPostCode';
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 class RegistEmployee extends Component{
 
@@ -13,39 +16,77 @@ class RegistEmployee extends Component{
             modalOpen: false,
             staffLevel: [],
             department: [],
-            stafflevelCode: ""
+            workPlace: [],
+            jobCategory : [],
+            staffLevelName: "",
+            departmentName: "",
+            workPlaceName: "",
+            jobCategoryName: "",
+            workType:false,
+            startDate:"",
+            birthDate:"",
+            registAddress:[],
+            registAddressCode:[]
+
         }
 
-        this.getStaffLevel();
+        this.getTable();
     }
 
     // select할 테이블 가져오기
-    getStaffLevel = async () =>{
+    getTable = async () =>{
         let staffLevel = await axios.get('/hradmin/admin/stafflevel');
         const data = staffLevel.data;
+        console.log(data);
 
         let department = await axios.get('/hradmin/admin/department');
         const departmentData = department.data;
         console.log(departmentData);
 
-        this.setState({staffLevel:data, department:departmentData})
+        let workPlace = await axios.get('/hradmin/admin/workPlace');
+        const workplaceData = workPlace.data;
+        console.log(workplaceData);
+
+        let jobCategory = await axios.get('/hradmin/admin/jobCategory');
+        const jobCategoryData = jobCategory.data;
+        console.log(jobCategoryData);
+
+
+        this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData})
     }
 
+    dateChange = (value) =>{
+        this.setState({startDate:value})
+    }
+
+    birthChange = (value)=>{
+        this.setState({birthDate:value})
+    }
 
     onChange = (e, type) =>{
         const value = e.target.value;
 
         if(type==='staffLevel'){
-            this.setState({selectValue:value})
-            this.dataChanger(value)
+            this.setState({staffLevelName:value})
         }else if(type==='department'){
             console.log(value);
-            this.setState({selectValue:value})
+            this.setState({departmentName:value})
+        }else if(type==='workPlace'){
+            console.log(value);
+            this.setState({workPlaceName:value})
+        }else if(type==='jobCategory'){
+            console.log(value);
+            this.setState({jobCategoryName:value})
+        }else if (type==='workType'){
+            console.log(value);
+            if(value==='근무자'){
+                this.setState({workType:true})
+            }
         }
         
     }
 
-        //사진 업로드 구현
+    //사진 업로드 구현
     postImage = async(e) =>{
             const formData = new FormData();
             const file = e.target.files[0];
@@ -57,7 +98,7 @@ class RegistEmployee extends Component{
                 })
      
         }
-            //주소 찾기 구현
+    //주소 찾기 구현
     openModal = () => {
         this.setState({modalOpen: true})
     }
@@ -66,20 +107,6 @@ class RegistEmployee extends Component{
     }
 
     //화면 데이터 전송
-    //dataChanger
-    dataChanger =  (changeData) =>{
-
-        const staffList = this.state.staffLevel
-        let code = "";
-        for(let i =0; i<staffList.length; i++){
-            if(JSON.stringify(staffList[i].name).includes(changeData)){
-                 code = staffList[i].code;
-            }
-        }
-        console.log(code);
-        this.setState({stafflevelCode:code})
-    }
-
     onSubmit = async (e)=>{
         e.preventDefault();
         console.log("onSubmit event 발생");
@@ -89,13 +116,18 @@ class RegistEmployee extends Component{
         const sendData ={
                 id:e.target.id.value, 
                 korName:e.target.korName.value,
+                gender:e.target.gender.value,
                 email:e.target.email.value,
                 password:e.target.password.value,
                 role:e.target.role.value,
-                stafflevel: {
-                    code: this.state.stafflevelCode,
-                    name: this.state.selectValue
-                },
+                staffLevelName: this.state.staffLevelName,
+                departmentName: this.state.departmentName,
+                workPlaceName: this.state.workPlaceName,
+                jobCategoryName: this.state.jobCategoryName,
+                workType:this.state.workType,
+                birthDate:this.state.birthDate,
+                startDate:this.state.startDate
+                
             } 
             console.log(sendData);
             axios.post('/hradmin/admin', sendData)
@@ -108,7 +140,7 @@ class RegistEmployee extends Component{
     }
 
     render() {
-      
+    console.log(this.state.address)
     return (
         <div>
             <form id="addPlayerFrm" onSubmit={this.onSubmit}>
@@ -135,17 +167,25 @@ class RegistEmployee extends Component{
                                 }}></img>
                         </TableCell>
                         <TableCell align='right'>성명</TableCell>
-                        <TableCell key='3'><TextField name='korName' variant="outlined" size="small"/></TableCell>
+                        <TableCell key='korName'><TextField name='korName' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>입사일</TableCell>
-                        <TableCell key='4'><TextField label=''variant="outlined" size="small"/></TableCell>
+                        <TableCell key='startDate'> 
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DesktopDatePicker
+                            inputFormat="yyyy-MM-dd"
+                            value={this.state.startDate}
+                            onChange={this.dateChange}
+                            renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
+                        </TableCell>
                     </TableRow>
                     <TableRow>
 
                         <TableCell align='right'>영문성명</TableCell>
-                        <TableCell key='5'><TextField label=''variant="outlined" size="small"/></TableCell>
+                        <TableCell key='engName'><TextField name='engName' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>직책</TableCell>
-                        <TableCell key='6'><TextField
-                            label=''
+                        <TableCell key='role'><TextField
                             name='role'
                             variant="outlined"
                             size="small"/></TableCell>
@@ -158,6 +198,7 @@ class RegistEmployee extends Component{
                                 value={this.state.selectValue}
                                 label="직급"
                                 onChange={e => this.onChange(e,'staffLevel')}
+                                defaultValue = ""
                             >
                         {this.state.staffLevel.map((staffLevelData, i) => {
                             return(
@@ -167,28 +208,37 @@ class RegistEmployee extends Component{
 
                             </TableCell>
                         <TableCell align='right'>직무</TableCell>
-                        <TableCell key='8'><TextField
-                            label=''
-                            variant="outlined"
-                            size="small"/></TableCell>
+                        <TableCell key={this.state.selectValue}> <Select 
+                                value={this.state.selectValue}
+                                label="직무"
+                                onChange={e => this.onChange(e,'jobCategory')}
+                                defaultValue = ""
+                            >
+                                {this.state.jobCategory.map((jobCategoryData, i) => {
+                                    return(
+                                        <MenuItem value={jobCategoryData.name}>{jobCategoryData.name}</MenuItem>
+                                )})}
+                            </Select>
+                            </TableCell>
                     </TableRow>
                     <TableRow>
 
                         <TableCell align='right'>주민번호</TableCell>
-                        <TableCell key='9'><TextField label='' variant="outlined" size="small"/></TableCell>
+                        <TableCell key='residentNum'><TextField name='residentNum' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>연령</TableCell>
-                        <TableCell key='10'><TextField label='' variant="outlined" size="small"/></TableCell>
+                        <TableCell key='age'><TextField name='age' variant="outlined" size="small"/></TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align='center'>
                             <Input type="file" acept="img/*" onChange={this.postImage}/> {/* <IconButton aria-label="upload picture" component="span"></IconButton> */}
                         </TableCell>
                         <TableCell align='right'>부서</TableCell>
-                        <TableCell colSpan='3' key='2'>
+                        <TableCell colSpan='3' key={this.state.selectValue}>
                             <Select 
                                 value={this.state.selectValue}
                                 label="부서"
                                 onChange={e => this.onChange(e,'department')}
+                                defaultValue = ""
                             >
                         {this.state.department.map((departmentData, i) => {
                             return(
@@ -205,33 +255,43 @@ class RegistEmployee extends Component{
                  <TableBody>
                      <TableRow>
                          <TableCell align='right'>생년월일</TableCell>
-                         <TableCell key=''><TextField label='' variant="outlined" size="small"/></TableCell>
+                         <TableCell key='birthDate'>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DesktopDatePicker
+                                inputFormat="yyyy-MM-dd"
+                                value={this.state.birthDate}
+                                onChange={this.birthChange}
+                                renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                         </TableCell>
                          <TableCell align='right'>이메일</TableCell>
-                         <TableCell key=''><TextField name='email' variant="outlined" size="small"/></TableCell>
+                         <TableCell key='email'><TextField name='email' variant="outlined" size="small"/></TableCell>
                          <TableCell align='right'>휴대폰</TableCell>
-                         <TableCell key=''><TextField label='' variant="outlined" size="small"/></TableCell>
+                         <TableCell key='phone'><TextField name='phone' variant="outlined" size="small"/></TableCell>
                      </TableRow>
                      <TableRow >
                          <TableCell align='right'>주소</TableCell>
 
-                         <TableCell align='left' colSpan='5' key=''>
+                         <TableCell align='left' colSpan='5' key='post'>
                              <Button variant="contained" onClick={this.openModal}>우편번호 검색</Button>
                              <PopupPostCode
                                  open={this.state.modalOpen}
                                  close={this.closeModal}
-                                 address=''
-                                 address_code=''
-                                 address_detail =''
+                                 registAddress={this.state.registAddress}
+                                 registAddressCode ={this.state.registAddressCode}
+                                
                                  />
+                                  {console.log(this.state)}
                              <TextField
-                                 label=''
+                                 label={this.state.registAddressCode[0]}
                                  variant="outlined"
                                  size="small"/>
                              <span>
                                  <br/>
                              </span>
                              <TextField
-                                 label=''
+                                 label={this.state.registAddress[0]}
                                  variant="outlined"
                                  style ={{width: '53%'}}
                                  size="small"/>
@@ -248,11 +308,33 @@ class RegistEmployee extends Component{
                      </TableRow>
                      <TableRow>
                          <TableCell align='right'>결재권자</TableCell>
-                         <TableCell key=''><TextField label='' variant="outlined" size="small"/></TableCell>
+                         <TableCell key='bossId'><TextField name='bossId' variant="outlined" size="small"/></TableCell>
                          <TableCell align='right'>근무형태</TableCell>
-                         <TableCell key=''><TextField label='' variant="outlined" size="small"/></TableCell>
+                         <TableCell key='workType'>
+                             <Select 
+                                value={this.state.selectValue}
+                                label="근무형태"
+                                onChange={e => this.onChange(e,'workType')}
+                                defaultValue = ""
+                            >
+                                <MenuItem value='휴직자'>휴직자</MenuItem>
+                                <MenuItem value='근무자'>근무자</MenuItem>                                              
+                            </Select>
+                         </TableCell>
                          <TableCell align='right'>주재지</TableCell>
-                         <TableCell key=''><TextField label='' variant="outlined" size="small"/></TableCell>
+                         <TableCell key={this.state.selectValue}>
+                         <Select 
+                                value={this.state.selectValue}
+                                label="주재지"
+                                onChange={e => this.onChange(e,'workPlace')}
+                                defaultValue = ""
+                            >
+                                {this.state.workPlace.map((workplaceData, i) => {
+                                    return(
+                                        <MenuItem value={workplaceData.name}>{workplaceData.name}</MenuItem>
+                                )})}
+                            </Select>
+                         </TableCell>
                      </TableRow>
                      <TableRow >
 
@@ -271,10 +353,8 @@ class RegistEmployee extends Component{
                          <TableCell align='right'>Cost Center</TableCell>
                          <TableCell ><TextField label="" variant="outlined" size="small"/></TableCell>
                          <TableCell align='right'>원부서</TableCell>
-                         <TableCell key=''>
+                         <TableCell key='ori_department'>
                              <TextField label='' variant="outlined" size="small"/></TableCell>
-                         <TableCell align='right'>근무장소</TableCell>
-                         <TableCell key=''><TextField label='' variant="outlined" size="small"/></TableCell>
                      </TableRow>
                      <TableRow>
                         <TableCell key="password" colSpan='4' align='right'>초기 비밀번호

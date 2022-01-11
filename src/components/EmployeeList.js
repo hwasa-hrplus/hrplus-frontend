@@ -11,7 +11,7 @@ class EmployeeList extends Component {
     }
 
     state = {
-        data: []
+        data: [],
     };
 
     getMyData = async () => {
@@ -25,14 +25,6 @@ class EmployeeList extends Component {
     componentDidMount() {
         console.log('in componentDidMount');
         this.getMyData();
-    }
-
-    componentDidUpdate() {
-        console.log('in componentDidUpdate');
-    }
-
-    componentWillUnmount() {
-        console.log('in componentWillUnmount');
     }
 
     render() {
@@ -64,9 +56,9 @@ class EmployeeList extends Component {
                 <Link to={`/admin/detail/${EmployeeData.id}`}>{EmployeeData.id}</Link>
                 </TableCell>
                 <TableCell align='center'>{EmployeeData.korName}</TableCell>
-                <TableCell align='center'>{EmployeeData.stafflevel.name}</TableCell>
+                <TableCell align='center'>{EmployeeData.staffLevelName}</TableCell>
                 <TableCell align='center'>{EmployeeData.role}</TableCell>
-                <TableCell align='center'>{EmployeeData.department.name}</TableCell>
+                <TableCell align='center'>{EmployeeData.departmentName}</TableCell>
                 {/* <TableCell align='center'>{EmployeeData.project.name}</TableCell> */}
                 <TableCell align='center'>{EmployeeData.email}</TableCell>
                 <TableCell align='center'>{EmployeeData.phone}</TableCell>

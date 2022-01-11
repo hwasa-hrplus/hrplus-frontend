@@ -83,7 +83,7 @@ class EmployeeDetail extends Component {
 
     //원부서 구현
     updateDepartment = (data) => {
-        const department = data.map((updateData) => updateData.department.name);
+        const department = data.map((updateData) => updateData.departmentName);
         const splitDepartment = department[0].split(" ");
         this.setState({updateDepartment: splitDepartment[2]});
         return this.state.updateDepartment;
@@ -131,6 +131,7 @@ class EmployeeDetail extends Component {
         
     }
 
+
     //결재권자 가져오기
     searchAdmin = async (data)=>{
         const admin = data.map((updateData) => updateData.bossId);
@@ -177,21 +178,21 @@ class EmployeeDetail extends Component {
                                         <TableCell align='right'>영문성명</TableCell>
                                         <TableCell key={employeeData.engName}><TextField label={employeeData.engName} variant="outlined" size="small"/></TableCell>
                                         <TableCell align='right'>직책</TableCell>
-                                        <TableCell key={employeeData.stafflevel.name}><TextField
-                                            label={employeeData.stafflevel.name}
+                                        <TableCell key={employeeData.role}><TextField
+                                            label={employeeData.role}
                                             variant="outlined"
                                             size="small"/></TableCell>
                                     </TableRow>
                                     <TableRow>
 
                                         <TableCell align='right'>직급</TableCell>
-                                        <TableCell key={employeeData.stafflevel.level}><TextField
-                                            label={employeeData.stafflevel.level}
+                                        <TableCell key={employeeData.staffLevelName}><TextField
+                                            label={employeeData.staffLevelName}
                                             variant="outlined"
                                             size="small"/></TableCell>
                                         <TableCell align='right'>직무</TableCell>
-                                        <TableCell key={employeeData.jobCategory.name}><TextField
-                                            label={employeeData.jobCategory.name}
+                                        <TableCell key={employeeData.jobCategoryName}><TextField
+                                            label={employeeData.jobCategoryName}
                                             variant="outlined"
                                             size="small"/></TableCell>
                                     </TableRow>
@@ -209,10 +210,10 @@ class EmployeeDetail extends Component {
                                             
                                         </TableCell>
                                         <TableCell align='right'>부서</TableCell>
-                                        <TableCell colSpan='3' key={employeeData.department.name}>
+                                        <TableCell colSpan='3' key={employeeData.departmentName}>
                                             <TextField
                                                 style ={{width: '70%'}}
-                                                label={employeeData.department.name}
+                                                label={employeeData.departmentName}
                                                 variant="outlined"
                                                 fullWidth ={true}
                                                 size="small"/></TableCell>
@@ -250,23 +251,27 @@ class EmployeeDetail extends Component {
                                                 address={this.state.address}
                                                 address_code ={this.state.address_code}
                                                 address_detail ={this.state.address_detail}
+                                              
                                                 />
-                                            <TextField
-                                                label={this.state.address_code[0]}
-                                                variant="outlined"                                                
-                                                size="small"/>
-                                            <span> <br/> </span>
-                                            <TextField
-                                                label={this.state.address[0]}
-                                                variant="outlined"
-                                                style ={{width: '53%'}}
-                                                size="small"/>
-                                            <span> <br/> </span>    
-                                            <TextField
-                                                label={this.state.address_detail[0]}
-                                                variant="outlined"
-                                                style ={{width: '53%'}}
-                                                size="small"/>
+                                            <div>
+                                                <TextField
+                                                  label={this.state.address_code[0]}
+                                                  variant="outlined"                                                
+                                                  size="small"/>
+                                              <span> <br/> </span>
+                                              <TextField
+                                                  label={this.state.address[0]}
+                                                  variant="outlined"
+                                                  style ={{width: '53%'}}
+                                                  size="small"/>
+                                              <span> <br/> </span>    
+                                              <TextField
+                                                  label={this.state.address_detail[0]}
+                                                  variant="outlined"
+                                                  style ={{width: '53%'}}
+                                                  size="small"/>
+                                            </div>
+                                          
                                         </TableCell>
 
                                     </TableRow>
@@ -276,8 +281,8 @@ class EmployeeDetail extends Component {
                                         <TableCell align='right'>근무형태</TableCell>
                                         <TableCell key={employeeData.workType}><TextField label={employeeData.workType} variant="outlined" size="small"/></TableCell>
                                         <TableCell align='right'>주재지</TableCell>
-                                        <TableCell key={employeeData.workPlace.name}><TextField
-                                            label={employeeData.workPlace.name}
+                                        <TableCell key={employeeData.workPlaceName}><TextField
+                                            label={employeeData.workPlaceName}
                                             variant="outlined"
                                             size="small"/></TableCell>
                                     </TableRow>
@@ -307,8 +312,6 @@ class EmployeeDetail extends Component {
                                             variant="outlined"
                                             size="small"
                                            /></TableCell>
-                                        <TableCell align='right'>근무장소</TableCell>
-                                        <TableCell key={employeeData.workPlace.name}><TextField label={employeeData.workPlace.name} variant="outlined" size="small"/></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell key="button" colSpan='6' align='right'>
