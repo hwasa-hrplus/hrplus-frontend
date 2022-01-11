@@ -1,11 +1,23 @@
 {
+<<<<<<< HEAD
   "name": "test02",
+=======
+  "name": "test01",
+>>>>>>> origin/development
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8082",
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+<<<<<<< HEAD
+=======
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.16",
+>>>>>>> origin/development
     "@material-ui/core": "^4.12.3",
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.63",
@@ -15,11 +27,24 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.24.0",
+<<<<<<< HEAD
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "recharts": "^2.1.8",
+=======
+    "bootstrap": "^5.1.3",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.1.0",
+    "react-daum-postcode": "^3.0.1",
+    "react-dom": "^17.0.2",
+    "react-router": "^6.2.1",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "5.0.0",
+    "react-slick": "^0.28.1",
+    "slick-carousel": "^1.8.1",
+>>>>>>> origin/development
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.2"
   },
@@ -46,5 +71,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+<<<<<<< HEAD
+=======
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-react": "^7.28.0"
+>>>>>>> origin/development
   }
 }
