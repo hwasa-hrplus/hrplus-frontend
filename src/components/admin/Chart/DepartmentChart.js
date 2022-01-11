@@ -140,7 +140,7 @@ class DepartmentChart extends Component {
                                         <div style={{ 
                                             display: 'flex',
                                             alignContent: 'left',
-                                            width: 700,
+                                            width: 800,
                                             height: 30
                                             
                                             }}>
@@ -187,18 +187,23 @@ class DepartmentChart extends Component {
                         </FormControl>
                     </div>
                     <div>
-                        <h3>선택 부서: {this.state.dataName ? this.state.dataName.replace(departmentHead+" ", "") : "None"}</h3>
+                        <h3 style={{padding: 10}}>선택 부서: {this.state.dataName ? this.state.dataName.replace(departmentHead+" ", "") : "None"}</h3>
                     </div>
                 </div>
                 <div className="TableWrapper">
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell align='center'>사번</TableCell>
-                                <TableCell align='center'>성명</TableCell>
-                                <TableCell align='center'>부서</TableCell>
-                                <TableCell align='center'>직급</TableCell>
-                                <TableCell align='center'>직무</TableCell>
+                            <TableCell style={{width: 80}} align='center'>사번</TableCell>
+                            <TableCell style={{width: 90}} align='center'>성명</TableCell>
+                            <TableCell style={{width: 80}} align='center'>직급</TableCell>
+                            <TableCell style={{width: 80}} align='center'>직책</TableCell>
+                            <TableCell style={{width: 400}} align='center'>부서</TableCell>
+                            <TableCell style={{width: 120}} align='center'>직무</TableCell>
+                            <TableCell style={{width: 180}} align='center'>프로젝트</TableCell>
+                            <TableCell style={{width: 100}} align='center'>이메일</TableCell>
+                            <TableCell style={{width: 150}} align='center'>휴대전화</TableCell>
+                            <TableCell style={{width: 100}} align='center'>근무형태</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -224,9 +229,14 @@ class DepartmentChart extends Component {
                                         <TableRow>
                                             <TableCell align='center'>{filteredData.id}</TableCell>
                                             <TableCell align='center'>{filteredData.korName}</TableCell>
-                                            <TableCell align='center'>{filteredData.department.name.replace(departmentHead+" ", "")}</TableCell>
                                             <TableCell align='center'>{filteredData.stafflevel.name}</TableCell>
+                                            <TableCell align='center'>{filteredData.role === 'ROLE_MEMBER' ? "팀원" : "팀장"}</TableCell>
+                                            <TableCell align='center'>{filteredData.department.name.replace(departmentHead+" ", "")}</TableCell>
                                             <TableCell align='center'>{filteredData.jobCategory.name}</TableCell>
+                                            <TableCell align='center'>{filteredData.workPlace.name}</TableCell>
+                                            <TableCell align='center'>{filteredData.email}</TableCell>
+                                            <TableCell align='center'>{filteredData.phone}</TableCell>
+                                            <TableCell align='center'>{filteredData.workType === false ? "근무" : "휴직"}</TableCell>
                                         </TableRow>
                                     );
                                 })

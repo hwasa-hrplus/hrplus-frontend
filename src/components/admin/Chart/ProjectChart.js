@@ -103,7 +103,7 @@ class ProjectChart extends Component {
                 <div >
                     <h1 align='center'>{departmentHead} 직무별 사원 현황</h1>
                 </div>
-                <div className='pieChartWrapper'>
+                <div className='ChartWrapper'>
                     <BarChart width={1000} height={400} data={this.state.uniqueDataState} layout = 'horizontal'>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name"/>
@@ -149,12 +149,16 @@ class ProjectChart extends Component {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell align='center'>사번</TableCell>
-                                <TableCell align='center'>성명</TableCell>
-                                <TableCell align='center'>부서</TableCell>
-                                <TableCell align='center'>직급</TableCell>
-                                <TableCell align='center'>프로젝트</TableCell>
-                                <TableCell align='center'>직무</TableCell>
+                                <TableCell style={{width: 80}} align='center'>사번</TableCell>
+                                <TableCell style={{width: 90}} align='center'>성명</TableCell>
+                                <TableCell style={{width: 80}} align='center'>직급</TableCell>
+                                <TableCell style={{width: 80}} align='center'>직책</TableCell>
+                                <TableCell style={{width: 400}} align='center'>부서</TableCell>
+                                <TableCell style={{width: 120}} align='center'>직무</TableCell>
+                                <TableCell style={{width: 180}} align='center'>프로젝트</TableCell>
+                                <TableCell style={{width: 100}} align='center'>이메일</TableCell>
+                                <TableCell style={{width: 150}} align='center'>휴대전화</TableCell>
+                                <TableCell style={{width: 100}} align='center'>근무형태</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -179,10 +183,14 @@ class ProjectChart extends Component {
                                         <TableRow>
                                             <TableCell align='center'>{filteredData.id}</TableCell>
                                             <TableCell align='center'>{filteredData.korName}</TableCell>
-                                            <TableCell align='center'>{filteredData.department.name}</TableCell>
                                             <TableCell align='center'>{filteredData.stafflevel.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.project.name}</TableCell>
+                                            <TableCell align='center'>{filteredData.role === 'ROLE_MEMBER' ? "팀원" : "팀장"}</TableCell>
+                                            <TableCell align='center'>{filteredData.department.name.replace(departmentHead+" ", "")}</TableCell>
                                             <TableCell align='center'>{filteredData.jobCategory.name}</TableCell>
+                                            <TableCell align='center'>{filteredData.workPlace.name}</TableCell>
+                                            <TableCell align='center'>{filteredData.email}</TableCell>
+                                            <TableCell align='center'>{filteredData.phone}</TableCell>
+                                            <TableCell align='center'>{filteredData.workType === false ? "근무" : "휴직"}</TableCell>
                                         </TableRow>
                                     );
                                 })

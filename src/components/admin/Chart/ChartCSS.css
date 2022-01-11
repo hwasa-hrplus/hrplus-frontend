@@ -9,6 +9,11 @@
     flex-wrap: wrap;
   }
 
+/* .BarChartWrapper {
+  text-align: center;
+  justify-content: center;
+} */
+
 .LegendWrapper{
     display: flex;
     flex-direction: column;

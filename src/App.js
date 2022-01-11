@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import Bar from "./layouts/Bar";
-import Menu from "./layouts/Menu";
-
-function App() {
-  return (
-    <div className="App">
-      <Bar/>
-      <Menu/>
-=======
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import Header from './layouts/Header';
@@ -27,13 +17,8 @@ function App() {
         <Route path="/bizTrip/*" element={<BizTripRouter />} />
         <Route path="/admin/*" element={<AdminRouter />} />
       </Routes>
->>>>>>> origin/development
     </div>
   );
 }
 
-<<<<<<< HEAD
 export default App;
-=======
-export default App;
->>>>>>> origin/development
