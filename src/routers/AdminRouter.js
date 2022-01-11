@@ -2,7 +2,7 @@ import { faIdCard, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Nav } from 'react-bootstrap';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import EmployeeList from '../components/EmployeeList';
 import RegistEmployee from '../components/RegistEmployee';
 import Detail from '../components/Detail'
@@ -21,14 +21,14 @@ const AdminRouter = () => {
             </div>
             <div className="content">
            
-                <Routes>
-                    <Route path="/list" element={<EmployeeList />} />
-                    <Route path='/detail/:id' element={<Detail/>} />
+                <Switch>
+                    <Route path="/admin/list" component={EmployeeList} />
+                    <Route path='/admin/detail/:id' component={Detail} />
 
-                </Routes>
-                <Routes>
-                    <Route path="regist" element={<RegistEmployee />} />
-                </Routes>
+                </Switch>
+                <Switch>
+                    <Route path="/admin/regist" component={RegistEmployee} />
+                </Switch>
             </div>
         </div>
     );

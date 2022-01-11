@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 import Header from './layouts/Header';
 import EmployeeRouter from './routers/EmployeeRouter';
 import AdminRouter from './routers/AdminRouter';
@@ -9,11 +9,11 @@ function App() {
   return (
     <div> 
       <Header/>
-      <Routes>
-        <Route path="/employee/*" element={<EmployeeRouter />} />
-        <Route path="/bizTrip/*" element={<BizTripRouter />} />
-        <Route path="/admin/*" element={<AdminRouter />} />
-      </Routes>
+      <Switch>
+        <Route path="/employee/*" component={EmployeeRouter} />
+        <Route path="/bizTrip/*" component={BizTripRouter} />
+        <Route path="/admin/*" component={AdminRouter} />
+      </Switch>
     </div>
   );
 }
