@@ -1,13 +1,18 @@
 # To Do List
+## 1/12 수요일
+- [ ] (Add) [직무]] Pagination 구현
+- [ ] (Add) [부서] Pagination 구현
+- [ ] (Add) [프로젝트] Pagination 구현
+- [ ] (Add) [프로젝트] 프로젝트별 사원 조회, 검색 기능 추가
+- [ ] (Fix) [부서] 부서 Pie chart Tooltip 오류 수정
+- [ ] (Fix) [전체] 사원명 '가나다...' 오름차순 정렬
+- [ ] (Update) [직급] 직급별 사원수 조정(e.g., 상무보 가장 적게 쿼리문 수정)
+
 ## 1/11 화요일
-- [ ] (Add) [Git] Development Branch와 merge하기
-- [ ] (Add) [프로젝트] 프로젝트별 사원 조회 기능
-- [ ] (Add) [프로젝트] 프로젝트+사원명 기반 사원 조회 기능(검색기능)
+- [x] (Add) [전체] Pagination 구현
+- [x] (Add) [Git] Development Branch와 merge하기
 - [x] (Add) [직무] 직무별 사원 조회 기능
 - [x] (Add) [직무] 직무+사원명 기반 사원 조회 기능(검색기능)
-- [ ] (Fix) [부서] 부서 Pie chart Tooltip 오류 수정
-- [ ] (Update) [직급] 직급별 사원수 조정(i.e.,, 상무보 가장 적게->쿼리문 수정)
-- [ ] (Fix) [전체] 사원명 '가나다...' 오름차순 정렬
 
 ## 1/10 월요일
 - [x] (Add) [부서] Smart융합사업실 내 부서만 필터링 및 차트 타이틀 추가
