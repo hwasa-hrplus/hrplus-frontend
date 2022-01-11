@@ -5,6 +5,7 @@ import DepartmentChart from './Chart/DepartmentChart';
 import ProjectChart from './Chart/ProjectChart';
 import StaffLevelChart from './Chart/StaffLevelChart';
 import EmployeeTable from './Chart/EmployeeTable';
+import JobCategoryChart from './Chart/JobCategoryChart';
 
 
 export default class HrInfoList extends PureComponent {
@@ -17,6 +18,7 @@ export default class HrInfoList extends PureComponent {
       BtnVariantProject: 'outlined',
       BtnVariantDepartment: 'outlined',
       BtnVariantStaffLevel: 'outlined',
+      BtnVariantJobCategory: 'outlined',
     });
   }
 
@@ -28,6 +30,7 @@ export default class HrInfoList extends PureComponent {
       BtnVariantProject: 'outlined',
       BtnVariantDepartment: 'outlined',
       BtnVariantStaffLevel: 'outlined',
+      BtnVariantJobCategory: 'outlined',
     });
     
     return ("");
@@ -41,6 +44,7 @@ export default class HrInfoList extends PureComponent {
       BtnVariantProject: 'contained',
       BtnVariantDepartment: 'outlined',
       BtnVariantStaffLevel: 'outlined',
+      BtnVariantJobCategory: 'outlined',
     });
     
     return (
@@ -56,6 +60,7 @@ export default class HrInfoList extends PureComponent {
       BtnVariantProject: 'outlined',
       BtnVariantDepartment: 'contained',
       BtnVariantStaffLevel: 'outlined',
+      BtnVariantJobCategory: 'outlined',
     });
     return (
       ""
@@ -70,6 +75,22 @@ export default class HrInfoList extends PureComponent {
       BtnVariantProject: 'outlined',
       BtnVariantDepartment: 'outlined',
       BtnVariantStaffLevel: 'contained',
+      BtnVariantJobCategory: 'outlined',
+    });
+    return (
+      ""
+    );
+  }
+
+  findByJobCategory = () =>{
+    console.log('직무별 사원 조회 버튼 클릭');
+    this.setState({
+      clickedBtnName : 'JobCategory',
+      BtnVariantTotalEmployee: 'outlined',
+      BtnVariantProject: 'outlined',
+      BtnVariantDepartment: 'outlined',
+      BtnVariantStaffLevel: 'outlined',
+      BtnVariantJobCategory: 'contained',
     });
     return (
       ""
@@ -91,7 +112,8 @@ export default class HrInfoList extends PureComponent {
 
       case 'StaffLevel':
         return (<StaffLevelChart/>);
-
+      case 'JobCategory':
+        return (<JobCategoryChart/>)
       default:
         return ""
     }
@@ -109,6 +131,7 @@ export default class HrInfoList extends PureComponent {
               <Button onClick={this.findByProject} variant={this.state.BtnVariantProject}> 프로젝트 </Button> 
               <Button onClick={this.findByDepartment} variant={this.state.BtnVariantDepartment}> 부서 </Button> 
               <Button onClick={this.findByStaffLevel} variant={this.state.BtnVariantStaffLevel}> 직급 </Button><br/>
+              <Button onClick={this.findByJobCategory} variant={this.state.BtnVariantJobCategory}> 직무 </Button><br/>
           </ButtonGroup>
         </div>
         <div>

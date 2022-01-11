@@ -4,12 +4,13 @@ import { Table, TableHead, TableBody, TableRow, TableCell, TextField, Input, For
 import axios from 'axios';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
+const departmentHead = "Smart융합사업실";
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AB6512', '#CC1234', '#8884d8'];
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {        
       return (
         <div className="customTooltip">
-          <p className="info">{`${payload[0].payload.name}, 인원: ${payload[0].payload.value}명`}</p>
+          <p className="info">{`${payload[0].payload.name}, 인원: ${payload[0].value}명`}</p>
         </div>
       );
     }
@@ -89,8 +90,6 @@ class StaffLevelChart extends Component {
         this.setState({searchingKeyword : event.target.value});
         console.log('searchingKeyword: ', this.state.searchingKeyword);
     };
-    
-    
 
     render() {
         if (this.state.isLoaded){
@@ -100,6 +99,9 @@ class StaffLevelChart extends Component {
         }
         return (
             <div>
+                <div >
+                    <h1 align='center'>{departmentHead} 직무별 사원 현황</h1>
+                </div>
                 <div className='pieChartWrapper'>
                     <BarChart width={1000} height={400} data={this.state.uniqueDataState} layout = 'horizontal'>
                         <CartesianGrid strokeDasharray="3 3" />
@@ -139,7 +141,7 @@ class StaffLevelChart extends Component {
                         </FormControl>
                     </div>
                     <div>
-                        <h3>선택한 직급: {this.state.dataName}</h3>
+                        <h3>선택 직급: {this.state.dataName ? this.state.dataName : "None"}</h3>
                     </div>
                 </div>
                 <div className="TableWrapper">
@@ -156,7 +158,6 @@ class StaffLevelChart extends Component {
                         <TableBody>
                             {   
                                 this.state.employeeData.filter((data) =>{
-                                    
                                     if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.stafflevel.name === this.state.dataName && this.state.dataName){
                                         console.log('클릭로직');
                                         console.log('data.stafflevel.name: ', data.stafflevel.name);

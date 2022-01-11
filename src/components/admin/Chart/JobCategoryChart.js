@@ -3,6 +3,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
+import './ChartCSS.css';
 
 const departmentHead = "Smart융합사업실";
 const COLORS = ['#4f07eb', '#00C49F', '#ffea28', 
@@ -14,15 +15,14 @@ const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {
         return (
         <div className="customTooltip">
-            <p className="info">{`${payload[0].name.replace(departmentHead, "")} 인원: ${payload[0].value}명`}</p>
+            <p className="info">{`${payload[0].name}, 인원: ${payload[0].value}명`}</p>
         </div>
         );
     }
     return null;
 };
-
-
-class DepartmentChart extends Component {
+                
+class JobCategoryChart extends Component {
     constructor(props){
         super(props);
         this.state=({
@@ -67,9 +67,9 @@ class DepartmentChart extends Component {
 
         let uniqueDataNameSet = new Set();
         for (let idx = 0; idx < this.state.employeeData.length; idx++) {
-            const departmentName = this.state.employeeData[idx].department.name;
-            if (!uniqueDataNameSet.has(departmentName)){
-                uniqueDataNameSet.add(departmentName);
+            const jobName = this.state.employeeData[idx].jobCategory.name;
+            if (!uniqueDataNameSet.has(jobName)){
+                uniqueDataNameSet.add(jobName);
             } else {
                 continue;
             }
@@ -79,8 +79,8 @@ class DepartmentChart extends Component {
         let uniqueDataset = [];
         for (let idx = 0; idx < uniqueDataNameArr.length; idx++){
             let cnt = this.state.employeeData.filter(data =>
-                uniqueDataNameArr[idx] === data.department.name).length;
-            console.log(`${uniqueDataNameArr[idx]} 부서: ${cnt}명`);
+                uniqueDataNameArr[idx] === data.jobCategory.name).length;
+            
             let uniqueObj = {};
             uniqueObj.name = uniqueDataNameArr[idx];
             uniqueObj.value = cnt;
@@ -105,22 +105,22 @@ class DepartmentChart extends Component {
         return (
             <div>
                 <div >
-                    <h1 align='center'>{departmentHead} 부서별 사원 현황</h1>
+                    <h1 align='center'>{departmentHead} 직무별 사원 현황</h1>
                 </div>
                 <div className="ContentWrapper">
                     <div className='ChartWrapper'>
                         <div>
                             <PieChart width={700} height={530} onMouseEnter={this.onPieEnter} style = {{flexDirection: 'row'}}>
                                 <Pie 
-                                data={this.state.uniqueDataState}
-                                cx={300}
-                                cy={250}
-                                innerRadius={140}
-                                outerRadius={230}
-                                fill="#8884d8"
-                                paddingAngle={5}
-                                dataKey="value"
-                                onClick={this.findTableByChartClick}
+                                    data={this.state.uniqueDataState}
+                                    cx={300}
+                                    cy={250}
+                                    innerRadius={140}
+                                    outerRadius={230}
+                                    fill="#8884d8"
+                                    paddingAngle={5}
+                                    dataKey="value"
+                                    onClick={this.findTableByChartClick}
                                 >   
                                 {this.state.uniqueDataState.map((entry, index) => (
                                 <Cell 
@@ -130,65 +130,62 @@ class DepartmentChart extends Component {
                                 />
                                 ))}
                                 </Pie>
-                                <Tooltip content={<CustomTooltip/>} />
+                                <Tooltip content={<CustomTooltip />} />
                             </PieChart>
-                        </div>
-                        <div className="LegendWrapper">
-                            {
-                                this.state.uniqueDataState.map((data, index) => {
-                                    return (
-                                        <div style={{ 
-                                            display: 'flex',
-                                            alignContent: 'left',
-                                            width: 700,
-                                            height: 30
-                                            
-                                            }}>
-                                                
-                                            <button style={{ backgroundColor: COLORS[index],
-                                                            width: 50
-                                                            }}
-                                                    data-name={data.name}
-                                                    data-value={data.value}
-                                                    onClick={this.findTableByLegendColorClick}
-                                            >{" "}</button>
-                                            <button size='large' style={{
-                                                justifyContent: 'left',
-                                                width: 370,
-                                                backgroundColor: 'white',
-                                                textAlign: 'left'
-                                            }} className="LegendButton"
-                                            data-name={data.name}
-                                            data-value={data.value}
-                                            onClick={this.findTableByLegendColorClick}>
-                                                {`${data.name.replace(departmentHead+" ", "")} (${data.value}명)`}</button>
-                                        </div>
-                                        );
-                                })
+                    </div>
+                    <div className="LegendWrapper">
+                        {
+                            this.state.uniqueDataState.map((data, index) => {
+                                return (
+                                    <div style={{ 
+                                        display: 'flex',
+                                        alignContent: 'left',
+                                        width: 700,
+                                        height: 30
+                                        }}>
+                                        <button style={{ backgroundColor: COLORS[index],
+                                                        width: 50
+                                                        }}
+                                                data-name={data.name}
+                                                data-value={data.value}
+                                                onClick={this.findTableByLegendColorClick}
+                                        >{" "}</button>
+                                        <button size='large' style={{
+                                            justifyContent: 'left',
+                                            width: 370,
+                                            backgroundColor: 'white',
+                                            textAlign: 'left'
+                                        }} className="LegendButton"
+                                        data-name={data.name}
+                                        data-value={data.value}
+                                        onClick={this.findTableByLegendColorClick}>
+                                            {`${data.name.replace(departmentHead+" ", "")} (${data.value}명)`}</button>
+                                    </div>
+                                    );
+                            })
+                        }
+                    </div>
+                </div>
+                <div className="SearchBarWrapper" align="center" style={{padding: "20px"}}>
+                    <FormControl variant="standard">
+                        <InputLabel htmlFor="input-with-icon-adornment">
+                        사원 이름으로 조회
+                        </InputLabel>
+                        <Input
+                            id="input-with-icon-adornment"
+                            onChange={this.searchingKeywordInput('searchingKeyword')}
+                            placeholder='사원 이름을 입력하세요.'
+                            onFocus={this.placeholder=""}
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <AccountCircle />
+                                </InputAdornment>
                             }
-                        </div>
-                    </div>
-                    <div className="SearchBarWrapper" align="center" style={{padding: "20px"}}>
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="input-with-icon-adornment">
-                            사원 이름으로 조회
-                            </InputLabel>
-                            <Input
-                                id="input-with-icon-adornment"
-                                onChange={this.searchingKeywordInput('searchingKeyword')}
-                                placeholder='사원 이름을 입력하세요.'
-                                onFocus={this.placeholder=""}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <AccountCircle />
-                                    </InputAdornment>
-                                }
-                                />
-                        </FormControl>
-                    </div>
-                    <div>
-                        <h3>선택 부서: {this.state.dataName ? this.state.dataName.replace(departmentHead+" ", "") : "None"}</h3>
-                    </div>
+                            />
+                    </FormControl>
+                </div>
+                <div>
+                    <h3>선택 직무: {this.state.dataName ? this.state.dataName.replace(departmentHead+" ", "") : "None"}</h3>
                 </div>
                 <div className="TableWrapper">
                     <Table>
@@ -205,12 +202,11 @@ class DepartmentChart extends Component {
                             {   
                                 this.state.employeeData.filter((data) =>{
                                     
-                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.department.name === this.state.dataName && this.state.dataName){
+                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.jobCategory.name === this.state.dataName && this.state.dataName){
                                         console.log('클릭로직');
-                                        console.log('data.department.name: ', data.department.name);
                                         return data;
                                     }
-                                    else if (data.department.name.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+                                    else if (data.jobCategory.name.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
                                         console.log('검색로직');
                                         return data;
                                     }
@@ -235,8 +231,10 @@ class DepartmentChart extends Component {
                     </Table>
                 </div>
             </div>
+        </div>
+
         );
     }
 }
 
-export default DepartmentChart;
+export default JobCategoryChart;

@@ -26,3 +26,12 @@ export const StaffLevelData = [
     { code: 'CL7', name: "상무보", value: 15 },
 ];
 
+export const JObCategoryData = [
+    { code: 'CL1', name:  "사원", value: 30},
+    { code: 'CL2', name: "대리" , value: 20},
+    { code: 'CL3', name: "과장", value: 50 },
+    { code: 'CL4', name: "차장" , value: 60},
+    { code: 'CL5', name: "리더대우", value: 67 },
+    { code: 'CL6', name: "리더" , value: 67},
+    { code: 'CL7', name: "상무보", value: 15 },
+];

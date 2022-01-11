@@ -6,11 +6,12 @@ import React, { Component } from 'react';
 const departmentHead = "Smart융합사업실";
 
 class EmployeeTable extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state=({
           employeeData: [],
           searchingKeyword: "",
+          isLoaded: true
         });
     }
 
@@ -27,9 +28,15 @@ class EmployeeTable extends Component {
     };
 
     render() {
-        this.requestData();
+        if (this.state.isLoaded){
+            this.requestData();
+            this.setState({isLoaded : false});
+        }
         return (
             <>
+                <div >
+                    <h1 align='center'>{departmentHead} 전체 사원 목록</h1>
+                </div>
                 <div className="SearchBarWrapper" align="center" style={{padding: "20px"}}>
                     <FormControl variant="standard">
                         <InputLabel htmlFor="input-with-icon-adornment">
@@ -69,7 +76,6 @@ class EmployeeTable extends Component {
                                         return "";
                                     }
                                 }).map((filteredData) => { 
-                                    console.log('filteredData: ', filteredData);
                                     if (filteredData){
                                         return (
                                             <TableRow>
