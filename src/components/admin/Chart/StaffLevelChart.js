@@ -50,7 +50,11 @@ class StaffLevelChart extends Component {
     }
 
     getMyData = async () => {
-        let employeeData = await axios.get('/api/v1/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
+        employeeData = employeeData.data.filter((data)=>{
+            return data.departmentName.includes(departmentHead);
+        });
+        /** 
         // 직급순 데이터 정렬
         let employeeDataSorted = employeeData.data.sort( (a, b) => {
             a = a.stafflevel.level;
@@ -63,14 +67,14 @@ class StaffLevelChart extends Component {
                 return 0;
             }
         });
-
+        */
         this.setState({
-            employeeData: employeeDataSorted
+            employeeData: employeeData
         }); 
         
         let uniqueDataNameSet = new Set();
         for (let idx = 0; idx < this.state.employeeData.length; idx++) {
-            const staffLevelName = this.state.employeeData[idx].stafflevel.name;
+            const staffLevelName = this.state.employeeData[idx].staffLevelName;
             if (!uniqueDataNameSet.has(staffLevelName)){
                 uniqueDataNameSet.add(staffLevelName);
             } else {
@@ -82,7 +86,7 @@ class StaffLevelChart extends Component {
         let uniqueDataset = [];
         for (let idx = 0; idx < uniqueDataNameArr.length; idx++){
             let cnt = this.state.employeeData.filter(data =>
-                uniqueDataNameArr[idx] === data.stafflevel.name).length;
+                uniqueDataNameArr[idx] === data.staffLevelName).length;
 
             let uniqueObj = {};
             uniqueObj.name = uniqueDataNameArr[idx];
@@ -91,8 +95,8 @@ class StaffLevelChart extends Component {
         }
         
         this.setState({uniqueDataState: uniqueDataset});
-        // this.countData();
-        // this.handlePageChange();
+        console.log('uniqueDataState: ', uniqueDataNameSet);
+        
     };
 
     searchingKeywordInput = () => (event) => {
@@ -115,11 +119,11 @@ class StaffLevelChart extends Component {
 
     handleClick = () => {
         let filteredData = this.state.employeeData.filter((data) =>{                   
-            if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.stafflevel.name === this.state.dataName && this.state.dataName){
+            if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.staffLevelName === this.state.dataName && this.state.dataName){
                 console.log('클릭로직');
                 return data;
             }
-            else if (data.stafflevel.name.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+            else if (data.staffLevelName.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
                 console.log('검색로직');
                 return data;
             }
@@ -209,11 +213,11 @@ class StaffLevelChart extends Component {
                                 <TableRow>
                                     <TableCell align='center'>{data.id}</TableCell>
                                     <TableCell align='center'>{data.korName}</TableCell>
-                                    <TableCell align='center'>{data.stafflevel.name}</TableCell>
-                                    <TableCell align='center'>{data.role === 'ROLE_MEMBER' ? "팀원" : "팀장"}</TableCell>
-                                    <TableCell align='center'>{data.department.name.replace(departmentHead+" ", "")}</TableCell>
-                                    <TableCell align='center'>{data.jobCategory.name}</TableCell>
-                                    <TableCell align='center'>{data.workPlace.name}</TableCell>
+                                    <TableCell align='center'>{data.staffLevelName}</TableCell>
+                                    <TableCell align='center'>{data.role}</TableCell>
+                                    <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
+                                    <TableCell align='center'>{data.jobCategoryName}</TableCell>
+                                    <TableCell align='center'>{data.workPlaceName}</TableCell>
                                     <TableCell align='center'>{data.email}</TableCell>
                                     <TableCell align='center'>{data.phone}</TableCell>
                                     <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>

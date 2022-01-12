@@ -4,6 +4,7 @@
 - [ ] (Add) [부서] Pagination 구현
 - [ ] (Add) [프로젝트] Pagination 구현
 - [ ] (Add) [프로젝트] 프로젝트별 사원 조회, 검색 기능 추가
+- [ ] (Update) [전체] Pagination 1페이지당 최대 출력 개수 20개로 수정
 - [ ] (Fix) [부서] 부서 Pie chart Tooltip 오류 수정
 - [ ] (Fix) [전체] 사원명 '가나다...' 오름차순 정렬
 - [ ] (Update) [직급] 직급별 사원수 조정(e.g., 상무보 가장 적게 쿼리문 수정)
