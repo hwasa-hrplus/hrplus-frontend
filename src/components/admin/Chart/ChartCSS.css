@@ -1,0 +1,24 @@
+.contentWrapper{
+  justify-content: center;
+}
+
+.ChartWrapper {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-around; */
+    flex-wrap: wrap;
+  }
+
+/* .BarChartWrapper {
+  text-align: center;
+  justify-content: center;
+} */
+
+.LegendWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    width: 300px;
+    float: left;
+}

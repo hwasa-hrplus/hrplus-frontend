@@ -60,8 +60,8 @@ class EmployeeList extends Component {
 
         this.state.data.map( (EmployeeData, index) =>
             <TableRow>
-                <TableCell className='test' key = {index} align='center'>
-                <Link to={`/detail/${EmployeeData.id}`}>{EmployeeData.id}</Link>
+                <TableCell  key = {index} align='center'>
+                <Link to={`/admin/detail/${EmployeeData.id}`}>{EmployeeData.id}</Link>
                 </TableCell>
                 <TableCell align='center'>{EmployeeData.korName}</TableCell>
                 <TableCell align='center'>{EmployeeData.stafflevel.name}</TableCell>
@@ -70,7 +70,7 @@ class EmployeeList extends Component {
                 {/* <TableCell align='center'>{EmployeeData.project.name}</TableCell> */}
                 <TableCell align='center'>{EmployeeData.email}</TableCell>
                 <TableCell align='center'>{EmployeeData.phone}</TableCell>
-                {EmployeeData.workType == 0 ?
+                {EmployeeData.workType === 0 ?
                     <TableCell align='center'>휴직자</TableCell>
                         :<TableCell align='center'>근무자</TableCell>
 
