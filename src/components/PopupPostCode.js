@@ -7,7 +7,7 @@ const PopupPostCode = (props) => {
     const {open, close, header} = props;
     const [address, setAddress] = useState(undefined);
     const [addressCode, setAddressCode] = useState(undefined);
-    console.log(Object.keys(props).includes('registAddress'))
+    console.log(props)
 
     const handleComplete = (data) => {
 

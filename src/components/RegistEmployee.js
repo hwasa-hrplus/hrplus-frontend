@@ -5,6 +5,7 @@ import PopupPostCode from './PopupPostCode';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import {v4 as uuidv4} from 'uuid';
 
 class RegistEmployee extends Component{
 
@@ -17,16 +18,21 @@ class RegistEmployee extends Component{
             staffLevel: [],
             department: [],
             workPlace: [],
+            admin:[],
             jobCategory : [],
             staffLevelName: "",
             departmentName: "",
             workPlaceName: "",
             jobCategoryName: "",
+            bossId:"",
             workType:false,
             startDate:"",
             birthDate:"",
             registAddress:[],
-            registAddressCode:[]
+            registAddressCode:[],
+            detailAddress:"",
+            filesId:"",
+            role:""
 
         }
 
@@ -51,8 +57,11 @@ class RegistEmployee extends Component{
         const jobCategoryData = jobCategory.data;
         console.log(jobCategoryData);
 
+        let admin = await axios.get('/hradmin/admin/boss');
+        const adminData = admin.data;
+        console.log(adminData);
 
-        this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData})
+        this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData})
     }
 
     dateChange = (value) =>{
@@ -68,6 +77,9 @@ class RegistEmployee extends Component{
 
         if(type==='staffLevel'){
             this.setState({staffLevelName:value})
+        }else if(type==='id'){
+            console.log(value);
+            this.setState({id:value})
         }else if(type==='department'){
             console.log(value);
             this.setState({departmentName:value})
@@ -82,22 +94,69 @@ class RegistEmployee extends Component{
             if(value==='근무자'){
                 this.setState({workType:true})
             }
-        }
-        
+        }else if(type==='detailAddress'){
+            this.setState({detailAddress:value})
+        }else if(type==='role'){
+            this.setState({role:value})
+        }else if(type==='bossId'){
+            console.log(this.state.admin)
+            const adminList = this.state.admin
+            for(let i =0; i<adminList.length; i ++){
+                adminList.map((adminData) => {
+                    if(adminData.korName.includes(value)){
+                        this.setState({bossId:adminData.id})
+                    }
+                    })
+                }
+               
+            }
+
+            
     }
 
     //사진 업로드 구현
     postImage = async(e) =>{
             const formData = new FormData();
             const file = e.target.files[0];
+            const id = this.state.id
+            console.log(id);
             formData.append("img", file);
             
-            await axios.post('/hradmin/image', formData)
+            await axios.post('/hradmin/image/'+id, formData)
                 .then(res =>{
                     console.log(res);
                 })
+
+                    
+            let image = await axios.get('/hradmin/regist/image/'+id);
+            const imageData = image.data;
+            console.log(imageData);   
+            this.setState({filesId:imageData.uuid}) 
      
+           
+            this.getImage(id)
         }
+
+        getImage = async (id) =>{
+      
+            await axios({
+                method:'GET',
+                url:'/hradmin/image/'+id,
+                responseType:'blob',
+            })
+            .then((res) => {
+                const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
+                this.setState({setUrl:url})
+               
+            })
+            .catch(e => {
+                console.log(`error === ${e}`)
+            })
+            
+            console.log(this.state.setUrl);
+            
+            
+        }    
     //주소 찾기 구현
     openModal = () => {
         this.setState({modalOpen: true})
@@ -110,24 +169,31 @@ class RegistEmployee extends Component{
     onSubmit = async (e)=>{
         e.preventDefault();
         console.log("onSubmit event 발생");
-
         console.log(this.state);
 
         const sendData ={
                 id:e.target.id.value, 
                 korName:e.target.korName.value,
+                engName:e.target.engName.value,
                 gender:e.target.gender.value,
+                age:e.target.age.value,
+                residentNum:e.target.residentNum.value,
                 email:e.target.email.value,
                 password:e.target.password.value,
-                role:e.target.role.value,
+                role:this.state.role,
                 staffLevelName: this.state.staffLevelName,
                 departmentName: this.state.departmentName,
                 workPlaceName: this.state.workPlaceName,
                 jobCategoryName: this.state.jobCategoryName,
                 workType:this.state.workType,
                 birthDate:this.state.birthDate,
-                startDate:this.state.startDate
-                
+                startDate:this.state.startDate,
+                phone:e.target.phone.value,
+                address:this.state.registAddress[0],
+                addressCode:this.state.registAddressCode[0],
+                addressDetail:this.state.detailAddress,
+                bossId:this.state.bossId,
+                filesId:this.state.filesId
             } 
             console.log(sendData);
             axios.post('/hradmin/admin', sendData)
@@ -139,6 +205,8 @@ class RegistEmployee extends Component{
             })
     }
 
+
+
     render() {
     console.log(this.state.address)
     return (
@@ -149,7 +217,7 @@ class RegistEmployee extends Component{
                     <TableRow>
                         <TableCell align='center'>사진</TableCell>
                         <TableCell align='right'>사번</TableCell>
-                        <TableCell key='id'><TextField name='id' variant="outlined" size="small"/></TableCell>
+                        <TableCell key='id'><TextField onChange={e => this.onChange(e,'id')} name='id' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>성별</TableCell>
                         <TableCell key='gender'><TextField name='gender' variant="outlined" size="small"/></TableCell>
 
@@ -159,7 +227,7 @@ class RegistEmployee extends Component{
 
                         <TableCell align='center' rowSpan='4'>
                             <img
-                                src=''
+                                src={this.state.setUrl}
                                 alt=""
                                 style={{
                                     height: "300px",
@@ -185,10 +253,17 @@ class RegistEmployee extends Component{
                         <TableCell align='right'>영문성명</TableCell>
                         <TableCell key='engName'><TextField name='engName' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>직책</TableCell>
-                        <TableCell key='role'><TextField
-                            name='role'
-                            variant="outlined"
-                            size="small"/></TableCell>
+                        <TableCell key='role'>
+                            <Select 
+                                value={this.state.selectValue}
+                                label="직책"
+                                onChange={e => this.onChange(e,'role')}
+                                defaultValue = ""
+                            >
+                                <MenuItem value='팀장'>팀장</MenuItem>
+                                <MenuItem value='팀원'>팀원</MenuItem>                                              
+                            </Select>
+                        </TableCell>
                     </TableRow>
                     <TableRow>
 
@@ -230,7 +305,7 @@ class RegistEmployee extends Component{
                     </TableRow>
                     <TableRow>
                         <TableCell align='center'>
-                            <Input type="file" acept="img/*" onChange={this.postImage}/> {/* <IconButton aria-label="upload picture" component="span"></IconButton> */}
+                            <Input type="file" onChange={this.postImage}/> {/* <IconButton aria-label="upload picture" component="span"></IconButton> */}
                         </TableCell>
                         <TableCell align='right'>부서</TableCell>
                         <TableCell colSpan='3' key={this.state.selectValue}>
@@ -285,6 +360,7 @@ class RegistEmployee extends Component{
                                   {console.log(this.state)}
                              <TextField
                                  label={this.state.registAddressCode[0]}
+                                 value={this.state.registAddressCode[0]}
                                  variant="outlined"
                                  size="small"/>
                              <span>
@@ -292,6 +368,7 @@ class RegistEmployee extends Component{
                              </span>
                              <TextField
                                  label={this.state.registAddress[0]}
+                                 value={this.state.registAddress[0]}
                                  variant="outlined"
                                  style ={{width: '53%'}}
                                  size="small"/>
@@ -299,7 +376,7 @@ class RegistEmployee extends Component{
                                  <br/>
                              </span>
                              <TextField
-                                 label=''
+                                 onChange={e => this.onChange(e,'detailAddress')}
                                  variant="outlined"
                                  style ={{width: '53%'}}
                                  size="small"/>
@@ -308,7 +385,19 @@ class RegistEmployee extends Component{
                      </TableRow>
                      <TableRow>
                          <TableCell align='right'>결재권자</TableCell>
-                         <TableCell key='bossId'><TextField name='bossId' variant="outlined" size="small"/></TableCell>
+                         <TableCell key='bossId'>
+                            <Select 
+                                    value={this.state.selectValue}
+                                    label="직급"
+                                    onChange={e => this.onChange(e,'bossId')}
+                                    defaultValue = ""
+                                >
+                            {this.state.admin.map((adminData, i) => {
+                                return(
+                                    <MenuItem value={adminData.korName}>{adminData.korName}</MenuItem>
+                            )})}
+                            </Select>
+                         </TableCell>
                          <TableCell align='right'>근무형태</TableCell>
                          <TableCell key='workType'>
                              <Select 
@@ -339,22 +428,17 @@ class RegistEmployee extends Component{
                      <TableRow >
 
                          <TableCell align='right'>프로젝트</TableCell>
-                         <TableCell align='left' colSpan='5'>
+                         <TableCell align='left' colSpan='3'>
                              <Button variant="contained">프로젝트 찾기</Button>
                              <span><br/></span>
                              <TextField
                                  label=""
-                                 style={{width: '53%'}}
+                                 style={{width: '100%'}}
                                  size="small"
                                  variant="outlined"/>
                          </TableCell>
-                     </TableRow>
-                     <TableRow>
                          <TableCell align='right'>Cost Center</TableCell>
                          <TableCell ><TextField label="" variant="outlined" size="small"/></TableCell>
-                         <TableCell align='right'>원부서</TableCell>
-                         <TableCell key='ori_department'>
-                             <TextField label='' variant="outlined" size="small"/></TableCell>
                      </TableRow>
                      <TableRow>
                         <TableCell key="password" colSpan='4' align='right'>초기 비밀번호

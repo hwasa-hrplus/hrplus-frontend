@@ -54,8 +54,8 @@ class EmployeeDetail extends Component {
         //우편번호
         this.setState({
             address: data.map((employeeData) => employeeData.address),
-            address_code: data.map((employeeData) => employeeData.address_code),
-            address_detail: data.map((employeeData) => employeeData.detail_address),
+            addressCode: data.map((employeeData) => employeeData.addressCode),
+            addressDetail: data.map((employeeData) => employeeData.addressDetail),
 
         })
         //state 저장
@@ -101,6 +101,7 @@ class EmployeeDetail extends Component {
     postImage = async(e) =>{
         const formData = new FormData();
         const file = e.target.files[0];
+        console.log(file);
         formData.append("img", file);
         
         await axios.post('/hradmin/image', formData)
@@ -249,13 +250,13 @@ class EmployeeDetail extends Component {
                                                 open={this.state.modalOpen}
                                                 close={this.closeModal}
                                                 address={this.state.address}
-                                                address_code ={this.state.address_code}
-                                                address_detail ={this.state.address_detail}
+                                                addressCode ={this.state.addressCode}
+                                                addressDetail ={this.state.addressDetail}
                                               
                                                 />
                                             <div>
                                                 <TextField
-                                                  label={this.state.address_code[0]}
+                                                  label={this.state.addressCode[0]}
                                                   variant="outlined"                                                
                                                   size="small"/>
                                               <span> <br/> </span>
@@ -266,7 +267,7 @@ class EmployeeDetail extends Component {
                                                   size="small"/>
                                               <span> <br/> </span>    
                                               <TextField
-                                                  label={this.state.address_detail[0]}
+                                                  label={this.state.addressDetail[0]}
                                                   variant="outlined"
                                                   style ={{width: '53%'}}
                                                   size="small"/>
@@ -305,7 +306,7 @@ class EmployeeDetail extends Component {
                                             label=""
                                             variant="outlined"
                                             size="small"/></TableCell>
-                                        <TableCell align='right'>원부서</TableCell>
+                                        <TableCell align='right' colSpan='3'>원부서</TableCell>
                                         <TableCell key={this.state.updateDepartment}>
                                             <TextField
                                             label={this.state.updateDepartment}
