@@ -49,7 +49,7 @@ class ProjectChart extends Component {
 
     getMyData = async () => {
         let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
-        let projectData = await axios.get('/project/list');
+        //let projectData = await axios.get('/project/list');
         // 직급순 데이터 정렬
         // let employeeDataSorted = employeeData.data.sort( (a, b) => {
         //     a = a.stafflevel.level;
