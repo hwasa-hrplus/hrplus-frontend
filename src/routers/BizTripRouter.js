@@ -1,8 +1,9 @@
 import { faSuitcase, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+
 import { Nav } from 'react-bootstrap';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import BizTripDetail from '../components/BizTripDetail';
 import RegistBizTrip from '../components/RegistBizTrip';
 
@@ -20,10 +21,10 @@ const BizTripRouter = () => {
             </Nav>   
             </div>
             <div className="content">
-                <Routes>
-                    <Route path="registBizTrip" element={<RegistBizTrip />} />
-                    <Route path="bizTripDetail" element={<BizTripDetail />} />
-                </Routes>
+                <Switch>
+                    <Route path="/biztrip/registBizTrip" component={RegistBizTrip} />
+                    <Route path="/biztrip/bizTripDetail" component={BizTripDetail} />
+                </Switch>
             </div>
         </div>
     );
