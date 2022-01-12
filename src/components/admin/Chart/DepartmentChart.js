@@ -55,10 +55,10 @@ class DepartmentChart extends Component {
     }
 
     getMyData = async () => {
-        let employeeData = await axios.get('/api/v1/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
         
         employeeData = employeeData.data.filter((data)=>{
-            return data.department.name.includes(departmentHead);
+            return data.departmentName.includes(departmentHead);
         });
         
         this.setState({
@@ -67,7 +67,7 @@ class DepartmentChart extends Component {
 
         let uniqueDataNameSet = new Set();
         for (let idx = 0; idx < this.state.employeeData.length; idx++) {
-            const departmentName = this.state.employeeData[idx].department.name;
+            const departmentName = this.state.employeeData[idx].departmentName;
             if (!uniqueDataNameSet.has(departmentName)){
                 uniqueDataNameSet.add(departmentName);
             } else {
@@ -79,7 +79,7 @@ class DepartmentChart extends Component {
         let uniqueDataset = [];
         for (let idx = 0; idx < uniqueDataNameArr.length; idx++){
             let cnt = this.state.employeeData.filter(data =>
-                uniqueDataNameArr[idx] === data.department.name).length;
+                uniqueDataNameArr[idx] === data.departmentName).length;
             console.log(`${uniqueDataNameArr[idx]} 부서: ${cnt}명`);
             let uniqueObj = {};
             uniqueObj.name = uniqueDataNameArr[idx];
@@ -154,7 +154,7 @@ class DepartmentChart extends Component {
                                             >{" "}</button>
                                             <button size='large' style={{
                                                 justifyContent: 'left',
-                                                width: 370,
+                                                width: 450,
                                                 backgroundColor: 'white',
                                                 textAlign: 'left'
                                             }} className="LegendButton"
@@ -210,12 +210,12 @@ class DepartmentChart extends Component {
                             {   
                                 this.state.employeeData.filter((data) =>{
                                     
-                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.department.name === this.state.dataName && this.state.dataName){
+                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.departmentName === this.state.dataName && this.state.dataName){
                                         console.log('클릭로직');
-                                        console.log('data.department.name: ', data.department.name);
+                                        console.log('data.departmentName: ', data.departmentName);
                                         return data;
                                     }
-                                    else if (data.department.name.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+                                    else if (data.departmentName.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
                                         console.log('검색로직');
                                         return data;
                                     }
@@ -229,11 +229,11 @@ class DepartmentChart extends Component {
                                         <TableRow>
                                             <TableCell align='center'>{filteredData.id}</TableCell>
                                             <TableCell align='center'>{filteredData.korName}</TableCell>
-                                            <TableCell align='center'>{filteredData.stafflevel.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.role === 'ROLE_MEMBER' ? "팀원" : "팀장"}</TableCell>
-                                            <TableCell align='center'>{filteredData.department.name.replace(departmentHead+" ", "")}</TableCell>
-                                            <TableCell align='center'>{filteredData.jobCategory.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.workPlace.name}</TableCell>
+                                            <TableCell align='center'>{filteredData.staffLevelName}</TableCell>
+                                            <TableCell align='center'>{filteredData.role}</TableCell>
+                                            <TableCell align='center'>{filteredData.departmentName.replace(departmentHead+" ", "")}</TableCell>
+                                            <TableCell align='center'>{filteredData.jobCategoryName}</TableCell>
+                                            <TableCell align='center'>{filteredData.workplaceName}</TableCell>
                                             <TableCell align='center'>{filteredData.email}</TableCell>
                                             <TableCell align='center'>{filteredData.phone}</TableCell>
                                             <TableCell align='center'>{filteredData.workType === false ? "근무" : "휴직"}</TableCell>

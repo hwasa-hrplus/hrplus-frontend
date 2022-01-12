@@ -3,6 +3,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import React, { Component } from 'react';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 import { paginate } from './Pagination/paginate';
 
 const departmentHead = "Smart융합사업실";
@@ -22,7 +23,9 @@ class EmployeeTable extends Component {
     }
 
     requestData = async () => {
-        let employeeData = await axios.get('/api/v1/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
+        console.log('employeeData:', employeeData);
+        
         this.setState({
             employeeData: employeeData.data,
         });
@@ -94,13 +97,13 @@ class EmployeeTable extends Component {
                         <TableBody>
                             {this.state.pagedData.map((data) => (
                             <TableRow>
-                                <TableCell align='center'>{data.id}</TableCell>
+                                <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
                                 <TableCell align='center'>{data.korName}</TableCell>
-                                <TableCell align='center'>{data.stafflevel.name}</TableCell>
-                                <TableCell align='center'>{data.role === 'ROLE_MEMBER' ? "팀원" : "팀장"}</TableCell>
-                                <TableCell align='center'>{data.department.name.replace(departmentHead+" ", "")}</TableCell>
-                                <TableCell align='center'>{data.jobCategory.name}</TableCell>
-                                <TableCell align='center'>{data.workPlace.name}</TableCell>
+                                <TableCell align='center'>{data.stafflevelName}</TableCell>
+                                <TableCell align='center'>{data.role}</TableCell>
+                                <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
+                                <TableCell align='center'>{data.jobCategoryName}</TableCell>
+                                <TableCell align='center'>{data.workPlaceName}</TableCell>
                                 <TableCell align='center'>{data.email}</TableCell>
                                 <TableCell align='center'>{data.phone}</TableCell>
                                 <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
