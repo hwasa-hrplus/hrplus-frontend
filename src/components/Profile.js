@@ -126,13 +126,13 @@ class Profile extends Component {
 
     //결재권자 가져오기
     searchAdmin = async (data)=>{
-        const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get('/hradmin/admin/list/'+admin[0]);
-        bossData = bossData.data
-        console.log(bossData);
+        // const admin = data.map((updateData) => updateData.bossId);
+        // let bossData = await axios.get('/hradmin/admin/list/'+admin[0]);
+        // bossData = bossData.data
+        // console.log(bossData);
 
-        const adminName = bossData.map((updateData) => updateData.korName);
-        this.setState({adminName:adminName})
+        // const adminName = bossData.map((updateData) => updateData.korName);
+        // this.setState({adminName:adminName})
     }
  
     componentDidMount() {

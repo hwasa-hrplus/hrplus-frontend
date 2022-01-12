@@ -5,7 +5,6 @@ import PopupPostCode from './PopupPostCode';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import {v4 as uuidv4} from 'uuid';
 
 class RegistEmployee extends Component{
 
@@ -197,7 +196,8 @@ class RegistEmployee extends Component{
             } 
             console.log(sendData);
             axios.post('/hradmin/admin', sendData)
-            .then((res) => {
+            .then((res) => {alert('사원 정보 추가 완료');      
+                window.location.reload();
                 console.log(res)
             })
             .catch((error) => {
@@ -275,15 +275,15 @@ class RegistEmployee extends Component{
                                 onChange={e => this.onChange(e,'staffLevel')}
                                 defaultValue = ""
                             >
-                        {this.state.staffLevel.map((staffLevelData, i) => {
-                            return(
-                                <MenuItem value={staffLevelData.name}>{staffLevelData.name}</MenuItem>
-                        )})}
+                                {this.state.staffLevel.map((staffLevelData, i) => {
+                                    return(
+                                        <MenuItem value={staffLevelData.name}>{staffLevelData.name}</MenuItem>
+                                )})}
                             </Select>
-
                             </TableCell>
                         <TableCell align='right'>직무</TableCell>
-                        <TableCell key={this.state.selectValue}> <Select 
+                        <TableCell key={this.state.selectValue}> 
+                        <Select 
                                 value={this.state.selectValue}
                                 label="직무"
                                 onChange={e => this.onChange(e,'jobCategory')}

@@ -57,19 +57,20 @@ const PopupPostCode = (props) => {
                                     &times;{' '}
                                 </button>
                             </header>
-                                {console.log(props.registAddress)}
+                                {console.log(props.address)}
+                                {console.log(Object.keys(props).includes('registAddress'))}
                                 <main>
                                     {Object.keys(props).includes('registAddress')===true
                                     ? 
-                                    <DaumPostcode onComplete={handleComplete} onClose={close} 
+                                        <DaumPostcode onComplete={handleComplete} onClose={close} 
                                          {...props.registAddress[0]=address}
                                          {...props.registAddressCode[0]=addressCode}
-                                    />                                
+                                        />                                
                                     :    
                                         <DaumPostcode onComplete={handleComplete} onClose={close} 
                                         {...props.address[0]=address}
-                                        {...props.address_code[0]=addressCode} 
-                                        {...props.address_detail[0]=null}
+                                        {...props.addressCode[0]=addressCode} 
+                                        {...props.addressDetail[0]=null}
                                     />
                                         }
                                  </main> 
