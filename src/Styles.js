@@ -79,6 +79,11 @@ const Styles = () => {
                 width:1300px;
                
             }
+
+            .slideBox{
+                
+                width:1300px;
+            }
                 
         `}
   </style>
