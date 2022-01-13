@@ -53,6 +53,10 @@ class EmployeeTable extends Component {
         console.log('current page in handlePageChange: ', this.state.currentPage);
     }
 
+    handlePagedData = () => {
+        return paginate(this.searchEmployee(), this.state.currentPage, pageSize);
+    }
+
     setPage = () => {
         if(sessionStorage.currentPage) {
             this.setState({ currentPage : Number(sessionStorage.currentPage) })
@@ -63,13 +67,26 @@ class EmployeeTable extends Component {
         return 1;
     }
 
+    searchEmployee = () => {
+        let filteredData = this.state.employeeData.filter((data) =>{
+            if (data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+                console.log('검색로직');
+                return data;
+            } else if (this.state.searchingKeyword==="사원 이름을 입력하세요." || this.state.searchingKeyword === "") {
+                return data;
+            } else {
+                return "";
+            }
+        })
+        return filteredData;
+    }
+
     componentWillMount(){
         this.requestData();
         this.setPage();
     }
 
     render() {
-        console.log('current page in rendering: ', this.state.currentPage);
         return (
             <>
                 <div >
@@ -110,19 +127,20 @@ class EmployeeTable extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.pagedData.map((data) => (
-                            <TableRow>
-                                <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
-                                <TableCell align='center'>{data.korName}</TableCell>
-                                <TableCell align='center'>{data.stafflevelName}</TableCell>
-                                <TableCell align='center'>{data.role}</TableCell>
-                                <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
-                                <TableCell align='center'>{data.jobCategoryName}</TableCell>
-                                <TableCell align='center'>{data.workPlaceName}</TableCell>
-                                <TableCell align='center'>{data.email}</TableCell>
-                                <TableCell align='center'>{data.phone}</TableCell>
-                                <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
-                            </TableRow>
+                            {
+                                this.handlePagedData().map((data) => (
+                                    <TableRow>
+                                        <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
+                                        <TableCell align='center'>{data.korName}</TableCell>
+                                        <TableCell align='center'>{data.stafflevelName}</TableCell>
+                                        <TableCell align='center'>{data.role}</TableCell>
+                                        <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
+                                        <TableCell align='center'>{data.jobCategoryName}</TableCell>
+                                        <TableCell align='center'>{data.workPlaceName}</TableCell>
+                                        <TableCell align='center'>{data.email}</TableCell>
+                                        <TableCell align='center'>{data.phone}</TableCell>
+                                        <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
+                                    </TableRow>
                             ))}
                         </TableBody>
                     </Table>
@@ -130,7 +148,8 @@ class EmployeeTable extends Component {
                 </div>
                 <nav>
                     <ul className="pagination" class="nav justify-content-center bg-light">
-                        { _.range(1, Math.ceil(this.state.dataNum / pageSize) + 1).map(page => (
+                        { 
+                            _.range(1, Math.ceil(this.searchEmployee().length / pageSize) + 1).map(page => (
                             <li 
                                 key={page} 
                                 className={page === this.state.currentPage ? "page-item active" : "page-item"} // Bootstrap을 이용하여 현재 페이지를 시각적으로 표시

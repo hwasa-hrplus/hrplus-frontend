@@ -4,8 +4,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
+import _ from 'lodash';
+import { paginate } from './pagination/paginate';
 
 const departmentHead = "Smart융합사업실";
+const pageSize = 50;
 const COLORS = ['#4f07eb', '#00C49F', '#ffea28', 
                 '#f78d59', '#eb0eca', '#ff0a2b', 
                 '#00ba25', '#DD8438', '#BB1213', 
@@ -33,14 +36,20 @@ class DepartmentChart extends Component {
           employeeData: [],
           uniqueDataState: [],
           searchingKeyword: "사원 이름을 입력하세요.",
+          pagedData: [],
+          filteredPagedData: [],
+          currentPage: 1,
+          dataNum: 0,
         });
     }
+
     findTableByChartClick = (data) => {
         console.log('차트 클릭 함수 내 data: ', data);
         this.setState({
             dataName: data.name,
             dataValue: data.value,
             searchingKeyword: "사원 이름을 입력하세요.",
+            currentPage: 1
         })
         console.log(`${this.state.dataName} 차트 조각 클릭!`);
     }
@@ -50,20 +59,34 @@ class DepartmentChart extends Component {
             dataName: event.target.dataset.name,
             dataValue: event.target.dataset.value,
             searchingKeyword: "사원 이름을 입력하세요.",
+            currentPage: 1
         })
         console.log('event.target.getAttribute("data-value"):', event.target.dataset.name);
         
     }
 
-    getMyData = async () => {
+    requestData = async () => {
         let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
         
         employeeData = employeeData.data.filter((data)=>{
             return data.departmentName.includes(departmentHead);
         });
         
+        // 직급순 데이터 정렬
+        let employeeDataSorted = this.sortByStaffLevel(employeeData).sort( (a, b) => {
+            a = a.staffLevel;
+            b = b.staffLevel; 
+            if (a < b){
+                return -1;
+            } else if (a > b){
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        
         this.setState({
-            employeeData: employeeData
+            employeeData: employeeDataSorted
         });       
 
         let uniqueDataNameSet = new Set();
@@ -88,18 +111,90 @@ class DepartmentChart extends Component {
             uniqueDataset.push(uniqueObj);
         }
         this.setState({uniqueDataState: uniqueDataset});
-        // this.getRandomColor();
+    }
+
+    sortByStaffLevel = (employeeData) => {
+        employeeData.staffLevel = "";
+        for (let index = 0; index < employeeData.length; index++) {
+            
+            switch(employeeData[index].staffLevelName){
+                case "사원":
+                    employeeData[index].staffLevel =  "PLC001";
+                    
+                    break;
+                case "대리":
+                    employeeData[index].staffLevel = "PLC002";
+                    break;
+
+                case "과장":
+                    employeeData[index].staffLevel = "PLC003";
+                    break;
+
+                case "차장":
+                    employeeData[index].staffLevel = "PLC004";
+                    break;
+
+                case "리더":
+                    employeeData[index].staffLevel = "PLC005";
+                    break;
+
+                case "부장":
+                    employeeData[index].staffLevel = "PLC006";
+                    break;
+
+                case "상무보":
+                    employeeData[index].staffLevel = "PLC007";
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        return employeeData;
     }
 
     searchingKeywordInput = (prop) => (event) => {
-        this.setState({searchingKeyword : event.target.value});
+        this.setState({
+            searchingKeyword : event.target.value,
+            currentPage: 1
+        });
         console.log('searchingKeyword: ', this.state.searchingKeyword);
     };
+    
+    handlePageChange = (page) => {
+        page = (page === undefined ? 1 : page);
+        this.setState({
+            currentPage: page,
+            pagedData: paginate(this.state.employeeData, page, pageSize),
+        });
+    }
+
+    handleClick = () => {
+        let filteredData = this.state.employeeData.filter((data) =>{                   
+            if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.departmentName === this.state.dataName && this.state.dataName){
+                console.log('클릭로직');
+                return data;
+            }
+            else if (data.departmentName.includes(this.state.dataName) && data.korName.includes(this.state.searchingKeyword)){
+                console.log('검색로직');
+                return data;
+            }
+            else {
+                return "";
+            }
+        })
+        console.log('filteredData Length: ', filteredData.length);
+        
+        return filteredData;
+    }
+
+    handlePagedData = () => {
+        return paginate(this.handleClick(), this.state.currentPage, pageSize);
+    }
 
     render() {
         if (this.state.isLoaded){
-            console.log('getMyData!');
-            this.getMyData();
+            this.requestData();
             this.setState({isLoaded : false});
         }
 
@@ -208,43 +303,40 @@ class DepartmentChart extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {   
-                                this.state.employeeData.filter((data) =>{
-                                    
-                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.departmentName === this.state.dataName && this.state.dataName){
-                                        console.log('클릭로직');
-                                        console.log('data.departmentName: ', data.departmentName);
-                                        return data;
-                                    }
-                                    else if (data.departmentName.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
-                                        console.log('검색로직');
-                                        return data;
-                                    }
-                                    else {
-                                        return "";
-                                    }
-                                }).map((filteredData) => { 
-                                    console.log('filteredData: ', filteredData);
-                                    
-                                    return (
-                                        <TableRow>
-                                            <TableCell align='center'>{filteredData.id}</TableCell>
-                                            <TableCell align='center'>{filteredData.korName}</TableCell>
-                                            <TableCell align='center'>{filteredData.staffLevelName}</TableCell>
-                                            <TableCell align='center'>{filteredData.role}</TableCell>
-                                            <TableCell align='center'>{filteredData.departmentName.replace(departmentHead+" ", "")}</TableCell>
-                                            <TableCell align='center'>{filteredData.jobCategoryName}</TableCell>
-                                            <TableCell align='center'>{filteredData.workplaceName}</TableCell>
-                                            <TableCell align='center'>{filteredData.email}</TableCell>
-                                            <TableCell align='center'>{filteredData.phone}</TableCell>
-                                            <TableCell align='center'>{filteredData.workType === false ? "근무" : "휴직"}</TableCell>
-                                        </TableRow>
-                                    );
-                                })
+                        { 
+                            this.handlePagedData().map((data) => (
+                                <TableRow>
+                                    <TableCell align='center'>{data.id}</TableCell>
+                                    <TableCell align='center'>{data.korName}</TableCell>
+                                    <TableCell align='center'>{data.staffLevelName}</TableCell>
+                                    <TableCell align='center'>{data.role}</TableCell>
+                                    <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
+                                    <TableCell align='center'>{data.jobCategoryName}</TableCell>
+                                    <TableCell align='center'>{data.workPlaceName}</TableCell>
+                                    <TableCell align='center'>{data.email}</TableCell>
+                                    <TableCell align='center'>{data.phone}</TableCell>
+                                    <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
+                                </TableRow>
+                            ))
                             }
                         </TableBody>
                     </Table>
                 </div>
+                <nav>
+                    {
+                    <ul className="pagination" class="nav justify-content-center bg-light">
+                        {
+                            _.range(1, Math.ceil(this.handleClick().length / pageSize) + 1).map(page => (
+                            <li 
+                                key={page} 
+                                className={page === this.state.currentPage ? "page-item active" : "page-item"}
+                                style={{ cursor: "pointer" }}>
+                                <a className="page-link" onClick={() => this.handlePageChange(page)}>{page}</a> 
+                            </li>
+                        ))}
+                    </ul>
+                    }
+                </nav>
             </div>
         );
     }
