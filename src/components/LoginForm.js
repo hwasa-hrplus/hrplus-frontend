@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import SimpleSlider from "./SimpleSlider";
+import Profile from "./Profile";
 
 const Container = styled.div`
   margin-top: 100px;
@@ -99,8 +99,9 @@ function LoginForm() {
      },[])
   return (
     <Container>
-      <SimpleSlider/>
-      <table align='center'>
+      <Profile/>
+      {/* <SimpleSlider/> */}
+      {/* <table align='center'>
           <tr>
               <td>
               <Input type = "text"  id="id" name="id" onChange={handleInputId} placeholder="아이디를 입력해주세요" />
@@ -118,7 +119,7 @@ function LoginForm() {
                 <Button  onClick={onClickLogin}>LOGIN</Button>
               </td>
           </tr>
-      </table>
+      </table> */}
      
      
     </Container>

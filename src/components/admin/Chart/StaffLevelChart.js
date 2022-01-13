@@ -5,7 +5,8 @@ import { Table, TableHead, TableBody, TableRow, TableCell, Input, FormControl, I
 import axios from 'axios';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import _ from 'lodash';
-import { paginate } from './Pagination/paginate';
+import { paginate } from './pagination/paginate';
+
 
 const departmentHead = "Smart융합사업실";
 const pageSize = 50;
