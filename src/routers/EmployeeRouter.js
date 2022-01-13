@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link, Route, Switch } from 'react-router-dom';
-import Profile from '../components/Profile';
+import HrInfo from '../components/hrMaster/HrInfo';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdBadge } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,7 +17,7 @@ const EmployeeRouter = () => {
             </div>
             <div className="content">
                 <Switch>
-                    <Route path="/employee/profile" component={Profile}/>
+                    <Route path="/employee/hrinfo" component={HrInfo}/>
                 </Switch>
             </div>
         </div>
