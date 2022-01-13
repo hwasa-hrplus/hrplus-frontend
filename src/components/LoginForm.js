@@ -1,129 +1,139 @@
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Image from '../images/posco3.png';
+import authService from '../services/auth.service';
+import { useHistory, withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import { Alert } from '@mui/material';
 
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Profile from "./Profile";
-
-const Container = styled.div`
-  margin-top: 100px;
-  padding: 20px;
-
-`;
-
-const Input = styled.input`
-  position: relative;
-  overflow: hidden;
-  width: 340px;
-  height: 40px;
-  margin: 0 0 8px;
-  padding: 5px 39px 5px 11px;
-  border: solid 1px #dadada;
-  background: #fff;
-  box-sizing: border-box;
-`;
-
-
-const Button = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 40px;
-  display: block;
-  width: 150px;
-  height: 40px;
-  margin: 0 0 8px;
-  cursor: pointer;
-  text-align: center;
-  color: #fff;
-  border: none;
-  border-radius: 0px;
-  background-color: #006399;
-
-  
-  ${({ disabled }) =>
-    disabled &&
-    `
-    background-color: #efefef;
-  `}
-`;
-//아디 비번 값 받기
-//값없으면 disabled
-function LoginForm() {
-    const [inputId, setInputId] = useState('')
-    const [inputPw, setInputPw] = useState('')
- 
-    const handleInputId = (e) => {
-        setInputId(e.target.value)
-    }
- 
-    const handleInputPw = (e) => {
-        setInputPw(e.target.value)
-    }
- 
-    const onClickLogin = () => {
-        console.log('click login')
-        console.log('ID : ', inputId)
-        console.log('PW : ', inputPw)
-        axios.post('/onLogin', null, {
-            params: {
-            'id': inputId,
-            'password': inputPw
-            }
-        })
-        .then(res => {
-            console.log(res)
-            console.log('res.data.userId :: ', res.data.userId)
-            console.log('res.data.msg :: ', res.data.msg)
-            if(res.data.userId === undefined){
-                // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
-                console.log('======================',res.data.msg)
-                alert('입력하신 id 가 일치하지 않습니다.')
-            } else if(res.data.userId === null){
-                // id는 있지만, pw 는 다른 경우 userId = null , msg = undefined
-                console.log('======================','입력하신 비밀번호 가 일치하지 않습니다.')
-                alert('입력하신 비밀번호 가 일치하지 않습니다.')
-            } else if(res.data.userId === inputId) {
-                // id, pw 모두 일치 userId = userId1, msg = undefined
-                console.log('======================','로그인 성공')
-                sessionStorage.setItem('user_id', inputId)
-            }
-            // 작업 완료 되면 페이지 이동(새로고침)
-            document.location.href = '/'
-        })
-        .catch()
-    }
- 
-     useEffect(() => {
-         axios.get('/user_inform/login')
-         .then(res => console.log(res))
-         .catch()
-     },[])
+function Copyright(props) {
   return (
-    <Container>
-      <Profile/>
-      {/* <SimpleSlider/> */}
-      {/* <table align='center'>
-          <tr>
-              <td>
-              <Input type = "text"  id="id" name="id" onChange={handleInputId} placeholder="아이디를 입력해주세요" />
-              </td>
-              <td>
-                <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="비밀번호를 입력해주세요"
-                    onChange={handleInputPw}
-                 />
-              </td>
-              <td>
-                <Button  onClick={onClickLogin}>LOGIN</Button>
-              </td>
-          </tr>
-      </table> */}
-     
-     
-    </Container>
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        POSCO ICT Hwasa
+      </Link>{' '}
+      {new Date().getFullYear()}
+      <p className='request'>문의: 김윤욱 프로(yunuk.kim@poscoict.com)</p>
+    </Typography>
   );
 }
 
-export default LoginForm;
+const theme = createTheme();
+
+function SignInSide() {
+  const history = useHistory();
+  const [count, setCount] = React.useState(0);
+  const [alert, setAlert] = React.useState(false);
+  React.useEffect(() => {
+    
+    setTimeout(() => {
+      console.log(count);
+      setAlert(false);
+    }, 2000);
+  }, [count]);
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+    authService.login(data.get('email'), data.get('password')).then(
+      () => {
+          history.push("/");
+          window.location.reload();
+      },error => {
+        setAlert(true);
+        setCount(count=>count+1);
+      });
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
+       {(alert)&& ( <Alert severity="error">아이디 혹은 패스워드가 틀렸습니다.</Alert>)}     
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />        
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={9}
+          sx={{
+            backgroundImage: `url(${Image})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        
+        <Grid item xs={12} sm={8} md={3} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              HR+ Sign in
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Username"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              
+              <Copyright sx={{ mt: 5 }} />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
+  );
+}
+export default withRouter(SignInSide);

@@ -77,7 +77,27 @@ const Styles = () => {
             }
             .MuiTable-root{
                 width:1300px;
-               
+            }
+            .slideBox{                
+                width:1300px;
+            }
+            .footer{
+                height: 100px;
+                color: white;
+                background-color: #006399;
+            }
+            .content{
+                padding-top: 35px;
+            }
+            .MuiTypography-body2 {
+                font-size: 0.875rem;
+                font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+                font-weight: 400;
+                line-height: 1.0;
+                letter-spacing: 0.01071em;
+            }
+            .request{
+                margin-top:20px;
             }
                 
         `}

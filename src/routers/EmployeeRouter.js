@@ -17,7 +17,7 @@ const EmployeeRouter = () => {
             </div>
             <div className="content">
                 <Switch>
-                    <Route path="/employee/hrinfo" component={HrInfo}/>
+                    <Route path="/employee/profile" component={HrInfo}/>
                 </Switch>
             </div>
         </div>
