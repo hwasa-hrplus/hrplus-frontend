@@ -7,6 +7,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import PopupPostCode from './PopupPostCode';
 import { Button } from '@mui/material';
+import ProjectList from '../bizTrip/ProjectList';
 
 class RegistEmployee extends Component{
 
@@ -113,6 +114,13 @@ class RegistEmployee extends Component{
             }
 
             
+    }
+
+    recvProjectData = (name)=>{
+        console.log('project code:' + name);
+        this.setState({projectName:name});
+      
+    
     }
 
     //사진 업로드 구현
@@ -369,6 +377,7 @@ class RegistEmployee extends Component{
                              </span>
                              <TextField
                                  label={this.state.registAddress[0]}
+
                                  variant="outlined"
                                  style ={{width: '53%'}}
                                  size="small"/>
@@ -428,17 +437,17 @@ class RegistEmployee extends Component{
                      <TableRow >
 
                          <TableCell align='right'>프로젝트</TableCell>
-                         <TableCell align='left' colSpan='3'>
-                             <Button variant="contained">프로젝트 찾기</Button>
-                             <span><br/></span>
-                             <TextField
-                                 label=""
-                                 style={{width: '100%'}}
-                                 size="small"
-                                 variant="outlined"/>
-                         </TableCell>
+                         <TableCell align='center' colSpan = "2">
+                            <Input align='center' readOnly='true' value={this.state.projectName} fullWidth={true}></Input>
+                        
+                            </TableCell>
+                            <TableCell align='rigth' >
+                                <ProjectList
+                                    recvProjectData={this.recvProjectData}
+                                />
+                            </TableCell>
                          <TableCell align='right'>Cost Center</TableCell>
-                         <TableCell ><TextField label="" variant="outlined" size="small"/></TableCell>
+                         <TableCell ><TextField label="" value={this.state.projectName} variant="outlined" size="small"/></TableCell>
                      </TableRow>
                      <TableRow>
                         <TableCell key="password" colSpan='4' align='right'>초기 비밀번호
