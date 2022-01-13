@@ -14,7 +14,6 @@ const MainRouter = () => {
     } else { //없을 때
       currLocation = '/login'
     }
-    console.log(currLocation);
     return (      
       <div>
         <Redirect to={currLocation}/>

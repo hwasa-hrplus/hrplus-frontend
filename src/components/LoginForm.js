@@ -25,7 +25,7 @@ function Copyright(props) {
         POSCO ICT Hwasa
       </Link>{' '}
       {new Date().getFullYear()}
-      {'.'}
+      <p className='request'>문의: 김윤욱 프로(yunuk.kim@poscoict.com)</p>
     </Typography>
   );
 }
@@ -95,7 +95,7 @@ function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              HR+ Sign in
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
