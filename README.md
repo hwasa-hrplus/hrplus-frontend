@@ -1,6 +1,16 @@
 # Update log 
+<<<<<<< Updated upstream
 @2021-01-13 목요일 10:10  written by 경빈
 - ```Session storate```를 활용하여 새로고침 이전에 선택된 page 출력 유지 기능 추가
+=======
+@2021-01-13 목요일 written by 경빈 
+- [x] ```Session storate```를 활용하여 새로고침 이전에 선택된 page 출력 유지 기능 추가
+- [x] 조회되는 사원 수에 맞게 페이지 numbering
+- [x] 전체 조회 탭에서 실시간 사원명 검색 기능 fix
+- [x] 차트 클릭 시 이전 action 데이터 초기화
+- [x] 직급순 차트 시각화(i.e., 사원, 대리, ...)
+- [ ] 새로고침 후에도 클릭된 Tab 세션 유지
+>>>>>>> Stashed changes
 
-@2021-01-12 수요일 23:59 written by 경빈
-- ```npm start``` 에러 수정 후 branch ```development_pgb```와 branch ```development``` merge 완료
+@2021-01-12 수요일 written by 경빈
+- [x] ```npm start``` 에러 수정 후 branch ```development_pgb```와 branch ```development``` merge 완료

@@ -41,26 +41,25 @@ class StaffLevelChart extends Component {
 
     findTableByChartClick = (data) => {
         console.log('차트 클릭 함수 내 data: ', data);
-        
         this.setState({
             dataName: data.name,
             dataValue: data.value,
             searchingKeyword: "사원 이름을 입력하세요.",
+            currentPage: 1
         })
         console.log(`${this.state.dataName} 차트 조각 클릭!`);
-        // this.handleClick();
     }
 
-    getMyData = async () => {
+    requestData = async () => {
         let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
         employeeData = employeeData.data.filter((data)=>{
             return data.departmentName.includes(departmentHead);
         });
-        /** 
+        
         // 직급순 데이터 정렬
-        let employeeDataSorted = employeeData.data.sort( (a, b) => {
-            a = a.stafflevel.level;
-            b = b.stafflevel.level; 
+        let employeeDataSorted = this.sortByStaffLevel(employeeData).sort( (a, b) => {
+            a = a.staffLevel;
+            b = b.staffLevel; 
             if (a < b){
                 return -1;
             } else if (a > b){
@@ -69,9 +68,9 @@ class StaffLevelChart extends Component {
                 return 0;
             }
         });
-        */
+        
         this.setState({
-            employeeData: employeeData
+            employeeData: employeeDataSorted
         }); 
         
         let uniqueDataNameSet = new Set();
@@ -101,15 +100,54 @@ class StaffLevelChart extends Component {
         
     };
 
-    searchingKeywordInput = () => (event) => {
-        this.setState({searchingKeyword : event.target.value});
-        console.log('searchingKeyword: ', this.state.searchingKeyword);
-        // this.handleClick();
-    };
+    sortByStaffLevel = (employeeData) => {
+        employeeData.staffLevel = "";
+        for (let index = 0; index < employeeData.length; index++) {
+            
+            switch(employeeData[index].staffLevelName){
+                case "사원":
+                    employeeData[index].staffLevel =  "PLC001";
+                    
+                    break;
+                case "대리":
+                    employeeData[index].staffLevel = "PLC002";
+                    break;
 
-    countData = () => {
-        this.setState({dataNum: this.state.filteredPagedData.length});
+                case "과장":
+                    employeeData[index].staffLevel = "PLC003";
+                    break;
+
+                case "차장":
+                    employeeData[index].staffLevel = "PLC004";
+                    break;
+
+                case "리더":
+                    employeeData[index].staffLevel = "PLC005";
+                    break;
+
+                case "부장":
+                    employeeData[index].staffLevel = "PLC006";
+                    break;
+
+                case "상무보":
+                    employeeData[index].staffLevel = "PLC007";
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        return employeeData;
     }
+
+    searchingKeywordInput = () => (event) => {
+        this.setState({
+            searchingKeyword : event.target.value,
+            currentPage: 1
+        });
+        console.log('searchingKeyword: ', this.state.searchingKeyword);
+        
+    };
 
     handlePageChange = (page) => {
         page = (page === undefined ? 1 : page);
@@ -125,7 +163,7 @@ class StaffLevelChart extends Component {
                 console.log('클릭로직');
                 return data;
             }
-            else if (data.staffLevelName.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+            else if (data.staffLevelName.includes(this.state.dataName) && data.korName.includes(this.state.searchingKeyword)){
                 console.log('검색로직');
                 return data;
             }
@@ -133,16 +171,18 @@ class StaffLevelChart extends Component {
                 return "";
             }
         })
-        // this.setState({
-        //                 filteredPagedData: paginate(filteredData, this.state.currentPage, pageSize),
-        //                 dataNum: this.state.filteredPagedData.length});
+        console.log('filteredData Length: ', filteredData.length);
+        
         return filteredData;
+    }
+
+    handlePagedData = () => {
+        return paginate(this.handleClick(), this.state.currentPage, pageSize);
     }
 
     render() {
         if (this.state.isLoaded){
-            console.log('getMyData!');
-            this.getMyData();
+            this.requestData();
             this.setState({isLoaded : false});
         }
         return (
@@ -211,7 +251,7 @@ class StaffLevelChart extends Component {
                         </TableHead>
                         <TableBody>
                         { 
-                        paginate(this.handleClick(), this.state.currentPage, pageSize).map((data) => (
+                            this.handlePagedData().map((data) => (
                                 <TableRow>
                                     <TableCell align='center'>{data.id}</TableCell>
                                     <TableCell align='center'>{data.korName}</TableCell>
@@ -233,12 +273,13 @@ class StaffLevelChart extends Component {
                 <nav>
                     {
                     <ul className="pagination" class="nav justify-content-center bg-light">
-                        { _.range(1, Math.ceil(paginate(this.handleClick(), this.state.currentPage, pageSize).length / pageSize) + 1).map(page => (
+                        {
+                            _.range(1, Math.ceil(this.handleClick().length / pageSize) + 1).map(page => (
                             <li 
                                 key={page} 
-                                className={page === this.state.currentPage ? "page-item active" : "page-item"} // Bootstrap을 이용하여 현재 페이지를 시각적으로 표시
+                                className={page === this.state.currentPage ? "page-item active" : "page-item"}
                                 style={{ cursor: "pointer" }}>
-                                <a className="page-link" onClick={() => this.handlePageChange(page)}>{page}</a> {/* 페이지 번호 클릭 이벤트 처리기 지정 */}
+                                <a className="page-link" onClick={() => this.handlePageChange(page)}>{page}</a> 
                             </li>
                         ))}
                     </ul>
