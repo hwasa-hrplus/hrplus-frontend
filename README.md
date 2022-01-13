@@ -1,5 +1,6 @@
 # Update log 
-@2021-01-13 목요일 10:10  written by 경빈
+@2021-01-13 목요일 10:15  written by 경빈
+- merge 
 - ```Session storate```를 활용하여 새로고침 이전에 선택된 page 출력 유지 기능 추가
 
 @2021-01-12 수요일 23:59 written by 경빈
