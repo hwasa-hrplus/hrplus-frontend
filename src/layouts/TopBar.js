@@ -15,7 +15,7 @@ const TopBar = () => {
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
-                    {user?(<a>반갑습니다 {user.username}님!</a>):(<></>)}
+                    {user?(<a>반갑습니다 {user.korName}님!</a>):(<></>)}
                 </Navbar.Text>
                 
                 <a href="/login" className="nav-link" onClick={logOut}>
