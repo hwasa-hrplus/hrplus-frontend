@@ -5,7 +5,8 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-import { paginate } from './Pagination/paginate';
+import { paginate } from './pagination/paginate';
+
 
 const departmentHead = "Smart융합사업실";
 const pageSize = 50;

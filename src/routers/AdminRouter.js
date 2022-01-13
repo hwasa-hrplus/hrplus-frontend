@@ -3,10 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link, Route, Switch } from 'react-router-dom';
-import EmployeeList from '../components/EmployeeList';
 import HrInfoList from '../components/admin/HrInfoList';
-import RegistEmployee from '../components/RegistEmployee';
-import EmployeeDetail from '../components/EmployeeDetail';
+import RegistEmployee from '../components/admin/RegistEmployee';
+import EmployeeDetail from '../components/admin/EmployeeDetail';
 
 const AdminRouter = () => {
     return (
