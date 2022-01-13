@@ -1,4 +1,4 @@
-import { Input, Table, TableBody, TableCell, TableRow, TextField, Button, Select, MenuItem } from '@material-ui/core';
+import { Input, Table, TableBody, TableCell, TableRow, TextField, Select, MenuItem } from '@material-ui/core';
 import axios from 'axios';
 import React, { Component } from 'react';
 
@@ -6,6 +6,7 @@ import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import PopupPostCode from './PopupPostCode';
+import { Button } from '@mui/material';
 
 class RegistEmployee extends Component{
 
@@ -361,7 +362,6 @@ class RegistEmployee extends Component{
                                   {console.log(this.state)}
                              <TextField
                                  label={this.state.registAddressCode[0]}
-                                 value={this.state.registAddressCode[0]}
                                  variant="outlined"
                                  size="small"/>
                              <span>
@@ -369,7 +369,6 @@ class RegistEmployee extends Component{
                              </span>
                              <TextField
                                  label={this.state.registAddress[0]}
-                                 value={this.state.registAddress[0]}
                                  variant="outlined"
                                  style ={{width: '53%'}}
                                  size="small"/>

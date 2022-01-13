@@ -62,7 +62,7 @@ const Styles = () => {
             }
 
             .sideMenuContent{
-                height:800px;
+                height:1000px;
             }
 
             .sideMenu{

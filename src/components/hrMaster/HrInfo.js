@@ -6,9 +6,13 @@ import {
     TableCell,
     TextField,
     Input,
-
+ 
 } from '@material-ui/core';
 import axios from 'axios';
+import { Tab, Tabs } from '@mui/material';
+import TabPanel from './TabPanel';
+import HrMasterTab from './HrMasterTab';
+import BizTripTab from './BizTripTab';
 
 class HrInfo extends Component {
     constructor(props) {
@@ -16,10 +20,10 @@ class HrInfo extends Component {
         console.log('in constructor');
 
         this.state = {
-            modalOpen: false,
             isFile : false,    
             data: [],
-            rootUrl:"/api/v1/hrmaster/"
+            rootUrl:"/api/v1/hrmaster",
+            value: 0
         }
 
         console.log(this.state);
@@ -29,65 +33,19 @@ class HrInfo extends Component {
         let data = await axios.get(this.state.rootUrl+'/hradmin/admin/list/300108');
         data = data.data;
 
-        //workType 구현
-        const workType = data.map((updateData) => updateData.workType);
-        if (workType[0] === true) {
-            this.setState(data.map((updateData) => updateData.workType = "재직"));
-        } else {
-            this.setState(data.map((updateData) => updateData.workType = "휴직"));
-        }
-
-        this.updateBirthDate(data);
         this.updateStartDate(data)
-        this.updateDepartment(data);
-        this.searchAdmin(data);
         this.getImage()
-    
 
-        //우편번호
-        this.setState({
-            address: data.map((employeeData) => employeeData.address),
-            address_code: data.map((employeeData) => employeeData.address_code),
-            address_detail: data.map((employeeData) => employeeData.detail_address),
-
-        })
         //state 저장
         this.setState({data});
-
-        if(this.state.content!==undefined){
-            this.postImage();
-        }
         console.log(this.state);      
     };
-
-    updateBirthDate = (data) => {
-        const birthDate = data.map((updateData) => updateData.birthDate);
-        const removeIndex = birthDate[0].substring(0, birthDate[0].indexOf('T'));
-        this.setState({"updateBirthDate": removeIndex});
-        return this.state.birthDate;
-    }
 
     updateStartDate = (data) => {
         const date = data.map((updateData) => updateData.startDate);
         const removeIndex = date[0].substring(0, date[0].indexOf('T'));
-        this.setState({"updateStartDate": removeIndex});
+        this.setState({updateStartDate: removeIndex});
         return this.state.startDate;
-    }
-
-    //원부서 구현
-    updateDepartment = (data) => {
-        const department = data.map((updateData) => updateData.departmentName);
-        const splitDepartment = department[0].split(" ");
-        this.setState({updateDepartment: splitDepartment[2]});
-        return this.state.updateDepartment;
-    }
-
-    //주소 찾기 구현
-    openModal = () => {
-        this.setState({modalOpen: true})
-    }
-    closeModal = () => {
-        this.setState({modalOpen: false})
     }
 
     //사진 업로드 구현
@@ -124,31 +82,32 @@ class HrInfo extends Component {
         
     }
 
-
-    //결재권자 가져오기
-    searchAdmin = async (data)=>{
-        // const admin = data.map((updateData) => updateData.bossId);
-        // let bossData = await axios.get('/hradmin/admin/list/'+admin[0]);
-        // bossData = bossData.data
-        // console.log(bossData);
-
-        // const adminName = bossData.map((updateData) => updateData.korName);
-        // this.setState({adminName:adminName})
-    }
- 
     componentDidMount() {
         this.getMyData();
+    }
+
+  
+    a11yProps = (index) => {
+        return {
+          id: `simple-tab-${index}`,
+          'aria-controls': `simple-tabpanel-${index}`,
+        };
+    } 
+
+    handleChange = (event, newValue) => {
+        this.setState({ value: newValue });
     }
 
     render(){
         return (
             <div>
+                <Table>
                 {
                     this
                         .state
                         .data
                         .map((employeeData, i) => {
-                            return <Table>
+                            return <Table >
                                 {/* <TableHead></TableHead> */}
                                 <TableBody>
                                     <TableRow>
@@ -204,15 +163,23 @@ class HrInfo extends Component {
                         })
 
                 }
-                          {/* <Tabs value={value} onChange={handleChange} centered>
-                                <Tab label="Item One" />
-                                <Tab label="Item Two" />
-                                <Tab label="Item Three" />
-                          </Tabs> */}
+                <Table style={{marginTop:"30px"}}>
+                <Tabs value={this.state.value} onChange={this.handleChange}  left>
+                    <Tab label="인사기본"  {...this.a11yProps(0)}/>
+                    <Tab label="출장이력"  {...this.a11yProps(1)}/>
+                </Tabs>
+                <TabPanel value={this.state.value} index={0}>
+                    <HrMasterTab/>
+                </TabPanel>
+                    <TabPanel value={this.state.value} index={1}>
+                    <BizTripTab/>
+                </TabPanel>
+
+                </Table>
+            </Table>      
         </div>
         )
     }
-    
 };
 
 export default HrInfo;
