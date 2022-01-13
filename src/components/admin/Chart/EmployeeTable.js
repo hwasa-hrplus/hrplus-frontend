@@ -16,7 +16,6 @@ class EmployeeTable extends Component {
         this.state=({
           employeeData: [],
           searchingKeyword: "사원 이름을 입력하세요.",
-          isLoaded: true,
           pagedData: [],
           currentPage: 1,
           dataNum: 0,
@@ -31,7 +30,6 @@ class EmployeeTable extends Component {
             employeeData: employeeData.data,
         });
         this.countData();
-        this.handlePageChange();
     };
 
     searchingKeywordInput = (prop) => (event) => {
@@ -41,6 +39,7 @@ class EmployeeTable extends Component {
 
     countData = () => {
         this.setState({dataNum: this.state.employeeData.length});
+        this.handlePageChange(this.state.currentPage);
     }
 
     handlePageChange = (page) => {
@@ -49,13 +48,27 @@ class EmployeeTable extends Component {
             currentPage: page,
             pagedData: paginate(this.state.employeeData, page, pageSize),
         });
+        sessionStorage.setItem('currentPage', page)
+        console.log('current page in handlePageChange: ', this.state.currentPage);
+    }
+
+    setPage = () => {
+        if(sessionStorage.currentPage) {
+            this.setState({ currentPage : Number(sessionStorage.currentPage) })
+            console.log('Number(sessionStorage.currentPage): ', Number(sessionStorage.currentPage));
+            return Number(sessionStorage.currentPage);
+        }
+        this.setState({ currentPage : 1 })
+        return 1;
+    }
+
+    componentWillMount(){
+        this.requestData();
+        this.setPage();
     }
 
     render() {
-        if (this.state.isLoaded){
-            this.requestData();
-            this.setState({isLoaded : false});
-        }
+        console.log('current page in rendering: ', this.state.currentPage);
         return (
             <>
                 <div >
