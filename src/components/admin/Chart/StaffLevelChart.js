@@ -6,11 +6,8 @@ import axios from 'axios';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import _ from 'lodash';
 import { paginate } from './pagination/paginate';
+import {departmentHead, pageSize, COLORS} from './commonData'
 
-
-const departmentHead = "Smart융합사업실";
-const pageSize = 50;
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AB6512', '#CC1234', '#8884d8'];
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {        
       return (

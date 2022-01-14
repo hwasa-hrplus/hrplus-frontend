@@ -6,13 +6,7 @@ import React, { Component } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
 import _ from 'lodash';
 import { paginate } from './pagination/paginate';
-
-const departmentHead = "Smart융합사업실";
-const pageSize = 50;
-const COLORS = ['#4f07eb', '#00C49F', '#ffea28', 
-                '#f78d59', '#eb0eca', '#ff0a2b', 
-                '#00ba25', '#DD8438', '#BB1213', 
-                '#EE6619', '#ee1688', '#CC7713', ];
+import {departmentHead, pageSize, COLORS} from './commonData'
 
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {

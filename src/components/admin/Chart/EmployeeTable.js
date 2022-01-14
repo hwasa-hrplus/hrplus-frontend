@@ -9,7 +9,7 @@ import { paginate } from './pagination/paginate';
 
 
 const departmentHead = "Smart융합사업실";
-const pageSize = 50;
+const pageSize = 20;
 
 class EmployeeTable extends Component {
     constructor(props){
@@ -131,7 +131,7 @@ class EmployeeTable extends Component {
                                     <TableRow>
                                         <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
                                         <TableCell align='center'>{data.korName}</TableCell>
-                                        <TableCell align='center'>{data.stafflevelName}</TableCell>
+                                        <TableCell align='center'>{data.staffLevelName}</TableCell>
                                         <TableCell align='center'>{data.role}</TableCell>
                                         <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
                                         <TableCell align='center'>{data.jobCategoryName}</TableCell>
