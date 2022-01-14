@@ -3,10 +3,10 @@ import { FormControl, Input, InputAdornment, InputLabel, Table, TableBody, Table
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import React, { Component } from 'react';
+import authHeader from '../../../services/auth-header';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { paginate } from './pagination/paginate';
-
 
 const departmentHead = "Smart융합사업실";
 const pageSize = 20;
@@ -24,7 +24,8 @@ class EmployeeTable extends Component {
     }
 
     requestData = async () => {
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
+
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
         this.setState({
             employeeData: employeeData.data,
         });

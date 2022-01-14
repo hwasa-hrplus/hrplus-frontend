@@ -1,5 +1,8 @@
+
+import axios from 'axios';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import authHeader from '../services/auth-header';
 import authService from '../services/auth.service';
 import React, { useRef, useState } from "react";
 
@@ -54,23 +57,29 @@ const TopMenu = () => {
     let showAdminBoard;
     if(user){
       showAdminBoard = user.roles.includes("ROLE_ADMIN");
-    } 
-    
-    console.log('currentTab before return: ', currentTab);
-    
+    }    
+
+    //테스트 위한 코드
+    const API_URL = "/api/v1/auth/test/";
+    const handleClick = () =>{
+      axios.get(API_URL+"admin", { headers: authHeader() })
+      .then( (response)=>console.log(response.data));      
+    }
+
 
     return (
       <>
-        <Nav  className="justify-content-center" variant="pills"  defaultActiveKey="link-1">
+        <Nav  className="justify-content-center" variant="pills"  defaultActiveKey="link-1">          
           <Nav.Item>
           <Nav.Link as={Link} to="/employee/profile" eventKey="link-1" className={currentTab === 1 ? "nav-link active" : "nav-link inactive"} onClick={(e)=>{onClickEvent(e)}}>인사</Nav.Link>
           </Nav.Item>   
           <Nav.Item>
             <Nav.Link as={Link} to="/bizTrip/bizTripDetail" className={currentTab === 2 ? "nav-link active" : "nav-link inactive"} eventKey="link-2" onClick={(e)=>{onClickEvent(e)}}>출장</Nav.Link>
           </Nav.Item>       
-            {showAdminBoard && (<Nav.Item>
-              <Nav.Link as={Link} to="/admin/list" className={currentTab === 3 ? "nav-link active" : "nav-link inactive"} eventKey="link-3" onClick={(e)=>{onClickEvent(e)}}>Admin</Nav.Link>
-            </Nav.Item>)}
+          {showAdminBoard && (<Nav.Item>
+            <Nav.Link as={Link} to="/admin/list" eventKey="link-3">Admin</Nav.Link>
+          </Nav.Item>)}          
+          {/* <button onClick={handleClick}>테스트</button>           */}
         </Nav>
         {/* className="nav-link active" */}
       </>

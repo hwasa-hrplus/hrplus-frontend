@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Image from '../images/posco3.png';
 import authService from '../services/auth.service';
-import { Switch, useHistory, withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory, withRouter } from 'react-router-dom/cjs/react-router-dom.min';
 import { Alert } from '@mui/material';
 
 function Copyright(props) {
