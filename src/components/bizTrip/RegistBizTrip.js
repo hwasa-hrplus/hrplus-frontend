@@ -47,6 +47,18 @@ constructor(props) {
             
                 }).then(res=>{alert('출장신청 완료');
                 })
+
+                console.log(this.state.data.map((employeeData) => employeeData.korName)[0]);
+                
+                await axios.post('/api/v1/mail/send'
+                ,{
+                    address:'hansoohyun97@gmail.com',
+                    name:this.state.data.map((employeeData) => employeeData.korName)[0],
+                    projectName:this.state.projectName
+                })
+                .then((res)=>console.log('메일발송'))
+                
+
                 window.location.reload();
         }
     }
