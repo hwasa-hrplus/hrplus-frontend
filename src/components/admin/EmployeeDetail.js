@@ -6,13 +6,13 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Button,
     TextField,
     Input,
     Select,
     MenuItem,
 
 } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PopupPostCode from './PopupPostCode';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -52,7 +52,7 @@ class EmployeeDetail extends Component {
             data: [],
             updateStartDate:"",
             updateBirthDate:"",
-            rootUrl:"/api/v1/hrmaster/"
+            rootUrl:"/api/v1/hrmaster"
         }
 
         console.log(this.state);
@@ -62,7 +62,7 @@ class EmployeeDetail extends Component {
      // select할 테이블 가져오기
      getTable = async () =>{
 
-        let staffLevel = await axios.get(this.state.rootUrl+'hradmin/admin/stafflevel');
+        let staffLevel = await axios.get(this.state.rootUrl+'/hradmin/admin/stafflevel');
         const data = staffLevel.data;
         console.log(data);
 
@@ -252,6 +252,7 @@ class EmployeeDetail extends Component {
       //화면 데이터 전송
       onSubmit = async (e)=>{
         e.preventDefault();
+        console.log(e.target)
         console.log("onSubmit event 발생");
         console.log(this.state);
 
@@ -263,7 +264,6 @@ class EmployeeDetail extends Component {
                 age:e.target.age.value,
                 residentNum:e.target.residentNum.value,
                 email:e.target.email.value,
-                password:e.target.password.value,
                 role:this.state.role,
                 staffLevelName: this.state.staffLevelName,
                 departmentName: this.state.departmentName,
@@ -380,9 +380,9 @@ class EmployeeDetail extends Component {
                                     <TableRow>
 
                                         <TableCell align='right'>주민번호</TableCell>
-                                        <TableCell key={employeeData.residentNum}><TextField label={employeeData.residentNum} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.residentNum}><TextField name ='residentNum' label={employeeData.residentNum} variant="outlined" size="small"/></TableCell>
                                         <TableCell align='right'>연령</TableCell>
-                                        <TableCell key={employeeData.age}><TextField label={employeeData.age} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.age}><TextField name = 'age' label={employeeData.age} variant="outlined" size="small"/></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell align='center'>
@@ -426,9 +426,9 @@ class EmployeeDetail extends Component {
                                             </LocalizationProvider>
                                         </TableCell>
                                         <TableCell align='right'>이메일</TableCell>
-                                        <TableCell key={employeeData.email}><TextField label={employeeData.email} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.email}><TextField name = 'email' label={employeeData.email} variant="outlined" size="small"/></TableCell>
                                         <TableCell align='right'>휴대폰</TableCell>
-                                        <TableCell key={employeeData.phone}><TextField label={employeeData.phone} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.phone}><TextField name = 'phone' label={employeeData.phone} variant="outlined" size="small"/></TableCell>
                                     </TableRow>
                                     <TableRow >
                                         <TableCell align='right'>주소</TableCell>

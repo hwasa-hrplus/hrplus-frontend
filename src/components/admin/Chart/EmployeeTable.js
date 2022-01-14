@@ -24,9 +24,7 @@ class EmployeeTable extends Component {
     }
 
     requestData = async () => {
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
-        console.log('employeeData:', employeeData);
-        
+        let employeeData = await axios.get('/api/v1/hradmin/list');
         this.setState({
             employeeData: employeeData.data,
         });

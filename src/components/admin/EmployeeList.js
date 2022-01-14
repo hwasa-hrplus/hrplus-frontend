@@ -15,11 +15,10 @@ class EmployeeList extends Component {
     };
 
     getMyData = async () => {
-        let data = await axios.get('/hradmin/admin/list');
+        let data = await axios.get('/api/v1/hrmaster/hradmin/list');
         data = data.data;
         console.log('data is ' + JSON.stringify(data));
         this.setState({data});
-
     };
 
     componentDidMount() {
