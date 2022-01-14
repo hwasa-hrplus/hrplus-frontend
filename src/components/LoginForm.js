@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Image from '../images/posco3.png';
 import authService from '../services/auth.service';
-import { useHistory, withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import { Switch, useHistory, withRouter } from 'react-router-dom/cjs/react-router-dom.min';
 import { Alert } from '@mui/material';
 
 function Copyright(props) {
@@ -91,6 +91,13 @@ function SignInSide() {
               alignItems: 'center',
             }}
           >
+
+
+
+
+
+
+
             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
@@ -132,8 +139,9 @@ function SignInSide() {
             </Box>
           </Box>
         </Grid>
-      </Grid>
+      </Grid>      
     </ThemeProvider>
+    
   );
 }
 export default withRouter(SignInSide);
