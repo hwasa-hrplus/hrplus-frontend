@@ -147,7 +147,7 @@ class DepartmentChart extends Component {
         return employeeData;
     }
 
-    searchingKeywordInput = (prop) => (event) => {
+    searchingKeywordInput = () => (event) => {
         this.setState({
             searchingKeyword : event.target.value,
             currentPage: 1
