@@ -6,8 +6,8 @@ const PopupPostCode = (props) => {
     // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
     const {open, close, header} = props;
     const [address, setAddress] = useState(undefined);
-    //const [addressCode, setAddressCode] = useState(undefined);
-console.log(props);
+    const [addressCode, setAddressCode] = useState(undefined);
+    console.log(props)
 
     const handleComplete = (data) => {
 
@@ -31,20 +31,18 @@ console.log(props);
                     : ''
             );
         }
-        console.log(data)
-        console.log(fullAddress)
-        console.log(data.zonecode)
+        // console.log(data)
+        // console.log(fullAddress)
+        // console.log(data.zonecode)
 
         setAddress(fullAddress);
-        //setAddressCode(data.zonecode);
-
-        //props.getAddress(address);
-
-        
+        setAddressCode(data.zonecode)
     }
 
     return (
+      
         <div
+       
             className={open
                 ? 'openModal modal'
                 : 'modal'}>
@@ -59,12 +57,23 @@ console.log(props);
                                     &times;{' '}
                                 </button>
                             </header>
-                            <main><DaumPostcode onComplete={handleComplete} onClose={close} 
-                              {...props.address[0]=address}
-                            //   {...props.address_code[0]=addressCode} 
-                            //   {...props.address_detail[0]=null}
-
-                            /></main>
+                                {console.log(props.address)}
+                                {console.log(Object.keys(props).includes('registAddress'))}
+                                <main>
+                                    {Object.keys(props).includes('registAddress')===true
+                                    ? 
+                                        <DaumPostcode onComplete={handleComplete} onClose={close} 
+                                         {...props.registAddress[0]=address}
+                                         {...props.registAddressCode[0]=addressCode}
+                                        />                                
+                                    :    
+                                        <DaumPostcode onComplete={handleComplete} onClose={close} 
+                                        {...props.address[0]=address}
+                                        {...props.addressCode[0]=addressCode} 
+                                        {...props.addressDetail[0]=null}
+                                    />
+                                        }
+                                 </main> 
                             <footer>
                                 <button className="close" onClick={close}>
                                     {' '}

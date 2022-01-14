@@ -1,10 +1,15 @@
+//
 import React, { Component } from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, Tooltip, XAxis, YAxis } from 'recharts';
 import { Table, TableHead, TableBody, TableRow, TableCell, Input, FormControl, InputLabel, InputAdornment } from '@material-ui/core';
 import axios from 'axios';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import _ from 'lodash';
+import { paginate } from './pagination/paginate';
+
 
 const departmentHead = "Smart융합사업실";
+const pageSize = 50;
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AB6512', '#CC1234', '#8884d8'];
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {        
@@ -27,6 +32,10 @@ class StaffLevelChart extends Component {
           employeeData: [],
           uniqueDataState: [],
           searchingKeyword: "사원 이름을 입력하세요.",
+          pagedData: [],
+          filteredPagedData: [],
+          currentPage: 1,
+          dataNum: 0,
         });
     }
 
@@ -39,10 +48,15 @@ class StaffLevelChart extends Component {
             searchingKeyword: "사원 이름을 입력하세요.",
         })
         console.log(`${this.state.dataName} 차트 조각 클릭!`);
+        // this.handleClick();
     }
 
     getMyData = async () => {
-        let employeeData = await axios.get('/api/v1/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
+        employeeData = employeeData.data.filter((data)=>{
+            return data.departmentName.includes(departmentHead);
+        });
+        /** 
         // 직급순 데이터 정렬
         let employeeDataSorted = employeeData.data.sort( (a, b) => {
             a = a.stafflevel.level;
@@ -55,14 +69,14 @@ class StaffLevelChart extends Component {
                 return 0;
             }
         });
-
+        */
         this.setState({
-            employeeData: employeeDataSorted
+            employeeData: employeeData
         }); 
         
         let uniqueDataNameSet = new Set();
         for (let idx = 0; idx < this.state.employeeData.length; idx++) {
-            const staffLevelName = this.state.employeeData[idx].stafflevel.name;
+            const staffLevelName = this.state.employeeData[idx].staffLevelName;
             if (!uniqueDataNameSet.has(staffLevelName)){
                 uniqueDataNameSet.add(staffLevelName);
             } else {
@@ -74,7 +88,7 @@ class StaffLevelChart extends Component {
         let uniqueDataset = [];
         for (let idx = 0; idx < uniqueDataNameArr.length; idx++){
             let cnt = this.state.employeeData.filter(data =>
-                uniqueDataNameArr[idx] === data.stafflevel.name).length;
+                uniqueDataNameArr[idx] === data.staffLevelName).length;
 
             let uniqueObj = {};
             uniqueObj.name = uniqueDataNameArr[idx];
@@ -83,13 +97,47 @@ class StaffLevelChart extends Component {
         }
         
         this.setState({uniqueDataState: uniqueDataset});
+        console.log('uniqueDataState: ', uniqueDataNameSet);
         
     };
 
     searchingKeywordInput = () => (event) => {
         this.setState({searchingKeyword : event.target.value});
         console.log('searchingKeyword: ', this.state.searchingKeyword);
+        // this.handleClick();
     };
+
+    countData = () => {
+        this.setState({dataNum: this.state.filteredPagedData.length});
+    }
+
+    handlePageChange = (page) => {
+        page = (page === undefined ? 1 : page);
+        this.setState({
+            currentPage: page,
+            pagedData: paginate(this.state.employeeData, page, pageSize),
+        });
+    }
+
+    handleClick = () => {
+        let filteredData = this.state.employeeData.filter((data) =>{                   
+            if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.staffLevelName === this.state.dataName && this.state.dataName){
+                console.log('클릭로직');
+                return data;
+            }
+            else if (data.staffLevelName.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+                console.log('검색로직');
+                return data;
+            }
+            else {
+                return "";
+            }
+        })
+        // this.setState({
+        //                 filteredPagedData: paginate(filteredData, this.state.currentPage, pageSize),
+        //                 dataNum: this.state.filteredPagedData.length});
+        return filteredData;
+    }
 
     render() {
         if (this.state.isLoaded){
@@ -149,55 +197,53 @@ class StaffLevelChart extends Component {
                     <Table>
                         <TableHead>
                             <TableRow>
-                            <TableCell style={{width: 80}} align='center'>사번</TableCell>
-                            <TableCell style={{width: 90}} align='center'>성명</TableCell>
-                            <TableCell style={{width: 80}} align='center'>직급</TableCell>
-                            <TableCell style={{width: 80}} align='center'>직책</TableCell>
-                            <TableCell style={{width: 400}} align='center'>부서</TableCell>
-                            <TableCell style={{width: 120}} align='center'>직무</TableCell>
-                            <TableCell style={{width: 180}} align='center'>프로젝트</TableCell>
-                            <TableCell style={{width: 100}} align='center'>이메일</TableCell>
-                            <TableCell style={{width: 150}} align='center'>휴대전화</TableCell>
-                            <TableCell style={{width: 100}} align='center'>근무형태</TableCell>
+                                <TableCell style={{width: 80}} align='center'>사번</TableCell>
+                                <TableCell style={{width: 90}} align='center'>성명</TableCell>
+                                <TableCell style={{width: 80}} align='center'>직급</TableCell>
+                                <TableCell style={{width: 80}} align='center'>직책</TableCell>
+                                <TableCell style={{width: 400}} align='center'>부서</TableCell>
+                                <TableCell style={{width: 120}} align='center'>직무</TableCell>
+                                <TableCell style={{width: 180}} align='center'>프로젝트</TableCell>
+                                <TableCell style={{width: 100}} align='center'>이메일</TableCell>
+                                <TableCell style={{width: 150}} align='center'>휴대전화</TableCell>
+                                <TableCell style={{width: 100}} align='center'>근무형태</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {   
-                                this.state.employeeData.filter((data) =>{
-                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.stafflevel.name === this.state.dataName && this.state.dataName){
-                                        console.log('클릭로직');
-                                        console.log('data.stafflevel.name: ', data.stafflevel.name);
-                                        return data;
-                                    }
-                                    else if (data.stafflevel.name.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
-                                        console.log('검색로직');
-                                        return data;
-                                    }
-                                    else {
-                                        return "";
-                                    }
-                                }).map((filteredData) => { 
-                                    console.log('filteredData: ', filteredData);
-                                    
-                                    return (
-                                        <TableRow>
-                                            <TableCell align='center'>{filteredData.id}</TableCell>
-                                            <TableCell align='center'>{filteredData.korName}</TableCell>
-                                            <TableCell align='center'>{filteredData.stafflevel.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.role === 'ROLE_MEMBER' ? "팀원" : "팀장"}</TableCell>
-                                            <TableCell align='center'>{filteredData.department.name.replace(departmentHead+" ", "")}</TableCell>
-                                            <TableCell align='center'>{filteredData.jobCategory.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.workPlace.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.email}</TableCell>
-                                            <TableCell align='center'>{filteredData.phone}</TableCell>
-                                            <TableCell align='center'>{filteredData.workType === false ? "근무" : "휴직"}</TableCell>
-                                        </TableRow>
-                                    );
-                                })
+                        { 
+                        paginate(this.handleClick(), this.state.currentPage, pageSize).map((data) => (
+                                <TableRow>
+                                    <TableCell align='center'>{data.id}</TableCell>
+                                    <TableCell align='center'>{data.korName}</TableCell>
+                                    <TableCell align='center'>{data.staffLevelName}</TableCell>
+                                    <TableCell align='center'>{data.role}</TableCell>
+                                    <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
+                                    <TableCell align='center'>{data.jobCategoryName}</TableCell>
+                                    <TableCell align='center'>{data.workPlaceName}</TableCell>
+                                    <TableCell align='center'>{data.email}</TableCell>
+                                    <TableCell align='center'>{data.phone}</TableCell>
+                                    <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
+                                </TableRow>
+                            ))
                             }
                         </TableBody>
                     </Table>
+                    
                 </div>
+                <nav>
+                    {
+                    <ul className="pagination" class="nav justify-content-center bg-light">
+                        { _.range(1, Math.ceil(paginate(this.handleClick(), this.state.currentPage, pageSize).length / pageSize) + 1).map(page => (
+                            <li 
+                                key={page} 
+                                className={page === this.state.currentPage ? "page-item active" : "page-item"} // Bootstrap을 이용하여 현재 페이지를 시각적으로 표시
+                                style={{ cursor: "pointer" }}>
+                                <a className="page-link" onClick={() => this.handlePageChange(page)}>{page}</a> {/* 페이지 번호 클릭 이벤트 처리기 지정 */}
+                            </li>
+                        ))}
+                    </ul>
+                    }
+                </nav>
             </div>
         );
     }

@@ -1,10 +1,15 @@
+//
 import { FormControl, Input, InputAdornment, InputLabel, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import React, { Component } from 'react';
 import authHeader from '../../../services/auth-header';
+import _ from 'lodash';
+import { Link } from 'react-router-dom';
+import { paginate } from './pagination/paginate';
 
 const departmentHead = "Smart융합사업실";
+const pageSize = 50;
 
 class EmployeeTable extends Component {
     constructor(props){
@@ -12,10 +17,9 @@ class EmployeeTable extends Component {
         this.state=({
           employeeData: [],
           searchingKeyword: "사원 이름을 입력하세요.",
-          isLoaded: true,
-          page: 1,
-          limit: 11,
-          pageTotal: [],
+          pagedData: [],
+          currentPage: 1,
+          dataNum: 0,
         });
     }
 
@@ -24,9 +28,7 @@ class EmployeeTable extends Component {
         this.setState({
             employeeData: employeeData.data,
         });
-        this.pageCount();
-        
-        
+        this.countData();
     };
 
     searchingKeywordInput = (prop) => (event) => {
@@ -34,41 +36,38 @@ class EmployeeTable extends Component {
         console.log('searchingKeyword: ', this.state.searchingKeyword);
     };
 
-    pageCount = () => {
-        let pageArrTmp = [];
-        for(let i = 1; i <= Math.ceil(this.state.employeeData.length/ this.state.limit); i++) {
-            pageArrTmp.push(i);
-        }
-        this.setState({pageTotal: pageArrTmp});
-        console.log("pageTotal: ", this.state.pageTotal);
+    countData = () => {
+        this.setState({dataNum: this.state.employeeData.length});
+        this.handlePageChange(this.state.currentPage);
     }
 
-    changePage = (el) => {
-        this.setState({ page : el });
-        sessionStorage.setItem('page', el);
+    handlePageChange = (page) => {
+        page = (page === undefined ? 1 : page);
+        this.setState({
+            currentPage: page,
+            pagedData: paginate(this.state.employeeData, page, pageSize),
+        });
+        sessionStorage.setItem('currentPage', page)
+        console.log('current page in handlePageChange: ', this.state.currentPage);
     }
 
-    // 새로고침해도 게시판 번호 유지
     setPage = () => {
-        if(sessionStorage.page) {
-          this.setState({ page : Number(sessionStorage.page) })
-          return Number(sessionStorage.page);
+        if(sessionStorage.currentPage) {
+            this.setState({ currentPage : Number(sessionStorage.currentPage) })
+            console.log('Number(sessionStorage.currentPage): ', Number(sessionStorage.currentPage));
+            return Number(sessionStorage.currentPage);
         }
-        this.setState({ page : 1 })
+        this.setState({ currentPage : 1 })
         return 1;
     }
-    
-    componentWillMount() {
+
+    componentWillMount(){
+        this.requestData();
         this.setPage();
     }
 
-    
-    
     render() {
-        if (this.state.isLoaded){
-            this.requestData();
-            this.setState({isLoaded : false});
-        }
+        console.log('current page in rendering: ', this.state.currentPage);
         return (
             <>
                 <div >
@@ -109,46 +108,36 @@ class EmployeeTable extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {   
-                                this.state.employeeData.filter((data) =>{
-                                    if (data.korName.includes(this.state.searchingKeyword) || this.state.searchingKeyword === "사원 이름을 입력하세요."){
-                                        return data;
-                                    }
-                                    else{
-                                        return "";
-                                    }
-                                }).map((filteredData) => { 
-                                        return (
-                                            <TableRow>
-                                                <TableCell align='center'>{filteredData.id}</TableCell>
-                                                <TableCell align='center'>{filteredData.korName}</TableCell>
-                                                <TableCell align='center'>{filteredData.stafflevelName}</TableCell>
-                                                <TableCell align='center'>{filteredData.role}</TableCell>
-                                                <TableCell align='center'>{filteredData.departmentName.replace(departmentHead+" ", "")}</TableCell>
-                                                <TableCell align='center'>{filteredData.jobCategoryName}</TableCell>
-                                                <TableCell align='center'>{filteredData.workPlaceName}</TableCell>
-                                                <TableCell align='center'>{filteredData.email}</TableCell>
-                                                <TableCell align='center'>{filteredData.phone}</TableCell>
-                                                <TableCell align='center'>{filteredData.workType === false ? "근무" : "휴직"}</TableCell>
-                                            </TableRow>
-                                        );
-                                })
-                            }
+                            {this.state.pagedData.map((data) => (
+                            <TableRow>
+                                <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
+                                <TableCell align='center'>{data.korName}</TableCell>
+                                <TableCell align='center'>{data.stafflevelName}</TableCell>
+                                <TableCell align='center'>{data.role}</TableCell>
+                                <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
+                                <TableCell align='center'>{data.jobCategoryName}</TableCell>
+                                <TableCell align='center'>{data.workPlaceName}</TableCell>
+                                <TableCell align='center'>{data.email}</TableCell>
+                                <TableCell align='center'>{data.phone}</TableCell>
+                                <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
+                            </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
-
+                    
                 </div>
-                <div>
-                    <nav aria-label="Page navigation example">
-                        <ul className="pagination">
-                            <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                            <li className="page-item"><a className="page-link" href="#">1</a></li>
-                            <li className="page-item"><a className="page-link" href="#">2</a></li>
-                            <li className="page-item"><a className="page-link" href="#">3</a></li>
-                            <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
+                <nav>
+                    <ul className="pagination" class="nav justify-content-center bg-light">
+                        { _.range(1, Math.ceil(this.state.dataNum / pageSize) + 1).map(page => (
+                            <li 
+                                key={page} 
+                                className={page === this.state.currentPage ? "page-item active" : "page-item"} // Bootstrap을 이용하여 현재 페이지를 시각적으로 표시
+                                style={{ cursor: "pointer" }}>
+                                <a className="page-link" onClick={() => this.handlePageChange(page)}>{page}</a> {/* 페이지 번호 클릭 이벤트 처리기 지정 */}
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
             </>
         );
     }

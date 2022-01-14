@@ -1,3 +1,4 @@
+//
 import { FormControl, Input, InputAdornment, InputLabel, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
@@ -55,19 +56,19 @@ class JobCategoryChart extends Component {
     }
 
     getMyData = async () => {
-        let employeeData = await axios.get('/api/v1/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
         
         employeeData = employeeData.data.filter((data)=>{
-            return data.department.name.includes(departmentHead);
+            return data.departmentName.includes(departmentHead);
         });
-        
+
         this.setState({
             employeeData: employeeData
-        });       
+         });
 
         let uniqueDataNameSet = new Set();
         for (let idx = 0; idx < this.state.employeeData.length; idx++) {
-            const jobName = this.state.employeeData[idx].jobCategory.name;
+            const jobName = this.state.employeeData[idx].jobCategoryName;
             if (!uniqueDataNameSet.has(jobName)){
                 uniqueDataNameSet.add(jobName);
             } else {
@@ -79,15 +80,16 @@ class JobCategoryChart extends Component {
         let uniqueDataset = [];
         for (let idx = 0; idx < uniqueDataNameArr.length; idx++){
             let cnt = this.state.employeeData.filter(data =>
-                uniqueDataNameArr[idx] === data.jobCategory.name).length;
+                uniqueDataNameArr[idx] === data.jobCategoryName).length;
             
             let uniqueObj = {};
             uniqueObj.name = uniqueDataNameArr[idx];
             uniqueObj.value = cnt;
             uniqueDataset.push(uniqueObj);
         }
-        this.setState({uniqueDataState: uniqueDataset});
-        // this.getRandomColor();
+        this.setState({
+                       uniqueDataState: uniqueDataset,
+                    });        
     }
 
     searchingKeywordInput = (prop) => (event) => {
@@ -143,16 +145,17 @@ class JobCategoryChart extends Component {
                                         width: 700,
                                         height: 30
                                         }}>
-                                        <button style={{ backgroundColor: COLORS[index],
+                                        <button style={{ 
+                                                        backgroundColor: COLORS[index],
                                                         width: 50
-                                                        }}
+                                                    }}
                                                 data-name={data.name}
                                                 data-value={data.value}
                                                 onClick={this.findTableByLegendColorClick}
                                         >{" "}</button>
                                         <button size='large' style={{
                                             justifyContent: 'left',
-                                            width: 370,
+                                            width: 450,
                                             backgroundColor: 'white',
                                             textAlign: 'left'
                                         }} className="LegendButton"
@@ -207,11 +210,11 @@ class JobCategoryChart extends Component {
                             {   
                                 this.state.employeeData.filter((data) =>{
                                     
-                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.jobCategory.name === this.state.dataName && this.state.dataName){
+                                    if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.jobCategoryName === this.state.dataName && this.state.dataName){
                                         console.log('클릭로직');
                                         return data;
                                     }
-                                    else if (data.jobCategory.name.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
+                                    else if (data.jobCategoryName.includes(this.state.dataName) && data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
                                         console.log('검색로직');
                                         return data;
                                     }
@@ -223,11 +226,11 @@ class JobCategoryChart extends Component {
                                         <TableRow>
                                             <TableCell align='center'>{filteredData.id}</TableCell>
                                             <TableCell align='center'>{filteredData.korName}</TableCell>
-                                            <TableCell align='center'>{filteredData.stafflevel.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.role === 'ROLE_MEMBER' ? "팀원" : "팀장"}</TableCell>
-                                            <TableCell align='center'>{filteredData.department.name.replace(departmentHead+" ", "")}</TableCell>
-                                            <TableCell align='center'>{filteredData.jobCategory.name}</TableCell>
-                                            <TableCell align='center'>{filteredData.workPlace.name}</TableCell>
+                                            <TableCell align='center'>{filteredData.staffLevelName}</TableCell>
+                                            <TableCell align='center'>{filteredData.role}</TableCell>
+                                            <TableCell align='center'>{filteredData.departmentName.replace(departmentHead+" ", "")}</TableCell>
+                                            <TableCell align='center'>{filteredData.jobCategoryName}</TableCell>
+                                            <TableCell align='center'>{filteredData.workPlaceName}</TableCell>
                                             <TableCell align='center'>{filteredData.email}</TableCell>
                                             <TableCell align='center'>{filteredData.phone}</TableCell>
                                             <TableCell align='center'>{filteredData.workType === false ? "근무" : "휴직"}</TableCell>
