@@ -114,7 +114,7 @@ class EmployeeTable extends Component {
                             <TableRow>
                                 <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
                                 <TableCell align='center'>{data.korName}</TableCell>
-                                <TableCell align='center'>{data.stafflevelName}</TableCell>
+                                <TableCell align='center'>{data.staffLevelName}</TableCell>
                                 <TableCell align='center'>{data.role}</TableCell>
                                 <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
                                 <TableCell align='center'>{data.jobCategoryName}</TableCell>

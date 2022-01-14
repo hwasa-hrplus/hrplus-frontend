@@ -21,7 +21,7 @@ class HrMasterTab extends Component {
             modalOpen: false,
             isFile : false,    
             data: [],
-            rootUrl:"/api/v1/hrmaster",
+            rootUrl:"/api/v1",
             value: 0
         }
 
@@ -33,8 +33,12 @@ class HrMasterTab extends Component {
 
     getMyData = async () => {
 
-        let data = await axios.get(this.state.rootUrl+'/hradmin/admin/list/300108');
+        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/list/300108');
         data = data.data;
+
+        let project = await axios.get(this.state.rootUrl+'/biztrip/project/300108');
+        const projectData = project.data;
+        this.setState({project:projectData});
 
         //workType 구현
         const workType = data.map((updateData) => updateData.workType);
@@ -162,7 +166,7 @@ class HrMasterTab extends Component {
                                         <TableRow >
 
                                             <TableCell align='right'>프로젝트</TableCell>
-                                            <TableCell align='left' colSpan='5'></TableCell>
+                                            <TableCell align='left' colSpan='5'>{this.state.project.code}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell align='right'>Cost Center</TableCell>
