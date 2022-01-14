@@ -70,7 +70,6 @@ const PopupPostCode = (props) => {
                                         <DaumPostcode onComplete={handleComplete} onClose={close} 
                                         {...props.address[0]=address}
                                         {...props.addressCode[0]=addressCode} 
-                                        {...props.addressDetail[0]=null}
                                     />
                                         }
                                  </main> 

@@ -141,6 +141,7 @@ class EmployeeTable extends Component {
                                         <TableCell align='center'>{data.phone}</TableCell>
                                         <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
                                     </TableRow>
+
                             ))}
                         </TableBody>
                     </Table>

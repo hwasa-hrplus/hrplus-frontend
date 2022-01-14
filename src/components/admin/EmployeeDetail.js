@@ -1,4 +1,3 @@
-// 
 import React, {Component} from 'react';
 import axios from 'axios';
 import {
@@ -17,6 +16,7 @@ import PopupPostCode from './PopupPostCode';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import ProjectList from '../bizTrip/ProjectList';
 
 class EmployeeDetail extends Component {
 
@@ -28,87 +28,95 @@ class EmployeeDetail extends Component {
         const id = parameter[5] ;
         console.log(id);
 
-
         this.state = {
             staffLevel: [],
             department: [],
             workPlace: [],
             admin:[],
+            project:"",
             jobCategory : [],
-            staffLevelName: "",
-            departmentName: "",
-            workPlaceName: "",
-            jobCategoryName: "",
             bossId:"",
-            workType:false,
             startDate:"",
             birthDate:"",
-            detailAddress:"",
             filesId:"",
-            role:"",
             modalOpen: false,
             id: id,
             isFile : false,    
             data: [],
             updateStartDate:"",
             updateBirthDate:"",
-            rootUrl:"/api/v1/hrmaster"
+            workType:false,
+            rootUrl:"/api/v1"
         }
 
-        console.log(this.state);
         this.getTable();
     }
 
      // select할 테이블 가져오기
      getTable = async () =>{
 
-        let staffLevel = await axios.get(this.state.rootUrl+'/hradmin/admin/stafflevel');
+        let staffLevel = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/stafflevel');
         const data = staffLevel.data;
-        console.log(data);
 
-        let department = await axios.get(this.state.rootUrl+'/hradmin/admin/department');
+        let department = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/department');
         const departmentData = department.data;
-        console.log(departmentData);
 
-        let workPlace = await axios.get(this.state.rootUrl+'/hradmin/admin/workPlace');
+        let workPlace = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/workPlace');
         const workplaceData = workPlace.data;
-        console.log(workplaceData);
 
-        let jobCategory = await axios.get(this.state.rootUrl+'/hradmin/admin/jobCategory');
+        let jobCategory = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/jobCategory');
         const jobCategoryData = jobCategory.data;
-        console.log(jobCategoryData);
 
-        let admin = await axios.get(this.state.rootUrl+'/hradmin/admin/boss');
+        let admin = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/boss');
         const adminData = admin.data;
-        this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData})
+
+        let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id);
+        const projectData = project.data;
+        console.log(projectData)
+
+        this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData, project:projectData})
+
+        
     }
 
 
     getMyData = async () => {
 
-        let data = await axios.get(this.state.rootUrl+'/hradmin/admin/list/'+this.state.id);
+        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/list/'+this.state.id);
         data = data.data;
-
-        //workType 구현
-        const workType = data.map((updateData) => updateData.workType);
-        if (workType[0] === true) {
-            this.setState(data.map((updateData) => updateData.workType = "근무자"));
-        } else {
-            this.setState(data.map((updateData) => updateData.workType = "휴직자"));
-        }
 
         this.updateBirthDate(data);
         this.updateStartDate(data)
         this.updateDepartment(data);
         this.searchAdmin(data);
         this.getImage()
-    
 
-        //우편번호
+        console.log(data[0]);
+        if(data[0].workType===true){
+            this.setState({workName:'근무자'})
+        }else{
+            this.setState({workName:'휴직자'})
+        };
+ 
         this.setState({
             address: data.map((employeeData) => employeeData.address),
             addressCode: data.map((employeeData) => employeeData.addressCode),
-            addressDetail: data.map((employeeData) => employeeData.addressDetail),
+            addressDetail: data[0].addressDetail,
+            role: data[0].role,
+            age: data[0].age,
+            residentNum: data[0].residentNum,
+            email: data[0].email,
+            gender: data[0].gender,
+            password: data[0].password,
+            korName: data[0].korName,
+            engName:data[0].engName,
+            staffLevelName:data[0].staffLevelName,
+            departmentName:data[0].departmentName,
+            jobCategoryName:data[0].jobCategoryName,
+            workPlaceName:data[0].workPlaceName,
+            phone: data[0].phone,
+            bossId: data[0].bossId,
+            workType:data[0].workType,
 
         })
         //state 저장
@@ -126,24 +134,39 @@ class EmployeeDetail extends Component {
         if(type==='staffLevel'){
             this.setState({staffLevelName:value})
         }else if(type==='id'){
-            console.log(value);
             this.setState({id:value})
+        }else if(type==='korName'){
+            this.setState({korName:value})
+        }else if(type==='engName'){
+            this.setState({engName:value})
+        }else if(type==='password'){
+            this.setState({password:value})
+        }else if(type==='phone'){
+            this.setState({phone:value})
+        }else if(type==='email'){
+            this.setState({email:value})
         }else if(type==='department'){
-            console.log(value);
             this.setState({departmentName:value})
         }else if(type==='workPlace'){
-            console.log(value);
+            console.log(value)
             this.setState({workPlaceName:value})
         }else if(type==='jobCategory'){
-            console.log(value);
             this.setState({jobCategoryName:value})
+        }else if(type==='age'){
+            this.setState({age:value})
+        }else if(type==='residentNum'){
+            this.setState({residentNum:value})
+        }else if(type==='gender'){
+            this.setState({gender:value})
         }else if (type==='workType'){
             console.log(value);
             if(value==='근무자'){
-                this.setState({workType:true})
-            }
-        }else if(type==='detailAddress'){
-            this.setState({detailAddress:value})
+                    this.setState({workType:true});
+            } else {
+                    this.setState({workType:false});
+                }
+        }else if(type==='addressDetail'){
+            this.setState({addressDetail:value})
         }else if(type==='role'){
             this.setState({role:value})
         }else if(type==='bossId'){
@@ -160,6 +183,10 @@ class EmployeeDetail extends Component {
             }
     }
 
+    recvProjectData = (name)=>{
+        console.log('project code:' + name[0]);
+        this.setState({projectName:name[0],costCenter:name[1]});
+    }
     updateBirthDate = (data) => {
         const birthDate = data.map((updateData) => updateData.birthDate);
         const removeIndex = birthDate[0].substring(0, birthDate[0].indexOf('T'));
@@ -204,19 +231,26 @@ class EmployeeDetail extends Component {
         const file = e.target.files[0];
         console.log(file);
         formData.append("img", file);
-        
-        await axios.post(this.state.rootUrl+'/hradmin/image', formData)
+        const id = this.state.id;
+
+        await axios.put(this.state.rootUrl+'/hrmaster/hradmin/image/'+id, formData)
             .then(res =>{
                 console.log(res);
             })
  
+            let image = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/regist/image/'+id);
+            const imageData = image.data;
+            console.log(imageData);   
+            this.setState({filesId:imageData.uuid}) 
+     
+            this.getImage()
     }
 
     getImage = async () =>{
 
         await axios({
             method:'GET',
-            url: this.state.rootUrl+'/hradmin/image/'+this.state.id,
+            url: this.state.rootUrl+'/hrmaster/hradmin/image/'+this.state.id,
             responseType:'blob',
         })
         .then((res) => {
@@ -237,7 +271,7 @@ class EmployeeDetail extends Component {
     searchAdmin = async (data)=>{
 
         const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get(this.state.rootUrl+'/hradmin/admin/list/'+admin[0]);
+        let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/list/'+admin[0]);
         bossData = bossData.data
         console.log(bossData);
 
@@ -257,32 +291,33 @@ class EmployeeDetail extends Component {
         console.log(this.state);
 
         const sendData ={
-                id:e.target.id.value, 
-                korName:e.target.korName.value,
-                engName:e.target.engName.value,
-                gender:e.target.gender.value,
-                age:e.target.age.value,
-                residentNum:e.target.residentNum.value,
-                email:e.target.email.value,
+                id:this.state.id, 
+                korName:this.state.korName,
+                engName:this.state.engName,
+                gender:this.state.gender,
+                age:this.state.age,
+                residentNum:this.state.residentNum,
+                email:this.state.email,
                 role:this.state.role,
+                password:this.state.password,
                 staffLevelName: this.state.staffLevelName,
                 departmentName: this.state.departmentName,
                 workPlaceName: this.state.workPlaceName,
                 jobCategoryName: this.state.jobCategoryName,
                 workType:this.state.workType,
-                birthDate:this.state.birthDate,
+                birthDate:this.state.updateBirthDate,
                 startDate:this.state.updateStartDate,
-                phone:e.target.phone.value,
+                phone:this.state.phone,
                 address:this.state.address[0],
                 addressCode:this.state.addressCode[0],
-                addressDetail:this.state.detailAddress,
+                addressDetail:this.state.addressDetail,
                 bossId:this.state.bossId,
                 filesId:this.state.filesId
             } 
             console.log(sendData);
-            axios.post(this.state.rootUrl+'/hradmin/admin', sendData)
+            axios.put(this.state.rootUrl+'/hrmaster/hradmin/admin/'+this.state.id, sendData)
             .then((res) => {alert('사원 정보 수정 완료');      
-                window.location.reload();
+                // window.location.reload();
                 console.log(res)
             })
             .catch((error) => {
@@ -308,13 +343,27 @@ class EmployeeDetail extends Component {
                                         <TableCell align='right'>사번</TableCell>
                                         <TableCell key={i}><TextField name='id' label={employeeData.id} variant="outlined" size="small"/></TableCell>
                                         <TableCell align='right'>성별</TableCell>
-                                        <TableCell key={employeeData.gender}><TextField name='gender' label={employeeData.gender} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.gender}>
+                                            <TextField 
+                                                onChange={e => this.onChange(e,'gender')}
+                                                name='gender' 
+                                                label={employeeData.gender}
+                                                variant="outlined"
+                                                size="small"/>
+                                            </TableCell>
                                     </TableRow>
 
                                     <TableRow >     
                                         <TableCell align='center' rowSpan='4'><img src={this.state.setUrl} alt="" style={{height:"300px", width:"250px"}}></img></TableCell>                                     
                                         <TableCell align='right'>성명</TableCell>
-                                        <TableCell key={employeeData.korName}><TextField name='korName' label={employeeData.korName} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.korName}>
+                                            <TextField 
+                                                name='korName' 
+                                                onChange={e => this.onChange(e,'korName')}
+                                                label={employeeData.korName} 
+                                                variant="outlined" 
+                                                size="small"/>
+                                            </TableCell>
                                         <TableCell align='right'>입사일</TableCell>
                                         <TableCell key={this.state.startDate}>
                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -331,7 +380,14 @@ class EmployeeDetail extends Component {
                                     <TableRow>
 
                                         <TableCell align='right'>영문성명</TableCell>
-                                        <TableCell key={employeeData.engName}><TextField name='engName' label={employeeData.engName} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.engName}>
+                                            <TextField 
+                                                name='engName' 
+                                                onChange={e => this.onChange(e,'engName')}
+                                                label={employeeData.engName} 
+                                                variant="outlined" 
+                                                size="small"/>
+                                            </TableCell>
                                         <TableCell align='right'>직책</TableCell>
                                         <TableCell key={employeeData.role}>
                                         <Select 
@@ -380,9 +436,23 @@ class EmployeeDetail extends Component {
                                     <TableRow>
 
                                         <TableCell align='right'>주민번호</TableCell>
-                                        <TableCell key={employeeData.residentNum}><TextField name ='residentNum' label={employeeData.residentNum} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.residentNum}>
+                                            <TextField 
+                                                onChange={e => this.onChange(e,'residentNum')}
+                                                name ='residentNum' 
+                                                label={employeeData.residentNum}
+                                                variant="outlined" 
+                                                size="small"/>
+                                            </TableCell>
                                         <TableCell align='right'>연령</TableCell>
-                                        <TableCell key={employeeData.age}><TextField name = 'age' label={employeeData.age} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.age}>
+                                            <TextField 
+                                                name = 'age' 
+                                                onChange={e => this.onChange(e,'age')}
+                                                label={employeeData.age}
+                                                variant="outlined" 
+                                                size="small"/>
+                                            </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell align='center'>
@@ -392,12 +462,18 @@ class EmployeeDetail extends Component {
                                         </TableCell>
                                         <TableCell align='right'>부서</TableCell>
                                         <TableCell colSpan='3' key={employeeData.departmentName}>
-                                            <TextField
-                                                style ={{width: '70%'}}
-                                                label={employeeData.departmentName}
-                                                variant="outlined"
-                                                fullWidth ={true}
-                                                size="small"/></TableCell>
+                                            <Select 
+                                                value={this.state.selectValue}
+                                                label="부서"
+                                                onChange={e => this.onChange(e,'department')}
+                                                defaultValue = {employeeData.departmentName}
+                                                    >
+                                                {this.state.department.map((departmentData, i) => {
+                                                    return(
+                                                        <MenuItem value={departmentData.name}>{departmentData.name}</MenuItem>
+                                                )})}
+                                            </Select>
+                                        </TableCell>
                                     </TableRow>
 
                                 </TableBody>
@@ -426,9 +502,21 @@ class EmployeeDetail extends Component {
                                             </LocalizationProvider>
                                         </TableCell>
                                         <TableCell align='right'>이메일</TableCell>
-                                        <TableCell key={employeeData.email}><TextField name = 'email' label={employeeData.email} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.email}>
+                                            <TextField 
+                                                name = 'email' 
+                                                onChange={e => this.onChange(e,'email')}
+                                                label={employeeData.email} 
+                                                variant="outlined" 
+                                                size="small"/></TableCell>
                                         <TableCell align='right'>휴대폰</TableCell>
-                                        <TableCell key={employeeData.phone}><TextField name = 'phone' label={employeeData.phone} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.phone}>
+                                            <TextField 
+                                                name = 'phone' 
+                                                onChange={e => this.onChange(e,'phone')}
+                                                label={employeeData.phone} 
+                                                variant="outlined" 
+                                                size="small"/></TableCell>
                                     </TableRow>
                                     <TableRow >
                                         <TableCell align='right'>주소</TableCell>
@@ -455,7 +543,8 @@ class EmployeeDetail extends Component {
                                                   size="small"/>
                                               <span> <br/> </span>    
                                               <TextField
-                                                  label={this.state.addressDetail[0]}
+                                                  label={this.state.addressDetail}
+                                                  onChange={e => this.onChange(e,'addressDetail')}
                                                   variant="outlined"
                                                   style ={{width: '53%'}}
                                                   size="small"/>
@@ -485,35 +574,43 @@ class EmployeeDetail extends Component {
                                             value={this.state.selectValue}
                                             label="근무형태"
                                             onChange={e => this.onChange(e,'workType')}
-                                            defaultValue = {employeeData.workType}
+                                            defaultValue = {this.state.workName}
                                         >
                                             <MenuItem value='휴직자'>휴직자</MenuItem>
                                             <MenuItem value='근무자'>근무자</MenuItem>                                              
                                         </Select>
                                         </TableCell>
                                         <TableCell align='right'>주재지</TableCell>
-                                        <TableCell key={employeeData.workPlaceName}><TextField
-                                            label={employeeData.workPlaceName}
-                                            variant="outlined"
-                                            size="small"/></TableCell>
+                                        <TableCell key={employeeData.workPlaceName}>
+                                        <Select 
+                                            value={this.state.selectValue}
+                                            label="주재지"
+                                            onChange={e => this.onChange(e,'workPlace')}
+                                            defaultValue = {employeeData.workPlaceName}
+                                           >
+                                            {this.state.workPlace.map((workplaceData, i) => {
+                                                return(
+                                                    <MenuItem value={workplaceData.name}>{workplaceData.name}</MenuItem>
+                                            )})}
+                                        </Select>
+                                        </TableCell>
                                     </TableRow>
                                     <TableRow >
 
                                         <TableCell align='right'>프로젝트</TableCell>
-                                        <TableCell align='left' colSpan='5'>
-                                            <Button variant="contained">프로젝트 찾기</Button>
-                                            <span><br/></span>
-                                            <TextField
-                                                label=""
-                                                style ={{width: '53%'}}
-                                                size="small"
-                                                variant="outlined"/>
+                                        <TableCell align='center' colSpan = "4">
+                                            <Input align='center' readOnly='true' label={this.state.project} fullWidth={true}></Input> 
+                                            </TableCell>
+                                            <TableCell align='rigth' >
+                                                <ProjectList
+                                                    recvProjectData={this.recvProjectData}
+                                                />
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell align='right'>Cost Center</TableCell>
                                         <TableCell ><TextField
-                                            label=""
+                                            label={this.state.costCenter}
                                             variant="outlined"
                                             size="small"/></TableCell>
                                         <TableCell align='right' colSpan='3'>원부서</TableCell>
@@ -523,6 +620,16 @@ class EmployeeDetail extends Component {
                                             variant="outlined"
                                             size="small"
                                            /></TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell align='right'>비밀번호</TableCell>
+                                        <TableCell align='left' colSpan='5'><TextField
+                                            label={employeeData.password}
+                                            variant="outlined"
+                                            size="small"
+                                            onChange={e => this.onChange(e,'password')}
+                                            />
+                                        </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell key="button" colSpan='6' align='right'>

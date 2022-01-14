@@ -4,8 +4,8 @@ import React from 'react';
 
 import { Nav } from 'react-bootstrap';
 import { Link, Route, Switch } from 'react-router-dom';
-import BizTripDetail from '../components/BizTripDetail';
-import RegistBizTrip from '../components/RegistBizTrip';
+import BizTripDetail from '../components/bizTrip/BizTripDetail';
+import RegistBizTrip from '../components/bizTrip/RegistBizTrip';
 
 const BizTripRouter = () => {
     return (

@@ -1,4 +1,5 @@
-import { Table, TableCell, TableHead, TableRow,  Button,} from '@material-ui/core';
+import { Table, TableCell, TableHead, TableRow, } from '@material-ui/core';
+import { Button } from '@mui/material';
 import axios from 'axios';
 import Modal from 'react-modal';
 import React, { Component } from 'react';
@@ -9,16 +10,18 @@ class ProjectList extends Component {
         console.log('in constructor');
 
          this.state = {
-        data: [],
-        modalIsOpen: false,
-        selectValue:[]
+            data: [],
+            modalIsOpen: false,
+            selectValue:[],
+            costCenter:""
         }
     }
     
 
     sendProjectData = ()=>{
-        this.props.recvProjectData(this.state.selectValue);
-        // console.log(this.state.selectValue);
+        this.props.recvProjectData([this.state.selectValue,this.state.costCenter]);
+        
+        console.log(this.state.selectValue);
         this.setState({modalIsOpen: false});
         
     }
@@ -32,8 +35,21 @@ class ProjectList extends Component {
 
         
         console.log('value: '+e.target.value);
+
+        this.getName(e.target.value);
         
       };
+
+    getName = (value) =>{
+ 
+        console.log(value)
+        this.state.data.map((data)=>{
+            if(data.name.includes(value)){
+                this.setState({costCenter:data.costCenter})
+            }
+           
+        })
+    } 
 
     getMyData = async () => {
         let data = await axios.get('/api/v1/biztrip/project/list');
@@ -111,6 +127,7 @@ class ProjectList extends Component {
                             type="radio"
                             checked={this.state.selectValue === ProjectData.name}
                             onChange={this.handleChange}
+                            defalutValue={this.state.project}
                         />
                     </TableCell>
                     <TableCell  key = {index} align='center'>{ProjectData.code}</TableCell>
