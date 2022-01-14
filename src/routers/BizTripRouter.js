@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Nav } from 'react-bootstrap';
 import { Link, Route, Switch } from 'react-router-dom';
-import BizTripDetail from '../components/bizTrip/BizTripDetail';
+import BizTripList from '../components/bizTrip/BizTripList';
 import RegistBizTrip from '../components/bizTrip/RegistBizTrip';
 
 const BizTripRouter = () => {
@@ -23,7 +23,7 @@ const BizTripRouter = () => {
             <div className="content">
                 <Switch>
                     <Route path="/biztrip/registBizTrip" component={RegistBizTrip} />
-                    <Route path="/biztrip/bizTripDetail" component={BizTripDetail} />
+                    <Route path="/biztrip/bizTripDetail" component={BizTripList} />
                 </Switch>
             </div>
         </div>
