@@ -9,6 +9,7 @@ import PopupPostCode from './PopupPostCode';
 import { Button } from '@mui/material';
 import ProjectList from '../bizTrip/ProjectList';
 import authHeader from '../../services/auth-header';
+import authService from '../../services/auth.service';
 
 class RegistEmployee extends Component{
 
@@ -41,6 +42,15 @@ class RegistEmployee extends Component{
 
         this.getTable();
     }
+    required = value => {
+        if (!value) {
+          return (
+            <div className="alert alert-danger" role="alert">
+              This field is required!
+            </div>
+          );
+        }
+      };
 
     // select할 테이블 가져오기
     getTable = async () =>{
@@ -110,8 +120,7 @@ class RegistEmployee extends Component{
                         this.setState({bossId:adminData.id})
                     }
                     })
-                }
-               
+                }               
             }
 
             
@@ -181,7 +190,13 @@ class RegistEmployee extends Component{
         e.preventDefault();
         console.log("onSubmit event 발생");
         console.log(this.state);
-
+        authService.register(
+            e.target.email.value,
+            e.target.password.value,
+            this.state.role==='팀장'? ['admin']:['user'],
+            e.target.id.value, 
+            e.target.korName.value                 
+        );
         const sendData ={
                 id:e.target.id.value, 
                 korName:e.target.korName.value,
@@ -207,7 +222,7 @@ class RegistEmployee extends Component{
                 filesId:this.state.filesId
             } 
             console.log(sendData);
-            axios.post(this.state.rootUrl+'hrmaster/hradmin', sendData, { headers: authHeader() })
+            axios.post(this.state.rootUrl+'hrmaster/hradmin/', sendData, { headers: authHeader() })
             .then((res) => {alert('사원 정보 추가 완료');      
                  window.location.href='/admin/list';
                 console.log(res)
@@ -221,7 +236,7 @@ class RegistEmployee extends Component{
             id:this.state.id
         }
 
-        axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData, { headers: authHeader() })
+        axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData)
         .then((res) => {    
             console.log(res)
         })
@@ -276,7 +291,7 @@ class RegistEmployee extends Component{
                     <TableRow>
 
                         <TableCell align='right'>영문성명</TableCell>
-                        <TableCell key='engName'><TextField name='engName' variant="outlined" size="small"/></TableCell>
+                        <TableCell key='engName'><TextField name='engName' variant="outlined" size="small" validations={[this.required]}/></TableCell>
                         <TableCell align='right'>직책</TableCell>
                         <TableCell key='role'>
                             <Select 
