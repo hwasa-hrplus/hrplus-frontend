@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import authService from '../../services/auth.service';
 import axios from 'axios';
+import authHeader from '../../services/auth-header';
 
 
 class BizTripTab extends Component {
@@ -31,7 +32,7 @@ class BizTripTab extends Component {
     }
 
     getMyData = async () => {
-        let data = await axios.get('/biztrip/employee/'+this.state.id);
+        let data = await axios.get('/biztrip/employee/'+this.state.id,{ headers: authHeader() });
         data = data.data;
         console.log('this project data is ' + JSON.stringify(data));
     };

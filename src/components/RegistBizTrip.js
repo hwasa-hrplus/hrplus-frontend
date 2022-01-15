@@ -4,9 +4,7 @@ import axios from 'axios';
 import ProjectList from './ProjectList';
 import DatePicker from './DatePicker';
 import PopupPostCode from './PopupPostCode';
-import authService from '../../services/auth.service';
-import authHeader from '../../services/auth-header';
-
+import authHeader from '../services/auth-header';
 
 class RegistBizTrip extends Component {
 
@@ -21,7 +19,6 @@ constructor(props) {
         startDate:0,
         endDate:0,
         text:'',
-        id:authService.getCurrentUser().id,
         address:[],
     };
     }
@@ -51,17 +48,6 @@ constructor(props) {
             
                 }).then(res=>{alert('출장신청 완료');
                 })
-
-
-                console.log(this.state.data.map((employeeData) => employeeData.korName)[0]);
-                
-                await axios.post('/api/v1/mail/send'
-                ,{
-                    address:'hansoohyun97@gmail.com',
-                    name:this.state.data.map((employeeData) => employeeData.korName)[0],
-                    projectName:this.state.projectName
-                })
-                .then((res)=>console.log('메일발송'))
                 window.location.reload();
         }
     }
@@ -73,7 +59,7 @@ constructor(props) {
     }
     recvProjectData = (name)=>{
         console.log('project code:' + name);
-        this.setState({projectName:name[0]});
+        this.setState({projectName:name});
     
     }
 
@@ -83,29 +69,24 @@ constructor(props) {
 
         this.setState({startDate:sd});
         this.setState({endDate:ed})
-        
     }
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/admin/list/'+this.state.id, { headers: authHeader() });
-
+        let data = await axios.get('/api/v1/hrmaster/hradmin/300112',  { headers: authHeader() });
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
 
         this.setState({data});
 
-        let admin = await axios.get('/api/v1/hrmaster/hradmin/boss', { headers: authHeader() });
+        let admin = await axios.get('/api/v1/hrmaster/hradmin/admin/boss',  { headers: authHeader() });
         const adminData = admin.data;
         console.log(adminData);
-
     };
-
-    
 
     getMyPurposeData = async () => {
         console.log('in getmypurpose');
         
-        let p_data = await axios.get('/api/v1/biztrip/bizpurpose/list');
+        let p_data = await axios.get('/api/v1/biztrip/bizpurpose/list',  { headers: authHeader() });
         p_data = p_data.data;
         console.log('this purpose data is ' + JSON.stringify(p_data));
         this.setState({p_data});

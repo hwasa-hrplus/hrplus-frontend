@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import PopupPostCode from '../admin/PopupPostCode';
 import axios from 'axios';
 import authService from '../../services/auth.service';
+import authHeader from '../../services/auth-header';
 
 class HrMasterTab extends Component {
     constructor(props) {
@@ -33,11 +34,11 @@ class HrMasterTab extends Component {
     }
 
     getMyData = async () => {
+        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
 
-        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/list/'+this.state.id);
         data = data.data;
 
-        let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id);
+        let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id,{ headers: authHeader() });
         const projectData = project.data;
         this.setState({project:projectData});
 
@@ -50,7 +51,7 @@ class HrMasterTab extends Component {
         }
 
         this.updateBirthDate(data);
-        this.searchAdmin(data);  
+     //   this.searchAdmin(data);  
         this.updateDepartment(data);
 
         //우편번호
@@ -76,16 +77,16 @@ class HrMasterTab extends Component {
         return this.state.birthDate;
     }
 
-    searchAdmin = async (data)=>{
+    // searchAdmin = async (data)=>{
 
-        const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get(this.state.rootUrl+'/hradmin/admin/list/'+admin[0]);
-        bossData = bossData.data
-        console.log(bossData);
+    //     const admin = data.map((updateData) => updateData.bossId);
+    //     let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+admin[0], { headers: authHeader() });
+    //     bossData = bossData.data
+    //     console.log(bossData);
 
-        const adminName = bossData.map((updateData) => updateData.korName);
-        this.setState({adminName:adminName})
-    }
+    //     const adminName = bossData.map((updateData) => updateData.korName);
+    //     this.setState({adminName:adminName})
+    // }
  
     //원부서 구현
     updateDepartment = (data) => {

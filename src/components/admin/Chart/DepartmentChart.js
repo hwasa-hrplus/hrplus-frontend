@@ -7,6 +7,7 @@ import { Cell, Pie, PieChart } from 'recharts';
 import _ from 'lodash';
 import { paginate } from './pagination/paginate';
 import {departmentHead, pageSize, COLORS} from './commonData'
+import authHeader from '../../../services/auth-header';
 
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {
@@ -56,11 +57,10 @@ class DepartmentChart extends Component {
             currentPage: 1
         })
         console.log('event.target.getAttribute("data-value"):', event.target.dataset.name);
-        
     }
 
     requestData = async () => {
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list',  { headers: authHeader() });
         
         employeeData = employeeData.data.filter((data)=>{
             return data.departmentName.includes(departmentHead);

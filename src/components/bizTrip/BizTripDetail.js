@@ -3,6 +3,7 @@ import { Table, TableBody, TableRow, TableCell, Input, Button, NativeSelect, Che
 import axios from 'axios';
 import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import authHeader from '../../services/auth-header';
 
 class BizTripDetail extends Component {
 
@@ -58,7 +59,7 @@ class BizTripDetail extends Component {
  
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/admin/list/300112');
+        let data = await axios.get('/api/v1/hrmaster/hradmin/300112',{ headers: authHeader() });
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
 
