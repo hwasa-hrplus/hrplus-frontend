@@ -83,6 +83,7 @@ class ProjectList extends Component {
               left: 0,
               right: 0,
               bottom: 0,
+              zIndex:"1",
               backgroundColor: "rgba(0, 0, 0, 0.6)",
             },
             content: {
@@ -98,6 +99,7 @@ class ProjectList extends Component {
               WebkitOverflowScrolling: "touch",
               outline: "none",
               padding: "20px",
+            
               textAlign: "center",
             },}}
        >

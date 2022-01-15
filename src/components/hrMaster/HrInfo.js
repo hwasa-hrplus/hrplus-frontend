@@ -14,6 +14,7 @@ import TabPanel from './TabPanel';
 import HrMasterTab from './HrMasterTab';
 import BizTripTab from './BizTripTab';
 import authHeader from '../../services/auth-header';
+import authService from '../../services/auth.service';
 
 class HrInfo extends Component {
     constructor(props) {
@@ -24,14 +25,15 @@ class HrInfo extends Component {
             isFile : false,    
             data: [],
             rootUrl:"/api/v1/hrmaster",
-            value: 0
+            value: 0,
+            id:authService.getCurrentUser().id
         }
 
         console.log(this.state);
     }
 
     getMyData = async () => {
-        let data = await axios.get(this.state.rootUrl+'/hradmin/list/300108', { headers: authHeader() });
+        let data = await axios.get(this.state.rootUrl+'/hradmin/'+this.state.id, { headers: authHeader() });
         data = data.data;
 
         this.updateStartDate(data)
@@ -55,7 +57,7 @@ class HrInfo extends Component {
         const file = e.target.files[0];
         formData.append("img", file);
         
-        await axios.post(this.state.rootUrl+'/hradmin/image', formData)
+        await axios.post(this.state.rootUrl+'/hradmin/image/', formData,  { headers: authHeader() })
             .then(res =>{
                 console.log(res);
             })
@@ -66,8 +68,9 @@ class HrInfo extends Component {
       
         await axios({
             method:'GET',
-            url:this.state.rootUrl+'/hradmin/image/300108',
+            url:this.state.rootUrl+'/hradmin/image/'+this.state.id,
             responseType:'blob',
+            headers: authHeader() 
         })
         .then((res) => {
             const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));

@@ -34,7 +34,6 @@ class EmployeeDetail extends Component {
             department: [],
             workPlace: [],
             admin:[],
-            project:"",
             jobCategory : [],
             bossId:"",
             startDate:"",
@@ -44,6 +43,7 @@ class EmployeeDetail extends Component {
             id: id,
             isFile : false,    
             data: [],
+            project:{},
             updateStartDate:"",
             updateBirthDate:"",
             workType:false,
@@ -55,31 +55,35 @@ class EmployeeDetail extends Component {
 
      // select할 테이블 가져오기
      getTable = async () =>{
-        let staffLevel = await axios.get(this.state.rootUrl+'/hradmin/stafflevel', { headers: authHeader() });
+
+        let staffLevel = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/stafflevel', { headers: authHeader() });
         const data = staffLevel.data;
 
-        let department = await axios.get(this.state.rootUrl+'/hradmin/department',{ headers: authHeader() });
+        let department = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/department', { headers: authHeader() });
         const departmentData = department.data;
 
-        let workPlace = await axios.get(this.state.rootUrl+'/hradmin/workPlace',{ headers: authHeader() });
+        let workPlace = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/workPlace', { headers: authHeader() });
         const workplaceData = workPlace.data;
 
-        let jobCategory = await axios.get(this.state.rootUrl+'/hradmin/jobCategory',{ headers: authHeader() });
+        let jobCategory = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/jobCategory', { headers: authHeader() });
         const jobCategoryData = jobCategory.data;
 
-        let admin = await axios.get(this.state.rootUrl+'/hradmin/boss',{ headers: authHeader() });
+        let admin = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/boss', { headers: authHeader() });
         const adminData = admin.data;
 
-        let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id);
+        let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id, { headers: authHeader() });
         const projectData = project.data;
         console.log(projectData)
 
-        this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData, project:projectData})
+        this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData, projectName:projectData.code})
+
+        
     }
 
 
     getMyData = async () => {
-        let data = await axios.get(this.state.rootUrl+'/hradmin/list/'+this.state.id, { headers: authHeader() });
+
+        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
         data = data.data;
 
         this.updateBirthDate(data);
@@ -164,6 +168,8 @@ class EmployeeDetail extends Component {
                 }
         }else if(type==='addressDetail'){
             this.setState({addressDetail:value})
+        }else if(type==='project'){
+            this.setState({projectName:value})
         }else if(type==='role'){
             this.setState({role:value})
         }else if(type==='bossId'){
@@ -228,14 +234,14 @@ class EmployeeDetail extends Component {
         const file = e.target.files[0];
         console.log(file);
         formData.append("img", file);
-
         const id = this.state.id;
-        await axios.put(this.state.rootUrl+'/hrmaster/hradmin/image/'+id, formData)
+
+        await axios.put(this.state.rootUrl+'/hrmaster/hradmin/image/'+id, formData, { headers: authHeader() })
             .then(res =>{
                 console.log(res);
             })
  
-            let image = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/regist/image/'+id);
+            let image = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/regist/image/'+id, { headers: authHeader() });
             const imageData = image.data;
             console.log(imageData);   
             this.setState({filesId:imageData.uuid}) 
@@ -249,6 +255,7 @@ class EmployeeDetail extends Component {
             method:'GET',
             url: this.state.rootUrl+'/hrmaster/hradmin/image/'+this.state.id,
             responseType:'blob',
+            headers: authHeader() 
         })
         .then((res) => {
             const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
@@ -266,8 +273,9 @@ class EmployeeDetail extends Component {
 
     //결재권자 가져오기
     searchAdmin = async (data)=>{
+
         const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get(this.state.rootUrl+'/hradmin/hradmin/list/'+admin[0] ,{ headers: authHeader() });
+        let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+admin[0] ,{ headers: authHeader() });
         bossData = bossData.data
         console.log(bossData);
 
@@ -311,17 +319,46 @@ class EmployeeDetail extends Component {
                 filesId:this.state.filesId
             } 
             console.log(sendData);
-
-            axios.post(this.state.rootUrl+'/hrmaster/hradmin/', sendData,{ headers: authHeader() })
+            axios.put(this.state.rootUrl+'/hrmaster/hradmin/admin/'+this.state.id, sendData, { headers: authHeader() })
             .then((res) => {alert('사원 정보 수정 완료');      
-                // window.location.reload();
+                window.location.reload();
+                console.log(res)
+            })
+            .catch((error) => {
+                console.log(error.response)
+            })
+
+            const sendBizTripData = {
+                code:this.state.projectName,
+                id:this.state.id
+            }
+    
+            axios.put(this.state.rootUrl+'/biztrip/project/'+this.state.id, sendBizTripData, { headers: authHeader() })
+            .then((res) => {    
                 console.log(res)
             })
             .catch((error) => {
                 console.log(error.response)
             })
     }
-    
+
+    deleteEmployee = () =>{
+
+        const answer = window.confirm('사번('+this.state.id+')를 삭제하시겠습니까?')
+        if(answer){
+            axios.delete(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, { headers: authHeader() })
+            .then((res) => {alert('사원 삭제 완료')
+            window.location.href='/admin/list';
+
+            })
+            axios.delete(this.state.rootUrl+'/biztrip/project'+this.state.id, { headers: authHeader() })
+            .then((res) => 
+                console.log(res)
+            )
+        }
+    }
+
+
     render() {
         return (
             <div>
@@ -592,10 +629,16 @@ class EmployeeDetail extends Component {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow >
-
+                                        {console.log(this.state.project.code)}
                                         <TableCell align='right'>프로젝트</TableCell>
                                         <TableCell align='center' colSpan = "4">
-                                            <Input align='center' readOnly='true' label={this.state.project} fullWidth={true}></Input> 
+                                            <Input 
+                                                onChange={e => this.onChange(e,'project')}
+                                                align='center' 
+                                                readOnly='true' 
+                                                value={this.state.projectName} 
+                                                fullWidth={true}>
+                                            </Input> 
                                             </TableCell>
                                             <TableCell align='rigth' >
                                                 <ProjectList
@@ -604,22 +647,16 @@ class EmployeeDetail extends Component {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell align='right'>Cost Center</TableCell>
-                                        <TableCell ><TextField
-                                            label={this.state.costCenter}
-                                            variant="outlined"
-                                            size="small"/></TableCell>
-                                        <TableCell align='right' colSpan='3'>원부서</TableCell>
+                                        <TableCell align='right'>원부서</TableCell>
                                         <TableCell key={this.state.updateDepartment}>
                                             <TextField
                                             label={this.state.updateDepartment}
                                             variant="outlined"
                                             size="small"
-                                           /></TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell align='right'>비밀번호</TableCell>
-                                        <TableCell align='left' colSpan='5'><TextField
+                                           />
+                                        </TableCell>
+                                        <TableCell align='right'  colSpan='3'>비밀번호</TableCell>
+                                        <TableCell align='left'><TextField
                                             label={employeeData.password}
                                             variant="outlined"
                                             size="small"
@@ -631,7 +668,7 @@ class EmployeeDetail extends Component {
                                         <TableCell key="button" colSpan='6' align='right'>
                                             <Button type= "submit" variant="contained">수정</Button>
                                             <span> </span>
-                                            <Button variant="contained">삭제</Button>
+                                            <Button onClick ={this.deleteEmployee} variant="contained">삭제</Button>
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>

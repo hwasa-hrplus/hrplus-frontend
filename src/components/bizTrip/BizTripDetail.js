@@ -59,7 +59,7 @@ class BizTripDetail extends Component {
  
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/list/300112',{ headers: authHeader() });
+        let data = await axios.get('/api/v1/hrmaster/hradmin/300112',{ headers: authHeader() });
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
 

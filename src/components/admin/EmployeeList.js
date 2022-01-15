@@ -16,7 +16,7 @@ class EmployeeList extends Component {
     };
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
+        let data = await axios.get('/api/v1/hrmaster/hradmin', { headers: authHeader() });
         data = data.data;
         console.log('data is ' + JSON.stringify(data));
         this.setState({data});

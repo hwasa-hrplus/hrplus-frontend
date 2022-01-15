@@ -4,6 +4,7 @@ import axios from 'axios';
 import ProjectList from './ProjectList';
 import DatePicker from './DatePicker';
 import PopupPostCode from './PopupPostCode';
+import authService from '../../services/auth.service';
 import authHeader from '../../services/auth-header';
 
 
@@ -20,6 +21,7 @@ constructor(props) {
         startDate:0,
         endDate:0,
         text:'',
+        id:authService.getCurrentUser().id,
         address:[],
     };
     }
@@ -71,7 +73,7 @@ constructor(props) {
     }
     recvProjectData = (name)=>{
         console.log('project code:' + name);
-        this.setState({projectName:name});
+        this.setState({projectName:name[0]});
     
     }
 
@@ -85,7 +87,8 @@ constructor(props) {
     }
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/list/300112', { headers: authHeader() });
+        let data = await axios.get('/api/v1/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
+
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
 

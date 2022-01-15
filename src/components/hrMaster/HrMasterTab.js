@@ -10,7 +10,7 @@ import {
 import { Button } from '@mui/material';
 import PopupPostCode from '../admin/PopupPostCode';
 import axios from 'axios';
-import { alignProperty } from '@mui/material/styles/cssUtils';
+import authService from '../../services/auth.service';
 import authHeader from '../../services/auth-header';
 
 class HrMasterTab extends Component {
@@ -23,7 +23,8 @@ class HrMasterTab extends Component {
             isFile : false,    
             data: [],
             rootUrl:"/api/v1",
-            value: 0
+            value: 0,
+            id:authService.getCurrentUser().id
         }
 
         console.log(this.state);
@@ -33,11 +34,11 @@ class HrMasterTab extends Component {
     }
 
     getMyData = async () => {
+        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
 
-        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/list/300108', { headers: authHeader() });
         data = data.data;
 
-        let project = await axios.get(this.state.rootUrl+'/biztrip/project/300108');
+        let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id,{ headers: authHeader() });
         const projectData = project.data;
         this.setState({project:projectData});
 
@@ -50,7 +51,7 @@ class HrMasterTab extends Component {
         }
 
         this.updateBirthDate(data);
-        this.searchAdmin(data);  
+     //   this.searchAdmin(data);  
         this.updateDepartment(data);
 
         //우편번호
@@ -76,16 +77,16 @@ class HrMasterTab extends Component {
         return this.state.birthDate;
     }
 
-    searchAdmin = async (data)=>{
+    // searchAdmin = async (data)=>{
 
-        const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get(this.state.rootUrl+'/hradmin/list/'+admin[0], { headers: authHeader() });
-        bossData = bossData.data
-        console.log(bossData);
+    //     const admin = data.map((updateData) => updateData.bossId);
+    //     let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+admin[0], { headers: authHeader() });
+    //     bossData = bossData.data
+    //     console.log(bossData);
 
-        const adminName = bossData.map((updateData) => updateData.korName);
-        this.setState({adminName:adminName})
-    }
+    //     const adminName = bossData.map((updateData) => updateData.korName);
+    //     this.setState({adminName:adminName})
+    // }
  
     //원부서 구현
     updateDepartment = (data) => {
@@ -167,11 +168,7 @@ class HrMasterTab extends Component {
                                         <TableRow >
 
                                             <TableCell align='right'>프로젝트</TableCell>
-                                            <TableCell align='left' colSpan='5'>{this.state.project.code}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell align='right'>Cost Center</TableCell>
-                                            <TableCell >코스트 센터</TableCell>
+                                            <TableCell align='left' >{this.state.project.code}</TableCell>
                                             <TableCell align='right' colSpan='3'>원부서</TableCell>
                                             <TableCell key={this.state.updateDepartment}>{this.state.updateDepartment}</TableCell>
                                         </TableRow>
