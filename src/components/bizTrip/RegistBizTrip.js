@@ -87,7 +87,7 @@ constructor(props) {
     }
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/admin/list/'+this.state.id, { headers: authHeader() });
+        let data = await axios.get('/api/v1/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
 
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
