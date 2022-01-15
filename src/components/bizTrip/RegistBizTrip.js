@@ -4,7 +4,7 @@ import axios from 'axios';
 import ProjectList from './ProjectList';
 import DatePicker from './DatePicker';
 import PopupPostCode from './PopupPostCode';
-
+import authService from '../../services/auth.service';
 
 class RegistBizTrip extends Component {
 
@@ -19,6 +19,7 @@ constructor(props) {
         startDate:0,
         endDate:0,
         text:'',
+        id:authService.getCurrentUser().id,
         address:[],
     };
     }
@@ -70,7 +71,7 @@ constructor(props) {
     }
     recvProjectData = (name)=>{
         console.log('project code:' + name);
-        this.setState({projectName:name});
+        this.setState({projectName:name[0]});
     
     }
 
@@ -84,7 +85,7 @@ constructor(props) {
     }
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/admin/list/300112');
+        let data = await axios.get('/api/v1/hrmaster/hradmin/admin/list/'+this.state.id);
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
 

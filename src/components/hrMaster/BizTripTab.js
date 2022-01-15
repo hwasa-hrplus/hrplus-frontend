@@ -6,6 +6,8 @@ import {
     TableRow,
 
 } from '@material-ui/core';
+import authService from '../../services/auth.service';
+import axios from 'axios';
 
 
 class BizTripTab extends Component {
@@ -17,8 +19,9 @@ class BizTripTab extends Component {
             modalOpen: false,
             isFile: false,
             data: [],
-            rootUrl: "/api/v1/hrmaster",
-            value: 0
+            rootUrl: "/api/v1/",
+            value: 0,
+            id:authService.getCurrentUser().id
         }
 
         console.log(this.state);
@@ -27,7 +30,11 @@ class BizTripTab extends Component {
         this.getMyData();
     }
 
-    getMyData = async () => {};
+    getMyData = async () => {
+        let data = await axios.get('/biztrip/employee/'+this.state.id);
+        data = data.data;
+        console.log('this project data is ' + JSON.stringify(data));
+    };
 
     render() {
 
