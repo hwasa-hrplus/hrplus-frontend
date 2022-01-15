@@ -78,7 +78,7 @@ constructor(props) {
 
         this.setState({data});
 
-        let admin = await axios.get('/api/v1/hrmaster/hradmin/admin/boss',  { headers: authHeader() });
+        let admin = await axios.get('/api/v1/hrmaster/hradmin/boss',  { headers: authHeader() });
         const adminData = admin.data;
         console.log(adminData);
     };
