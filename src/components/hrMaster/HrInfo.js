@@ -13,6 +13,7 @@ import { Tab, Tabs } from '@mui/material';
 import TabPanel from './TabPanel';
 import HrMasterTab from './HrMasterTab';
 import BizTripTab from './BizTripTab';
+import authHeader from '../../services/auth-header';
 
 class HrInfo extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class HrInfo extends Component {
     }
 
     getMyData = async () => {
-        let data = await axios.get(this.state.rootUrl+'/hradmin/admin/list/300108');
+        let data = await axios.get(this.state.rootUrl+'/hradmin/list/300108', { headers: authHeader() });
         data = data.data;
 
         this.updateStartDate(data)

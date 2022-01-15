@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import PopupPostCode from '../admin/PopupPostCode';
 import axios from 'axios';
 import { alignProperty } from '@mui/material/styles/cssUtils';
+import authHeader from '../../services/auth-header';
 
 class HrMasterTab extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class HrMasterTab extends Component {
 
     getMyData = async () => {
 
-        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/list/300108');
+        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/list/300108', { headers: authHeader() });
         data = data.data;
 
         let project = await axios.get(this.state.rootUrl+'/biztrip/project/300108');
@@ -78,7 +79,7 @@ class HrMasterTab extends Component {
     searchAdmin = async (data)=>{
 
         const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get(this.state.rootUrl+'/hradmin/admin/list/'+admin[0]);
+        let bossData = await axios.get(this.state.rootUrl+'/hradmin/list/'+admin[0], { headers: authHeader() });
         bossData = bossData.data
         console.log(bossData);
 

@@ -23,10 +23,8 @@ class EmployeeTable extends Component {
         });
     }
 
-    requestData = async () => {
-        
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
-        //let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
+    requestData = async () => {        
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
         this.setState({
             employeeData: employeeData.data,
         });

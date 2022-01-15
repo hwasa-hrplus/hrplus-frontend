@@ -4,6 +4,7 @@ import axios from 'axios';
 import ProjectList from './ProjectList';
 import DatePicker from './DatePicker';
 import PopupPostCode from './PopupPostCode';
+import authHeader from '../../services/auth-header';
 
 
 class RegistBizTrip extends Component {
@@ -84,13 +85,13 @@ constructor(props) {
     }
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/admin/list/300112');
+        let data = await axios.get('/api/v1/hrmaster/hradmin/list/300112', { headers: authHeader() });
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
 
         this.setState({data});
 
-        let admin = await axios.get('/api/v1/hrmaster/hradmin/admin/boss');
+        let admin = await axios.get('/api/v1/hrmaster/hradmin/boss', { headers: authHeader() });
         const adminData = admin.data;
         console.log(adminData);
 
