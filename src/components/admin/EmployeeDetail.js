@@ -17,6 +17,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import ProjectList from '../bizTrip/ProjectList';
+import authHeader from '../../services/auth-header';
 
 class EmployeeDetail extends Component {
 
@@ -54,20 +55,19 @@ class EmployeeDetail extends Component {
 
      // select할 테이블 가져오기
      getTable = async () =>{
-
-        let staffLevel = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/stafflevel');
+        let staffLevel = await axios.get(this.state.rootUrl+'/hradmin/stafflevel', { headers: authHeader() });
         const data = staffLevel.data;
 
-        let department = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/department');
+        let department = await axios.get(this.state.rootUrl+'/hradmin/department',{ headers: authHeader() });
         const departmentData = department.data;
 
-        let workPlace = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/workPlace');
+        let workPlace = await axios.get(this.state.rootUrl+'/hradmin/workPlace',{ headers: authHeader() });
         const workplaceData = workPlace.data;
 
-        let jobCategory = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/jobCategory');
+        let jobCategory = await axios.get(this.state.rootUrl+'/hradmin/jobCategory',{ headers: authHeader() });
         const jobCategoryData = jobCategory.data;
 
-        let admin = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/boss');
+        let admin = await axios.get(this.state.rootUrl+'/hradmin/boss',{ headers: authHeader() });
         const adminData = admin.data;
 
         let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id);
@@ -75,14 +75,11 @@ class EmployeeDetail extends Component {
         console.log(projectData)
 
         this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData, project:projectData})
-
-        
     }
 
 
     getMyData = async () => {
-
-        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/list/'+this.state.id);
+        let data = await axios.get(this.state.rootUrl+'/hradmin/list/'+this.state.id, { headers: authHeader() });
         data = data.data;
 
         this.updateBirthDate(data);
@@ -231,8 +228,8 @@ class EmployeeDetail extends Component {
         const file = e.target.files[0];
         console.log(file);
         formData.append("img", file);
-        const id = this.state.id;
 
+        const id = this.state.id;
         await axios.put(this.state.rootUrl+'/hrmaster/hradmin/image/'+id, formData)
             .then(res =>{
                 console.log(res);
@@ -269,9 +266,8 @@ class EmployeeDetail extends Component {
 
     //결재권자 가져오기
     searchAdmin = async (data)=>{
-
         const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/admin/list/'+admin[0]);
+        let bossData = await axios.get(this.state.rootUrl+'/hradmin/hradmin/list/'+admin[0] ,{ headers: authHeader() });
         bossData = bossData.data
         console.log(bossData);
 
@@ -315,7 +311,8 @@ class EmployeeDetail extends Component {
                 filesId:this.state.filesId
             } 
             console.log(sendData);
-            axios.put(this.state.rootUrl+'/hrmaster/hradmin/admin/'+this.state.id, sendData)
+
+            axios.post(this.state.rootUrl+'/hrmaster/hradmin/', sendData,{ headers: authHeader() })
             .then((res) => {alert('사원 정보 수정 완료');      
                 // window.location.reload();
                 console.log(res)
@@ -324,8 +321,7 @@ class EmployeeDetail extends Component {
                 console.log(error.response)
             })
     }
-
-
+    
     render() {
         return (
             <div>

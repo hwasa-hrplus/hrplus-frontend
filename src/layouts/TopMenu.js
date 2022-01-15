@@ -17,6 +17,7 @@ const TopMenu = () => {
       }
       setCurrentTab(Number(sessionStorage.currentTab));
       return 1;
+
     }
 
     useEffect(()=>{

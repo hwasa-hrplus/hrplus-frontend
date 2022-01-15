@@ -4,6 +4,7 @@ import { Bar, BarChart, CartesianGrid, Cell, Legend, Tooltip, XAxis, YAxis } fro
 import { Table, TableHead, TableBody, TableRow, TableCell, TextField, Input, FormControl, InputLabel, InputAdornment } from '@material-ui/core';
 import axios from 'axios';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import authHeader from '../../../services/auth-header';
 
 
 const departmentHead = "Smart융합사업실";
@@ -49,7 +50,7 @@ class ProjectChart extends Component {
     }
 
     getMyData = async () => {
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
         //let projectData = await axios.get('/project/list');
         // 직급순 데이터 정렬
         // let employeeDataSorted = employeeData.data.sort( (a, b) => {
