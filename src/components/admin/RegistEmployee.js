@@ -6,7 +6,7 @@ import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import PopupPostCode from './PopupPostCode';
-import { Button } from '@mui/material';
+import { Button, tableCellClasses } from '@mui/material';
 import ProjectList from '../bizTrip/ProjectList';
 import authHeader from '../../services/auth-header';
 
@@ -242,9 +242,9 @@ class RegistEmployee extends Component{
                     <TableRow>
                         <TableCell align='center'>사진</TableCell>
                         <TableCell align='right'>사번</TableCell>
-                        <TableCell key='id'><TextField onChange={e => this.onChange(e,'id')} name='id' variant="outlined" size="small"/></TableCell>
+                        <TableCell><TextField onChange={e => this.onChange(e,'id')} name='id' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>성별</TableCell>
-                        <TableCell key='gender'><TextField name='gender' variant="outlined" size="small"/></TableCell>
+                        <TableCell><TextField name='gender' variant="outlined" size="small"/></TableCell>
 
                     </TableRow>
 
@@ -260,9 +260,9 @@ class RegistEmployee extends Component{
                                 }}></img>
                         </TableCell>
                         <TableCell align='right'>성명</TableCell>
-                        <TableCell key='korName'><TextField name='korName' variant="outlined" size="small"/></TableCell>
+                        <TableCell><TextField name='korName' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>입사일</TableCell>
-                        <TableCell key='startDate'> 
+                        <TableCell> 
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DesktopDatePicker
                             inputFormat="yyyy-MM-dd"
@@ -276,9 +276,9 @@ class RegistEmployee extends Component{
                     <TableRow>
 
                         <TableCell align='right'>영문성명</TableCell>
-                        <TableCell key='engName'><TextField name='engName' variant="outlined" size="small"/></TableCell>
+                        <TableCell><TextField name='engName' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>직책</TableCell>
-                        <TableCell key='role'>
+                        <TableCell>
                             <Select 
                                 value={this.state.selectValue}
                                 label="직책"
@@ -293,7 +293,7 @@ class RegistEmployee extends Component{
                     <TableRow>
 
                         <TableCell align='right'>직급</TableCell>
-                        <TableCell key='stafflevel'>
+                        <TableCell>
                             <Select 
                                 value={this.state.selectValue}
                                 label="직급"
@@ -307,7 +307,7 @@ class RegistEmployee extends Component{
                             </Select>
                             </TableCell>
                         <TableCell align='right'>직무</TableCell>
-                        <TableCell key={this.state.selectValue}> 
+                        <TableCell> 
                         <Select 
                                 value={this.state.selectValue}
                                 label="직무"
@@ -324,16 +324,16 @@ class RegistEmployee extends Component{
                     <TableRow>
 
                         <TableCell align='right'>주민번호</TableCell>
-                        <TableCell key='residentNum'><TextField name='residentNum' variant="outlined" size="small"/></TableCell>
+                        <TableCell><TextField name='residentNum' variant="outlined" size="small"/></TableCell>
                         <TableCell align='right'>연령</TableCell>
-                        <TableCell key='age'><TextField name='age' variant="outlined" size="small"/></TableCell>
+                        <TableCell><TextField name='age' variant="outlined" size="small"/></TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align='center'>
                             <Input type="file" onChange={this.postImage}/> {/* <IconButton aria-label="upload picture" component="span"></IconButton> */}
                         </TableCell>
                         <TableCell align='right'>부서</TableCell>
-                        <TableCell colSpan='3' key={this.state.selectValue}>
+                        <TableCell colSpan='3'>
                             <Select 
                                 value={this.state.selectValue}
                                 label="부서"
@@ -355,7 +355,7 @@ class RegistEmployee extends Component{
                  <TableBody>
                      <TableRow>
                          <TableCell align='right'>생년월일</TableCell>
-                         <TableCell key='birthDate'>
+                         <TableCell>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DesktopDatePicker
                                 inputFormat="yyyy-MM-dd"
@@ -366,14 +366,14 @@ class RegistEmployee extends Component{
                             </LocalizationProvider>
                          </TableCell>
                          <TableCell align='right'>이메일</TableCell>
-                         <TableCell key='email'><TextField name='email' variant="outlined" size="small"/></TableCell>
+                         <TableCell><TextField name='email' variant="outlined" size="small"/></TableCell>
                          <TableCell align='right'>휴대폰</TableCell>
-                         <TableCell key='phone'><TextField name='phone' variant="outlined" size="small"/></TableCell>
+                         <TableCell><TextField name='phone' variant="outlined" size="small"/></TableCell>
                      </TableRow>
                      <TableRow >
                          <TableCell align='right'>주소</TableCell>
 
-                         <TableCell align='left' colSpan='5' key='post'>
+                         <TableCell align='left' colSpan='5'>
                              <Button variant="contained" onClick={this.openModal}>우편번호 검색</Button>
                              <PopupPostCode
                                  open={this.state.modalOpen}
@@ -409,7 +409,7 @@ class RegistEmployee extends Component{
                      </TableRow>
                      <TableRow>
                          <TableCell align='right'>결재권자</TableCell>
-                         <TableCell key='bossId'>
+                         <TableCell>
                             <Select 
                                     value={this.state.selectValue}
                                     label="직급"
@@ -423,7 +423,7 @@ class RegistEmployee extends Component{
                             </Select>
                          </TableCell>
                          <TableCell align='right'>근무형태</TableCell>
-                         <TableCell key='workType'>
+                         <TableCell>
                              <Select 
                                 value={this.state.selectValue}
                                 label="근무형태"
@@ -435,7 +435,7 @@ class RegistEmployee extends Component{
                             </Select>
                          </TableCell>
                          <TableCell align='right'>주재지</TableCell>
-                         <TableCell key={this.state.selectValue}>
+                         <TableCell>
                             <Select 
                                 value={this.state.selectValue}
                                 label="주재지"
@@ -463,15 +463,15 @@ class RegistEmployee extends Component{
                             </TableCell>
                      </TableRow>
                      <TableRow>
-                        <TableCell key="password"  align='right'>초기 비밀번호
+                        <TableCell align='right'>초기 비밀번호
                              </TableCell>
-                        <TableCell  colSpan='5' align = 'left'>
+                        <TableCell colSpan='5' align = 'left'>
                             <TextField name='password'   variant="outlined" size="small"/>
                         </TableCell>
                         
                      </TableRow>
                      <TableRow>
-                        <TableCell key="button" align='right' colSpan='6'>
+                        <TableCell align='right' colSpan='6'>
                              <Button type='submit' variant="contained">등록</Button>                      
                          </TableCell>
                      </TableRow>

@@ -125,14 +125,14 @@ class HrInfo extends Component {
                                     <TableRow >     
                                         <TableCell align='center' rowSpan='4'><img src={this.state.setUrl} alt="" style={{height:"300px", width:"250px"}}></img></TableCell>                                     
                                         <TableCell align='right'>성명</TableCell>
-                                        <TableCell key={employeeData.korName}><TextField label={employeeData.korName} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.korName}>{employeeData.korName} </TableCell>
                                         <TableCell align='right'>입사일</TableCell>
                                         <TableCell key={this.state.updateStartDate}>{this.state.updateStartDate}</TableCell>
                                     </TableRow>
                                     <TableRow>
 
                                         <TableCell align='right'>영문성명</TableCell>
-                                        <TableCell key={employeeData.engName}><TextField label={employeeData.engName} variant="outlined" size="small"/></TableCell>
+                                        <TableCell key={employeeData.engName}>{employeeData.engName}</TableCell>
                                         <TableCell align='right'>직책</TableCell>
                                         <TableCell key={employeeData.role}>{employeeData.role}</TableCell>
                                     </TableRow>

@@ -50,17 +50,20 @@ class HrMasterTab extends Component {
             this.setState(data.map((updateData) => updateData.workType = "휴직자"));
         }
 
-        this.updateBirthDate(data);
-     //   this.searchAdmin(data);  
-        this.updateDepartment(data);
-
-        //우편번호
         this.setState({
             address: data.map((employeeData) => employeeData.address),
             addressCode: data.map((employeeData) => employeeData.addressCode),
-            addressDetail: data.map((employeeData) => employeeData.addressDetail),
+            addressDetail: data[0].addressDetail,
+            korName: data[0].korName,
+            engName:data[0].engName,
+            filesId:data[0].filesId
 
         })
+
+        this.updateBirthDate(data);
+        this.searchAdmin(data);  
+        this.updateDepartment(data);
+
         //state 저장
         this.setState({data});
 
@@ -70,6 +73,19 @@ class HrMasterTab extends Component {
         console.log(this.state);      
     };
 
+    onChange = (e, type) =>{
+        const value = e.target.value;
+
+        if(type==='korName'){
+            this.setState({korName:value})
+        }else if(type==='engName'){
+            this.setState({engName:value})
+        }else if(type==='addressDetail'){
+            this.setState({addressDetail:value})
+        }
+    }
+    
+
     updateBirthDate = (data) => {
         const birthDate = data.map((updateData) => updateData.birthDate);
         const removeIndex = birthDate[0].substring(0, birthDate[0].indexOf('T'));
@@ -77,23 +93,58 @@ class HrMasterTab extends Component {
         return this.state.birthDate;
     }
 
-    // searchAdmin = async (data)=>{
+    searchAdmin = async (data)=>{
 
-    //     const admin = data.map((updateData) => updateData.bossId);
-    //     let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+admin[0], { headers: authHeader() });
-    //     bossData = bossData.data
-    //     console.log(bossData);
+        const admin = data.map((updateData) => updateData.bossId);
+        let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+admin[0], { headers: authHeader() });
+        bossData = bossData.data
+        console.log(bossData);
 
-    //     const adminName = bossData.map((updateData) => updateData.korName);
-    //     this.setState({adminName:adminName})
-    // }
+        const adminName = bossData.map((updateData) => updateData.korName);
+        this.setState({adminName:adminName})
+    }
  
+    //주소 찾기 구현
+    openModal = () => {
+        this.setState({modalOpen: true})
+            }
+        closeModal = () => {
+            this.setState({modalOpen: false})
+        }
+
     //원부서 구현
     updateDepartment = (data) => {
         const department = data.map((updateData) => updateData.departmentName);
         const splitDepartment = department[0].split(" ");
         this.setState({updateDepartment: splitDepartment[2]});
         return this.state.updateDepartment;
+    }
+
+    //화면 데이터 전송
+    onSubmit = async (e)=>{
+        e.preventDefault();
+        console.log(e.target)
+        console.log("onSubmit event 발생");
+        console.log(this.state);
+
+        const sendData ={
+                id:this.state.id, 
+                korName:this.state.korName,
+                engName:this.state.engName,
+                address:this.state.address[0],
+                addressCode:this.state.addressCode[0],
+                addressDetail:this.state.addressDetail,
+                filesId:this.state.filesId
+            } 
+            console.log(sendData);
+            axios.put(this.state.rootUrl+'/hrmaster/hrfixed/'+this.state.id, sendData, { headers: authHeader() })
+            .then((res) => {alert('사원 정보 수정 완료');      
+                window.location.reload();
+                console.log(res)
+            })
+            .catch((error) => {
+                console.log(error.response)
+            })
     }
 
     render() {
@@ -149,7 +200,8 @@ class HrMasterTab extends Component {
                                                     <TextField
                                                         label={this
                                                             .state
-                                                            .addressDetail[0]}
+                                                            .addressDetail}
+                                                        onChange={e => this.onChange(e,'addressDetail')}
                                                         variant="outlined"
                                                         style={{width: '53%'}}
                                                         size="small"/>
@@ -177,7 +229,7 @@ class HrMasterTab extends Component {
                         }
                     )
                     }
-                    <Button style={{marginTop:"20px", float:"right"}} type="submit" variant="contained">수정</Button>
+                    <Button style={{marginTop:"20px", float:"right"}} onClick={this.onSubmit} variant="contained">수정</Button>
             </div>
         )
     }
