@@ -3,6 +3,7 @@ import { Table, TableBody, TableRow, TableCell, Button, } from '@material-ui/cor
 import axios from 'axios';
 import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import authService from '../../services/auth.service';
 
 class BizTripList extends Component {
 
@@ -17,11 +18,15 @@ class BizTripList extends Component {
         endDate:new Date(),
         p_data:[],
         selectList:[],
+        admindata:[]
         };
     }
 
     getBizTripList = async()=>{
-        let p_data = await axios.get('/api/v1/biztrip/employee/300112');
+        const user = authService.getCurrentUser();  
+        //let p_data = await axios.get('/api/v1/biztrip/employee/111111');
+
+       let p_data = await axios.get('/api/v1/biztrip/employee/'+user.id);
         p_data = p_data.data;
         console.log('this project data is ' + JSON.stringify(p_data));
         this.setState({p_data:p_data});
@@ -53,13 +58,22 @@ class BizTripList extends Component {
  
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/admin/list/300112');
+        const user = authService.getCurrentUser();  
+        //let data = await axios.get('/api/v1/hrmaster/hradmin/111111',{withCredentials:true});
+
+        let data = await axios.get('/api/v1/hrmaster/hradmin/'+user.id);
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
 
         this.setState({data});
         this.setState({startDate:new Date(this.state.startDate.getFullYear()-1, 0, 1)})
         console.log(this.state.startDate.getFullYear()-1);
+
+
+        let admin = await axios.get('/api/v1/hrmaster/hradmin/'+ this.state.data.map((employeeData) => employeeData.bossId)[0]);
+        const adminData = admin.data;
+        console.log(adminData);
+        this.setState({adminData:adminData});
         
     };
 
@@ -170,8 +184,9 @@ class BizTripList extends Component {
                                                     day: 'numeric',
                                                   })}</TableCell>
                     <TableCell align='center'>{ProjectData.bizPurpose.name}</TableCell>
-                    <TableCell align='center'>{ProjectData.bossId}</TableCell>
-                    {ProjectData.approved === 0 ?
+                    {this.state.adminData.map(ad=>
+                        <TableCell align='center'>{ad.korName}</TableCell>
+                    )}                    {ProjectData.approved === 0 ?
                     <TableCell align='center'>승인</TableCell>
                         :<TableCell align='center'>미승인</TableCell>
 
@@ -181,6 +196,8 @@ class BizTripList extends Component {
             }
             
         </Table>
+        
+
         </div>
         );
     }

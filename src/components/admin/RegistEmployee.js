@@ -43,23 +43,23 @@ class RegistEmployee extends Component{
 
     // select할 테이블 가져오기
     getTable = async () =>{
-        let staffLevel = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/stafflevel');
+        let staffLevel = await axios.get(this.state.rootUrl+'hrmaster/hradmin/stafflevel');
         const data = staffLevel.data;
         console.log(data);
 
-        let department = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/department');
+        let department = await axios.get(this.state.rootUrl+'hrmaster/hradmin/department');
         const departmentData = department.data;
         console.log(departmentData);
 
-        let workPlace = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/workPlace');
+        let workPlace = await axios.get(this.state.rootUrl+'hrmaster/hradmin/workPlace');
         const workplaceData = workPlace.data;
         console.log(workplaceData);
 
-        let jobCategory = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/jobCategory');
+        let jobCategory = await axios.get(this.state.rootUrl+'hrmaster/hradmin/jobCategory');
         const jobCategoryData = jobCategory.data;
         console.log(jobCategoryData);
 
-        let admin = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/boss');
+        let admin = await axios.get(this.state.rootUrl+'hrmaster/hradmin/boss');
         const adminData = admin.data;
         console.log(adminData);
 
@@ -219,13 +219,13 @@ class RegistEmployee extends Component{
             id:this.state.id
         }
 
-        axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData)
-        .then((res) => {    
-            console.log(res)
-        })
-        .catch((error) => {
-            console.log(error.response)
-        })
+        // axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData)
+        // .then((res) => {    
+        //     console.log(res)
+        // })
+        // .catch((error) => {
+        //     console.log(error.response)
+        // })
     }
 
 
