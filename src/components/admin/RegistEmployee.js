@@ -7,6 +7,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import PopupPostCode from './PopupPostCode';
 import { Button } from '@mui/material';
+import ProjectList from '../bizTrip/ProjectList';
 
 class RegistEmployee extends Component{
 
@@ -34,7 +35,7 @@ class RegistEmployee extends Component{
             detailAddress:"",
             filesId:"",
             role:"",
-            rootUrl:"/api/v1/hrmaster/"
+            rootUrl:"/api/v1/"
         }
 
         this.getTable();
@@ -42,23 +43,23 @@ class RegistEmployee extends Component{
 
     // select할 테이블 가져오기
     getTable = async () =>{
-        let staffLevel = await axios.get(this.state.rootUrl+'/hradmin/admin/stafflevel');
+        let staffLevel = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/stafflevel');
         const data = staffLevel.data;
         console.log(data);
 
-        let department = await axios.get(this.state.rootUrl+'/hradmin/admin/department');
+        let department = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/department');
         const departmentData = department.data;
         console.log(departmentData);
 
-        let workPlace = await axios.get(this.state.rootUrl+'/hradmin/admin/workPlace');
+        let workPlace = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/workPlace');
         const workplaceData = workPlace.data;
         console.log(workplaceData);
 
-        let jobCategory = await axios.get(this.state.rootUrl+'/hradmin/admin/jobCategory');
+        let jobCategory = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/jobCategory');
         const jobCategoryData = jobCategory.data;
         console.log(jobCategoryData);
 
-        let admin = await axios.get(this.state.rootUrl+'/hradmin/admin/boss');
+        let admin = await axios.get(this.state.rootUrl+'hrmaster/hradmin/admin/boss');
         const adminData = admin.data;
         console.log(adminData);
 
@@ -115,6 +116,13 @@ class RegistEmployee extends Component{
             
     }
 
+    recvProjectData = (name)=>{
+        console.log('project code:' + name[0]);
+        this.setState({projectName:name[0],costCenter:name[1]});
+      
+    
+    }
+
     //사진 업로드 구현
     postImage = async(e) =>{
             const formData = new FormData();
@@ -123,13 +131,13 @@ class RegistEmployee extends Component{
             console.log(id);
             formData.append("img", file);
             
-            await axios.post(this.state.rootUrl+'/hradmin/image/'+id, formData)
+            await axios.post(this.state.rootUrl+'hrmaster/hradmin/image/'+id, formData)
                 .then(res =>{
                     console.log(res);
                 })
 
                     
-            let image = await axios.get(this.state.rootUrl+'/hradmin/regist/image/'+id);
+            let image = await axios.get(this.state.rootUrl+'hrmaster/hradmin/regist/image/'+id);
             const imageData = image.data;
             console.log(imageData);   
             this.setState({filesId:imageData.uuid}) 
@@ -142,7 +150,7 @@ class RegistEmployee extends Component{
       
             await axios({
                 method:'GET',
-                url:this.state.rootUrl+'/hradmin/image/'+id,
+                url:this.state.rootUrl+'hrmaster/hradmin/image/'+id,
                 responseType:'blob',
             })
             .then((res) => {
@@ -197,7 +205,7 @@ class RegistEmployee extends Component{
                 filesId:this.state.filesId
             } 
             console.log(sendData);
-            axios.post(this.state.rootUrl+'/hradmin/admin', sendData)
+            axios.post(this.state.rootUrl+'hrmaster/hradmin/admin', sendData)
             .then((res) => {alert('사원 정보 추가 완료');      
                 window.location.reload();
                 console.log(res)
@@ -205,6 +213,19 @@ class RegistEmployee extends Component{
             .catch((error) => {
                 console.log(error.response)
             })
+
+        const sendBizTripData = {
+            code:this.state.projectName,
+            id:this.state.id
+        }
+
+        axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData)
+        .then((res) => {    
+            console.log(res)
+        })
+        .catch((error) => {
+            console.log(error.response)
+        })
     }
 
 
@@ -369,6 +390,7 @@ class RegistEmployee extends Component{
                              </span>
                              <TextField
                                  label={this.state.registAddress[0]}
+
                                  variant="outlined"
                                  style ={{width: '53%'}}
                                  size="small"/>
@@ -412,7 +434,7 @@ class RegistEmployee extends Component{
                          </TableCell>
                          <TableCell align='right'>주재지</TableCell>
                          <TableCell key={this.state.selectValue}>
-                         <Select 
+                            <Select 
                                 value={this.state.selectValue}
                                 label="주재지"
                                 onChange={e => this.onChange(e,'workPlace')}
@@ -428,25 +450,28 @@ class RegistEmployee extends Component{
                      <TableRow >
 
                          <TableCell align='right'>프로젝트</TableCell>
-                         <TableCell align='left' colSpan='3'>
-                             <Button variant="contained">프로젝트 찾기</Button>
-                             <span><br/></span>
-                             <TextField
-                                 label=""
-                                 style={{width: '100%'}}
-                                 size="small"
-                                 variant="outlined"/>
-                         </TableCell>
+                         <TableCell align='center' colSpan = "2">
+                            <Input align='center' readOnly='true' value={this.state.projectName} fullWidth={true}></Input>
+                        
+                            </TableCell>
+                            <TableCell align='rigth' >
+                                <ProjectList
+                                    recvProjectData={this.recvProjectData}
+                                />
+                            </TableCell>
                          <TableCell align='right'>Cost Center</TableCell>
-                         <TableCell ><TextField label="" variant="outlined" size="small"/></TableCell>
+                         <TableCell ><TextField label="" value={this.state.costCenter} variant="outlined" size="small"/></TableCell>
                      </TableRow>
                      <TableRow>
-                        <TableCell key="password" colSpan='4' align='right'>초기 비밀번호
+                        <TableCell key="password"  align='right'>초기 비밀번호
                              </TableCell>
-                        <TableCell>
-                            <TextField name='password'  variant="outlined" size="small"/>
+                        <TableCell  colSpan='5' align = 'left'>
+                            <TextField name='password'   variant="outlined" size="small"/>
                         </TableCell>
-                         <TableCell key="button" align='center'>
+                        
+                     </TableRow>
+                     <TableRow>
+                        <TableCell key="button" align='right' colSpan='6'>
                              <Button type='submit' variant="contained">등록</Button>                      
                          </TableCell>
                      </TableRow>
