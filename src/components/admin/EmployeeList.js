@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import authHeader from '../../services/auth-header';
 
 class EmployeeList extends Component {
 
@@ -15,7 +16,7 @@ class EmployeeList extends Component {
     };
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/list');
+        let data = await axios.get('/api/v1/hrmaster/hradmin', { headers: authHeader() });
         data = data.data;
         console.log('data is ' + JSON.stringify(data));
         this.setState({data});

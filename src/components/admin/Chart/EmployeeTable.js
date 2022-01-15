@@ -23,9 +23,9 @@ class EmployeeTable extends Component {
         });
     }
 
-    requestData = async () => {
 
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list', { headers: authHeader() });
+    requestData = async () => {        
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
         this.setState({
             employeeData: employeeData.data,
         });
@@ -139,7 +139,7 @@ class EmployeeTable extends Component {
                                         <TableCell align='center'>{data.workPlaceName}</TableCell>
                                         <TableCell align='center'>{data.email}</TableCell>
                                         <TableCell align='center'>{data.phone}</TableCell>
-                                        <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
+                                        <TableCell align='center'>{data.workType === true ? "근무자" : "휴직자"}</TableCell>
                                     </TableRow>
 
                             ))}

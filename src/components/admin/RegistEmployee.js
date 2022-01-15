@@ -8,6 +8,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import PopupPostCode from './PopupPostCode';
 import { Button } from '@mui/material';
 import ProjectList from '../bizTrip/ProjectList';
+import authHeader from '../../services/auth-header';
 
 class RegistEmployee extends Component{
 
@@ -43,23 +44,24 @@ class RegistEmployee extends Component{
 
     // select할 테이블 가져오기
     getTable = async () =>{
-        let staffLevel = await axios.get(this.state.rootUrl+'hrmaster/hradmin/stafflevel');
+
+        let staffLevel = await axios.get(this.state.rootUrl+'hrmaster/hradmin/stafflevel', { headers: authHeader() });
         const data = staffLevel.data;
         console.log(data);
 
-        let department = await axios.get(this.state.rootUrl+'hrmaster/hradmin/department');
+        let department = await axios.get(this.state.rootUrl+'hrmaster/hradmin/department', { headers: authHeader() });
         const departmentData = department.data;
         console.log(departmentData);
 
-        let workPlace = await axios.get(this.state.rootUrl+'hrmaster/hradmin/workPlace');
+        let workPlace = await axios.get(this.state.rootUrl+'hrmaster/hradmin/workPlace', { headers: authHeader() });
         const workplaceData = workPlace.data;
         console.log(workplaceData);
 
-        let jobCategory = await axios.get(this.state.rootUrl+'hrmaster/hradmin/jobCategory');
+        let jobCategory = await axios.get(this.state.rootUrl+'hrmaster/hradmin/jobCategory', { headers: authHeader() });
         const jobCategoryData = jobCategory.data;
         console.log(jobCategoryData);
 
-        let admin = await axios.get(this.state.rootUrl+'hrmaster/hradmin/boss');
+        let admin = await axios.get(this.state.rootUrl+'hrmaster/hradmin/boss', { headers: authHeader() });
         const adminData = admin.data;
         console.log(adminData);
 
@@ -131,13 +133,13 @@ class RegistEmployee extends Component{
             console.log(id);
             formData.append("img", file);
             
-            await axios.post(this.state.rootUrl+'hrmaster/hradmin/image/'+id, formData)
+            await axios.post(this.state.rootUrl+'hrmaster/hradmin/image/'+id, formData, { headers: authHeader() })
                 .then(res =>{
                     console.log(res);
                 })
 
                     
-            let image = await axios.get(this.state.rootUrl+'hrmaster/hradmin/regist/image/'+id);
+            let image = await axios.get(this.state.rootUrl+'hrmaster/hradmin/regist/image/'+id, { headers: authHeader() });
             const imageData = image.data;
             console.log(imageData);   
             this.setState({filesId:imageData.uuid}) 
@@ -152,6 +154,7 @@ class RegistEmployee extends Component{
                 method:'GET',
                 url:this.state.rootUrl+'hrmaster/hradmin/image/'+id,
                 responseType:'blob',
+                headers: authHeader() 
             })
             .then((res) => {
                 const url = window.URL.createObjectURL(new Blob([res.data], { type: res.headers['content-type'] } ));
@@ -205,9 +208,9 @@ class RegistEmployee extends Component{
                 filesId:this.state.filesId
             } 
             console.log(sendData);
-            axios.post(this.state.rootUrl+'hrmaster/hradmin/admin', sendData)
+            axios.post(this.state.rootUrl+'hrmaster/hradmin', sendData, { headers: authHeader() })
             .then((res) => {alert('사원 정보 추가 완료');      
-                window.location.reload();
+                 window.location.href='/admin/list';
                 console.log(res)
             })
             .catch((error) => {
@@ -219,13 +222,14 @@ class RegistEmployee extends Component{
             id:this.state.id
         }
 
-        // axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData)
-        // .then((res) => {    
-        //     console.log(res)
-        // })
-        // .catch((error) => {
-        //     console.log(error.response)
-        // })
+
+        axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData, { headers: authHeader() })
+        .then((res) => {    
+            console.log(res)
+        })
+        .catch((error) => {
+            console.log(error.response)
+        })
     }
 
 
@@ -450,7 +454,7 @@ class RegistEmployee extends Component{
                      <TableRow >
 
                          <TableCell align='right'>프로젝트</TableCell>
-                         <TableCell align='center' colSpan = "2">
+                         <TableCell align='center' colSpan = "4">
                             <Input align='center' readOnly='true' value={this.state.projectName} fullWidth={true}></Input>
                         
                             </TableCell>
@@ -459,8 +463,6 @@ class RegistEmployee extends Component{
                                     recvProjectData={this.recvProjectData}
                                 />
                             </TableCell>
-                         <TableCell align='right'>Cost Center</TableCell>
-                         <TableCell ><TextField label="" value={this.state.costCenter} variant="outlined" size="small"/></TableCell>
                      </TableRow>
                      <TableRow>
                         <TableCell key="password"  align='right'>초기 비밀번호

@@ -76,7 +76,7 @@ const Styles = () => {
                 background-color:white;
             }
             .MuiTable-root{
-                width:1300px;
+                width:1400px;
             }
             .slideBox{                
                 width:1300px;

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Table, TableBody, TableRow, TableCell, Button, } from '@material-ui/core';
+import { Table, TableBody, TableRow, TableCell, Input, Button, NativeSelect, Checkbox } from '@material-ui/core';
 import axios from 'axios';
 import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import authService from '../../services/auth.service';
 import authHeader from '../../services/auth-header';
 
-class BizTripList extends Component {
+class BizTripDetail extends Component {
 
     
     constructor(props) {
@@ -19,27 +18,28 @@ class BizTripList extends Component {
         endDate:new Date(),
         p_data:[],
         selectList:[],
-        admindata:[]
         };
     }
 
     getBizTripList = async()=>{
-        const user = authService.getCurrentUser();  
-        //let p_data = await axios.get('/api/v1/biztrip/employee/111111');
-
-       let p_data = await axios.get('/api/v1/biztrip/employee/'+user.id);
+        let p_data = await axios.get('/api/v1/biztrip/employee/300112');
         p_data = p_data.data;
         console.log('this project data is ' + JSON.stringify(p_data));
         this.setState({p_data:p_data});
 
          const list =  this.state.p_data.filter((e)=>{
-            console.log('DB: '+ new Date(e.endDate) +'vs  <=  달력: '+ new Date(this.state.endDate));
+            console.log('DB: '+ new Date(e.endDate).toString() +'vs  <=  달력: '+ new Date(this.state.endDate).toString());
             console.log( new Date(e.endDate).toString() <= new Date(this.state.endDate).toString());
 
 
 
-            if((new Date(e.startDate) >= new Date(this.state.startDate)) 
-                    &&  (new Date(e.endDate) <= new Date(this.state.endDate)))
+            // if((new Date(e.endDate).toString() <= new Date(this.state.startDate).toString() ) 
+            //         &&  (new Date(e.startDate).toString() <= new Date(this.state.endDate).toString()))
+            
+            
+            if((new Date(this.state.startDate).toString() <= new Date(e.startDate).toString() && new Date(e.startDate).toString() <= new Date(this.state.endDate).toString())
+         || (new Date(this.state.endDate).toString() <= new Date(e.endDate).toString() && new Date(e.endDate).toString() <= new Date(this.state.endDate).toString()) 
+         )
             {
                 console.log('filer list id : '+e.id);
                 
@@ -59,23 +59,13 @@ class BizTripList extends Component {
  
 
     getMyData = async () => {
-        const user = authService.getCurrentUser();  
-        //let data = await axios.get('/api/v1/hrmaster/hradmin/111111',{withCredentials:true});
-
-     
-        let data = await axios.get('/api/v1/hrmaster/hradmin/300112', { headers: authHeader() });
+        let data = await axios.get('/api/v1/hrmaster/hradmin/300112',{ headers: authHeader() });
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
 
         this.setState({data});
         this.setState({startDate:new Date(this.state.startDate.getFullYear()-1, 0, 1)})
         console.log(this.state.startDate.getFullYear()-1);
-
-
-        let admin = await axios.get('/api/v1/hrmaster/hradmin/'+ this.state.data.map((employeeData) => employeeData.bossId)[0]);
-        const adminData = admin.data;
-        console.log(adminData);
-        this.setState({adminData:adminData});
         
     };
 
@@ -186,9 +176,8 @@ class BizTripList extends Component {
                                                     day: 'numeric',
                                                   })}</TableCell>
                     <TableCell align='center'>{ProjectData.bizPurpose.name}</TableCell>
-                    {this.state.adminData.map(ad=>
-                        <TableCell align='center'>{ad.korName}</TableCell>
-                    )}                    {ProjectData.approved === 0 ?
+                    <TableCell align='center'>{ProjectData.bossId}</TableCell>
+                    {ProjectData.approved === 0 ?
                     <TableCell align='center'>승인</TableCell>
                         :<TableCell align='center'>미승인</TableCell>
 
@@ -198,11 +187,9 @@ class BizTripList extends Component {
             }
             
         </Table>
-        
-
         </div>
         );
     }
 }
 
-export default BizTripList;
+export default BizTripDetail;
