@@ -17,6 +17,7 @@ import PopupPostCode from './PopupPostCode';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import authHeader from '../../services/auth-header';
 
 class EmployeeDetail extends Component {
 
@@ -62,23 +63,23 @@ class EmployeeDetail extends Component {
      // select할 테이블 가져오기
      getTable = async () =>{
 
-        let staffLevel = await axios.get(this.state.rootUrl+'/hradmin/admin/stafflevel');
+        let staffLevel = await axios.get(this.state.rootUrl+'/hradmin/stafflevel', { headers: authHeader() });
         const data = staffLevel.data;
         console.log(data);
 
-        let department = await axios.get(this.state.rootUrl+'/hradmin/admin/department');
+        let department = await axios.get(this.state.rootUrl+'/hradmin/department',{ headers: authHeader() });
         const departmentData = department.data;
         console.log(departmentData);
 
-        let workPlace = await axios.get(this.state.rootUrl+'/hradmin/admin/workPlace');
+        let workPlace = await axios.get(this.state.rootUrl+'/hradmin/workPlace',{ headers: authHeader() });
         const workplaceData = workPlace.data;
         console.log(workplaceData);
 
-        let jobCategory = await axios.get(this.state.rootUrl+'/hradmin/admin/jobCategory');
+        let jobCategory = await axios.get(this.state.rootUrl+'/hradmin/jobCategory',{ headers: authHeader() });
         const jobCategoryData = jobCategory.data;
         console.log(jobCategoryData);
 
-        let admin = await axios.get(this.state.rootUrl+'/hradmin/admin/boss');
+        let admin = await axios.get(this.state.rootUrl+'/hradmin/boss',{ headers: authHeader() });
         const adminData = admin.data;
         this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData})
     }
@@ -86,7 +87,7 @@ class EmployeeDetail extends Component {
 
     getMyData = async () => {
 
-        let data = await axios.get(this.state.rootUrl+'/hradmin/admin/list/'+this.state.id);
+        let data = await axios.get(this.state.rootUrl+'/hradmin/list/'+this.state.id, { headers: authHeader() });
         data = data.data;
 
         //workType 구현
@@ -205,7 +206,7 @@ class EmployeeDetail extends Component {
         console.log(file);
         formData.append("img", file);
         
-        await axios.post(this.state.rootUrl+'/hradmin/image', formData)
+        await axios.post(this.state.rootUrl+'/hradmin/image', formData,{ headers: authHeader() })
             .then(res =>{
                 console.log(res);
             })
@@ -237,7 +238,7 @@ class EmployeeDetail extends Component {
     searchAdmin = async (data)=>{
 
         const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get(this.state.rootUrl+'/hradmin/admin/list/'+admin[0]);
+        let bossData = await axios.get(this.state.rootUrl+'/hradmin/list/'+admin[0] ,{ headers: authHeader() });
         bossData = bossData.data
         console.log(bossData);
 
@@ -280,7 +281,7 @@ class EmployeeDetail extends Component {
                 filesId:this.state.filesId
             } 
             console.log(sendData);
-            axios.post(this.state.rootUrl+'/hradmin/admin', sendData)
+            axios.post(this.state.rootUrl+'/hradmin/', sendData,{ headers: authHeader() })
             .then((res) => {alert('사원 정보 수정 완료');      
                 window.location.reload();
                 console.log(res)

@@ -16,8 +16,6 @@ const TopMenu = () => {
           console.log('Number(sessionStorage.currentTab): ', Number(sessionStorage.currentTab));
           return Number(sessionStorage.currentTab);
       }
-      this.setState({ currentTab : 1 })
-      return 1;
     }
 
     const useComponentWillMount = (func) => {

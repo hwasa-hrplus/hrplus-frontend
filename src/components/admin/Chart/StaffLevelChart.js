@@ -7,6 +7,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import _ from 'lodash';
 import { paginate } from './pagination/paginate';
 import {departmentHead, pageSize, COLORS} from './commonData'
+import authHeader from '../../../services/auth-header';
 
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {        
@@ -48,7 +49,7 @@ class StaffLevelChart extends Component {
     }
 
     requestData = async () => {
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
         employeeData = employeeData.data.filter((data)=>{
             return data.departmentName.includes(departmentHead);
         });
