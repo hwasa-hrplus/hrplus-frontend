@@ -59,9 +59,9 @@ class HrInfo extends Component {
 
     updateStartDate = (data) => {
         const date = data.startDate;
-        const removeIndex = date.substring(0, date[0].indexOf('T'));
+        const removeIndex = date.substring(0, date.indexOf('T'));
         this.setState({updateStartDate: removeIndex});
-        return this.state.startDate;
+        console.log(date)
     }
 
       //사진 업로드 구현
@@ -108,7 +108,7 @@ class HrInfo extends Component {
                     .URL
                     .createObjectURL(new Blob([res.data], {type: res.headers['content-type']}));
                 this.setState({setUrl: url})
-                console.logt(res)
+                console.log(res)
 
             })
             .catch(e => {
