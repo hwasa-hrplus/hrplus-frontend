@@ -1,5 +1,5 @@
 //
-import { FormControl, Input, InputAdornment, InputLabel, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import { FormControl, Input, InputAdornment, InputLabel, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import React, { Component } from 'react';
@@ -7,14 +7,16 @@ import { Cell, Pie, PieChart } from 'recharts';
 import './ChartCSS.css';
 import _ from 'lodash';
 import { paginate } from './pagination/paginate';
-import {departmentHead, pageSize, COLORS} from './commonData'
+import {departmentHead, pageSize, COLORS} from './commonData';
 import authHeader from '../../../services/auth-header';
+import {Tooltip} from 'recharts';
+import { Link } from 'react-router-dom';
 
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {
         return (
         <div className="customTooltip">
-            <p className="info">{`${payload[0].name}, 인원: ${payload[0].value}명`}</p>
+            <p className="info">{`${payload[0].name}(${payload[0].value}명)`}</p>
         </div>
         );
     }
@@ -61,14 +63,21 @@ class JobCategoryChart extends Component {
     }
 
     requestData = async () => {
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list',  { headers: authHeader() });
+        let employeeArray = []
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
+        let projectData = await axios.get('/api/v1/biztrip/project/employee', { headers: authHeader() });
+        let mergedEmployeeData = _.merge({}, employeeData.data, projectData.data);
         
-        employeeData = employeeData.data.filter((data)=>{
+        for (let index = 0; index < employeeData.data.length; index++) {
+            employeeArray.push(mergedEmployeeData[index]);
+        }
+
+        employeeArray = employeeArray.filter((data)=>{
             return data.departmentName.includes(departmentHead);
         });
 
         // 직급순 데이터 정렬
-        let employeeDataSorted = this.sortByStaffLevel(employeeData).sort( (a, b) => {
+        let employeeDataSorted = this.sortByStaffLevel(employeeArray).sort( (a, b) => {
             a = a.staffLevel;
             b = b.staffLevel; 
             if (a < b){
@@ -108,6 +117,7 @@ class JobCategoryChart extends Component {
         }
         this.setState({
                        uniqueDataState: uniqueDataset,
+                       dataName: uniqueDataset[0].name
                     });
     }
 
@@ -198,7 +208,7 @@ class JobCategoryChart extends Component {
         return (
             <div>
                 <div >
-                    <h1 align='center'>{departmentHead} 직무별 사원 현황</h1>
+                    <h2 align='center' style={{padding: 20}}>{departmentHead} 직무별 사원 현황</h2>
                 </div>
                 <div className="ContentWrapper">
                     <div className='ChartWrapper'>
@@ -233,7 +243,7 @@ class JobCategoryChart extends Component {
                                     <div style={{ 
                                         display: 'flex',
                                         alignContent: 'left',
-                                        width: 700,
+                                        width: 800,
                                         height: 30
                                         }}>
                                         <button style={{ 
@@ -246,7 +256,7 @@ class JobCategoryChart extends Component {
                                         >{" "}</button>
                                         <button size='large' style={{
                                             justifyContent: 'left',
-                                            width: 450,
+                                            width: 470,
                                             backgroundColor: 'white',
                                             textAlign: 'left'
                                         }} className="LegendButton"
@@ -279,37 +289,37 @@ class JobCategoryChart extends Component {
                     </FormControl>
                 </div>
                 <div>
-                    <h3>선택 직무: {this.state.dataName ? this.state.dataName.replace(departmentHead+" ", "") : "None"}</h3>
+                    <h3 style={{padding: 20}}>선택 직무: {this.state.dataName ? this.state.dataName.replace(departmentHead+" ", "") : "None"}</h3>
                 </div>
                 <div className="TableWrapper">
-                    <Table>
+                <Table style={{width: 1500}} >
                         <TableHead>
-                            <TableRow>
-                                <TableCell style={{width: 80}} align='center'>사번</TableCell>
-                                <TableCell style={{width: 90}} align='center'>성명</TableCell>
-                                <TableCell style={{width: 80}} align='center'>직급</TableCell>
-                                <TableCell style={{width: 80}} align='center'>직책</TableCell>
-                                <TableCell style={{width: 400}} align='center'>부서</TableCell>
-                                <TableCell style={{width: 120}} align='center'>직무</TableCell>
-                                <TableCell style={{width: 180}} align='center'>프로젝트</TableCell>
-                                <TableCell style={{width: 100}} align='center'>이메일</TableCell>
-                                <TableCell style={{width: 150}} align='center'>휴대전화</TableCell>
-                                <TableCell style={{width: 100}} align='center'>근무형태</TableCell>
+                        <TableRow style={{height: 35}}>
+                                <TableCell style={{width: 70, backgroundColor: '#A9A9A9', color:'white'}} align='center'><b>사번</b></TableCell>
+                                <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>성명</b></TableCell>
+                                <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직급</b></TableCell>
+                                <TableCell style={{width: 65, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직책</b></TableCell>
+                                <TableCell style={{width: 400, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>부서</b></TableCell>
+                                <TableCell style={{width: 150, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직무</b></TableCell>
+                                <TableCell style={{width: 400, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>프로젝트</b></TableCell>
+                                <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>이메일</b></TableCell>
+                                {/* <TableCell style={{width: 130}} align='center'>휴대전화</TableCell> */}
+                                <TableCell style={{width: 90, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>근무형태</b></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {   
                                 this.handlePagedData().map((data) => (
                                     <TableRow>
-                                        <TableCell align='center'>{data.id}</TableCell>
+                                        <TableCell align='center' color="blue"><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
                                         <TableCell align='center'>{data.korName}</TableCell>
                                         <TableCell align='center'>{data.staffLevelName}</TableCell>
                                         <TableCell align='center'>{data.role}</TableCell>
                                         <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
                                         <TableCell align='center'>{data.jobCategoryName}</TableCell>
-                                        <TableCell align='center'>{data.workPlaceName}</TableCell>
+                                        <TableCell align='center'>{data.code}</TableCell>
                                         <TableCell align='center'>{data.email}</TableCell>
-                                        <TableCell align='center'>{data.phone}</TableCell>
+                                        {/* <TableCell align='center'>{data.phone}</TableCell> */}
                                         <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
                                     </TableRow>
                                 ))

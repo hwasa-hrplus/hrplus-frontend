@@ -23,10 +23,22 @@ class EmployeeTable extends Component {
         });
     }
 
-    requestData = async () => {        
+    requestData = async () => {
+        let employeeArray = []
         let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
+        let projectData = await axios.get('/api/v1/biztrip/project/employee', { headers: authHeader() });
+        let mergedEmployeeData = _.merge({}, employeeData.data, projectData.data);
+
+        for (let index = 0; index < employeeData.data.length; index++) {
+            employeeArray.push(mergedEmployeeData[index]);
+        }
+
+        employeeArray = employeeArray.filter((data)=>{
+            return data.departmentName.includes(departmentHead);
+        });
+
         this.setState({
-            employeeData: employeeData.data,
+            employeeData: employeeArray
         });
         this.countData();
     };
@@ -89,7 +101,7 @@ class EmployeeTable extends Component {
         return (
             <>
                 <div >
-                    <h1 align='center'>{departmentHead} 전체 사원 목록</h1>
+                    <h2 align='center' style={{padding: 20}}>{departmentHead} 전체 사원 목록</h2>
                 </div>
                 <div className="SearchBarWrapper" align="center" style={{padding: "20px"}}>
                     <FormControl variant="standard">
@@ -110,38 +122,38 @@ class EmployeeTable extends Component {
                     </FormControl>
                 </div>
                 <div className="TableWrapper">
-                    <Table>
+                <Table style={{width: 1500}} >
                         <TableHead>
-                            <TableRow>
-                                <TableCell style={{width: 80}} align='center'>사번</TableCell>
-                                <TableCell style={{width: 90}} align='center'>성명</TableCell>
-                                <TableCell style={{width: 80}} align='center'>직급</TableCell>
-                                <TableCell style={{width: 80}} align='center'>직책</TableCell>
-                                <TableCell style={{width: 400}} align='center'>부서</TableCell>
-                                <TableCell style={{width: 120}} align='center'>직무</TableCell>
-                                <TableCell style={{width: 180}} align='center'>프로젝트</TableCell>
-                                <TableCell style={{width: 100}} align='center'>이메일</TableCell>
-                                <TableCell style={{width: 150}} align='center'>휴대전화</TableCell>
-                                <TableCell style={{width: 100}} align='center'>근무형태</TableCell>
-                            </TableRow>
-                        </TableHead>
+                            <TableRow style={{height: 35}}>
+                                    <TableCell style={{width: 70, backgroundColor: '#A9A9A9', color:'white'}} align='center'><b>사번</b></TableCell>
+                                    <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>성명</b></TableCell>
+                                    <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직급</b></TableCell>
+                                    <TableCell style={{width: 65, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직책</b></TableCell>
+                                    <TableCell style={{width: 400, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>부서</b></TableCell>
+                                    <TableCell style={{width: 150, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직무</b></TableCell>
+                                    <TableCell style={{width: 400, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>프로젝트</b></TableCell>
+                                    <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>이메일</b></TableCell>
+                                    {/* <TableCell style={{width: 130}} align='center'>휴대전화</TableCell> */}
+                                    <TableCell style={{width: 90, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>근무형태</b></TableCell>
+                                </TableRow>
+                            </TableHead>
                         <TableBody>
                             {
                                 this.handlePagedData().map((data) => (
                                     <TableRow>
-                                        <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
+                                        <TableCell align='center' color="blue"><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
                                         <TableCell align='center'>{data.korName}</TableCell>
                                         <TableCell align='center'>{data.staffLevelName}</TableCell>
                                         <TableCell align='center'>{data.role}</TableCell>
                                         <TableCell align='center'>{data.departmentName.replace(departmentHead+" ", "")}</TableCell>
                                         <TableCell align='center'>{data.jobCategoryName}</TableCell>
-                                        <TableCell align='center'>{data.workPlaceName}</TableCell>
+                                        <TableCell align='center'>{data.code}</TableCell>
                                         <TableCell align='center'>{data.email}</TableCell>
-                                        <TableCell align='center'>{data.phone}</TableCell>
+                                        {/* <TableCell align='center'>{data.phone}</TableCell> */}
                                         <TableCell align='center'>{data.workType === true ? "근무자" : "휴직자"}</TableCell>
                                     </TableRow>
-
-                            ))}
+                            ))
+                            }
                         </TableBody>
                     </Table>
                     
