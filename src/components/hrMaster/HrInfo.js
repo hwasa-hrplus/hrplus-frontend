@@ -19,14 +19,13 @@ import authService from '../../services/auth.service';
 class HrInfo extends Component {
     constructor(props) {
         super(props);
-        console.log('in constructor');
-
+        const user = authService.getCurrentUser();
         this.state = {
             isFile : false,    
             data: [],
             rootUrl:"/api/v1/hrmaster",
             value: 0,
-            id:null
+            id:user?user.id:null
         }
 
         console.log(this.state);

@@ -15,6 +15,7 @@ import authHeader from '../../services/auth-header';
 
 class HrMasterTab extends Component {
     constructor(props) {
+        const user = authService.getCurrentUser();
         super(props);
         console.log('in constructor');
 
@@ -24,23 +25,19 @@ class HrMasterTab extends Component {
             data: [],
             rootUrl:"/api/v1",
             value: 0,
-            id:0
+            id: user?user.id:null
         }
 
-        console.log(this.state);
+        
     }
     componentDidMount() {
-        const user = authService.getCurrentUser();  
-        if(user){
-            this.getMyData();
-            this.setState({id:authService.getCurrentUser().id});
-        }
-        
+        this.getMyData(); 
     }
 
     getMyData = async () => {
+        
         let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
-
+        console.log("dfsdf:",this.state.id);
         data = data.data;
 
         let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id,{ headers: authHeader() });

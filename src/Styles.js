@@ -18,6 +18,7 @@ const Styles = () => {
                 font-size: 35px;
                 font-weight: bold;
             }
+
             .topBar.logo:hover{
                 color: white;
             }
@@ -62,7 +63,11 @@ const Styles = () => {
             }
 
             .sideMenuContent{
-                height:1000px;
+                height:1200px;
+            }
+
+            .sideMenuContent.admin{
+                height:2000px;
             }
 
             .sideMenu{
