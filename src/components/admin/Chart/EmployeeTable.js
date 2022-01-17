@@ -25,8 +25,7 @@ class EmployeeTable extends Component {
 
     requestData = async () => {
         
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
-        //let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
         this.setState({
             employeeData: employeeData.data,
         });
@@ -131,7 +130,7 @@ class EmployeeTable extends Component {
                             {
                                 this.handlePagedData().map((data) => (
                                     <TableRow>
-                                        <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
+                                        <TableCell align='center' color="blue"><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
                                         <TableCell align='center'>{data.korName}</TableCell>
                                         <TableCell align='center'>{data.staffLevelName}</TableCell>
                                         <TableCell align='center'>{data.role}</TableCell>

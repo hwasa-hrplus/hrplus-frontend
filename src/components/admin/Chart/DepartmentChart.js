@@ -1,18 +1,20 @@
 //
-import { FormControl, Input, InputAdornment, InputLabel, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import { FormControl, Input, InputAdornment, InputLabel, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import {Tooltip} from 'recharts';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
 import _ from 'lodash';
 import { paginate } from './pagination/paginate';
-import {departmentHead, pageSize, COLORS} from './commonData'
+import {departmentHead, pageSize, COLORS} from './commonData';
+import authHeader from '../../../services/auth-header';
 
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {
         return (
         <div className="customTooltip">
-            <p className="info">{`${payload[0].name.replace(departmentHead, "")} 인원: ${payload[0].value}명`}</p>
+            <p className="info">{`${payload[0].name.replace(departmentHead, "")}(${payload[0].value}명)`}</p>
         </div>
         );
     }
@@ -60,7 +62,7 @@ class DepartmentChart extends Component {
     }
 
     requestData = async () => {
-        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/admin/list');
+        let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
         
         employeeData = employeeData.data.filter((data)=>{
             return data.departmentName.includes(departmentHead);
@@ -104,7 +106,8 @@ class DepartmentChart extends Component {
             uniqueObj.value = cnt;
             uniqueDataset.push(uniqueObj);
         }
-        this.setState({uniqueDataState: uniqueDataset});
+        this.setState({uniqueDataState: uniqueDataset, 
+                        dataName: uniqueDataset[0].name});
     }
 
     sortByStaffLevel = (employeeData) => {
@@ -244,7 +247,7 @@ class DepartmentChart extends Component {
                                             >{" "}</button>
                                             <button size='large' style={{
                                                 justifyContent: 'left',
-                                                width: 450,
+                                                width: 470,
                                                 backgroundColor: 'white',
                                                 textAlign: 'left'
                                             }} className="LegendButton"
