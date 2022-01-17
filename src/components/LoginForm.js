@@ -110,7 +110,7 @@ function SignInSide() {
                 required
                 fullWidth
                 id="email"
-                label="Username"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 autoFocus

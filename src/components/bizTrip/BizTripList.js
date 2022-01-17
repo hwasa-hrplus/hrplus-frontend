@@ -6,11 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import authHeader from '../../services/auth-header';
 
 class BizTripList extends Component {
-
-    
     constructor(props) {
     super(props);
-    console.log('in constructor');
 
     this.state = {
         data: [],
@@ -48,8 +45,7 @@ class BizTripList extends Component {
         this.setState({selectList:list})
 
         list.map((ProjectData, i) => 
-        console.log('map id '+ProjectData.id))
-    
+        console.log('map id '+ProjectData.id))    
     }
  
 

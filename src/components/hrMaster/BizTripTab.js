@@ -22,13 +22,17 @@ class BizTripTab extends Component {
             data: [],
             rootUrl: "/api/v1/",
             value: 0,
-            id:authService.getCurrentUser().id
+            id:null
         }
 
         console.log(this.state);
     }
     componentDidMount() {
-        this.getMyData();
+        const user = authService.getCurrentUser();  
+        if(user){
+            this.getMyData();
+            this.setState({id:authService.getCurrentUser().id});
+        }
     }
 
     getMyData = async () => {
