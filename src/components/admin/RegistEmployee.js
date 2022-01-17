@@ -242,9 +242,22 @@ class RegistEmployee extends Component{
                     <TableRow>
                         <TableCell align='center'>사진</TableCell>
                         <TableCell align='right'>사번</TableCell>
-                        <TableCell><TextField onChange={e => this.onChange(e,'id')} name='id' variant="outlined" size="small"/></TableCell>
+                        <TableCell>
+                            <TextField
+                                error={this.state.id==''? true:false} 
+                                helperText='사번은 공백일 수 없습니다.'
+                                onChange={e => this.onChange(e,'id')} 
+                                name='id' 
+                                variant="outlined" 
+                                size="small"/>
+                            </TableCell>
                         <TableCell align='right'>성별</TableCell>
-                        <TableCell><TextField name='gender' variant="outlined" size="small"/></TableCell>
+                        <TableCell>
+                            <TextField     
+                                name='gender' 
+                                variant="outlined" 
+                                size="small"/>
+                            </TableCell>
 
                     </TableRow>
 
@@ -366,7 +379,14 @@ class RegistEmployee extends Component{
                             </LocalizationProvider>
                          </TableCell>
                          <TableCell align='right'>이메일</TableCell>
-                         <TableCell><TextField name='email' variant="outlined" size="small"/></TableCell>
+                         <TableCell>
+                             <TextField 
+                                error={this.state.email==''? true:false} 
+                                helperText='이메일을 입력해주세요'
+                                name='email' 
+                                variant="outlined" 
+                                size="small"/>
+                            </TableCell>
                          <TableCell align='right'>휴대폰</TableCell>
                          <TableCell><TextField name='phone' variant="outlined" size="small"/></TableCell>
                      </TableRow>

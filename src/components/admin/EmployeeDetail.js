@@ -43,7 +43,7 @@ class EmployeeDetail extends Component {
             id: id,
             isFile : false,    
             data: [],
-            project:{},
+       
             updateStartDate:"",
             updateBirthDate:"",
             workType:false,
@@ -616,7 +616,6 @@ class EmployeeDetail extends Component {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow >
-                                        {console.log(this.state.project.code)}
                                         <TableCell align='right'>프로젝트</TableCell>
                                         <TableCell align='center' colSpan = "4">
                                             <Input 
