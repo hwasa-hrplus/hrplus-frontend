@@ -319,7 +319,7 @@ class EmployeeDetail extends Component {
                 filesId:this.state.filesId
             } 
             console.log(sendData);
-            axios.put(this.state.rootUrl+'/hrmaster/hradmin/admin/'+this.state.id, sendData, { headers: authHeader() })
+            axios.put(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, sendData, { headers: authHeader() })
             .then((res) => {alert('사원 정보 수정 완료');      
                 window.location.reload();
                 console.log(res)
@@ -351,7 +351,7 @@ class EmployeeDetail extends Component {
             window.location.href='/admin/list';
 
             })
-            axios.delete(this.state.rootUrl+'/biztrip/project'+this.state.id, { headers: authHeader() })
+            axios.delete(this.state.rootUrl+'/biztrip/project/'+this.state.id, { headers: authHeader() })
             .then((res) => 
                 console.log(res)
             )

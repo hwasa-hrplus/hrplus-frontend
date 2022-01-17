@@ -7,11 +7,8 @@ import authService from '../../services/auth.service';
 import authHeader from '../../services/auth-header';
 import { Button } from '@mui/material';
 class BizTripList extends Component {
-
-    
     constructor(props) {
     super(props);
-    console.log('in constructor');
 
     this.state = {
         data: [],
@@ -48,6 +45,7 @@ class BizTripList extends Component {
          
         console.log(list[0].bizPurpose.name);
         this.setState({selectList:list})
+
     }
  
 

@@ -1,5 +1,7 @@
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Container, Navbar } from 'react-bootstrap';
+import { Button, Container, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import authService from '../services/auth.service';
 
@@ -11,16 +13,14 @@ const TopBar = () => {
     return (
         <Navbar className='topBar' variant='dark'>
             <Container>
-                <Navbar.Brand className='topBar logo style'><Link to='/employee/profile'>POSCO ICT</Link></Navbar.Brand>
+                <Navbar.Brand ><Link className='topBar logo style' to='/employee/profile'>POSCO ICT</Link></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
-                    {user?(<a>반갑습니다 {user.korName}님!</a>):(<></>)}
+                    {user?(<a className="greet">{user.korName} 님, 반갑습니다!&nbsp;&nbsp;</a>):(<></>)}
                 </Navbar.Text>
                 
-                <a href="/login" className="nav-link" onClick={logOut}>
-                  로그아웃
-                </a>
+                <Button id="logoutBtn" href="/login" onClick={logOut} variant="light"><FontAwesomeIcon icon={faSignOutAlt}/>&nbsp;로그아웃</Button>
                 </Navbar.Collapse>
 
                 

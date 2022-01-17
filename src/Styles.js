@@ -82,7 +82,7 @@ const Styles = () => {
                 width:1300px;
             }
             .footer{
-                height: 100px;
+                height: 116px;
                 color: white;
                 background-color: #006399;
             }
@@ -98,6 +98,15 @@ const Styles = () => {
             }
             .request{
                 margin-top:20px;
+            }
+
+            .navbar-dark .navbar-text a, .navbar-dark .navbar-text a:focus, .navbar-dark .navbar-text a:hover{
+                color:white;
+                font-size: 1.15rem;
+            }
+
+            a#logoutBtn.btn.btn-light{
+                padding: 0.2rem 0.5rem
             }
                 
         `}

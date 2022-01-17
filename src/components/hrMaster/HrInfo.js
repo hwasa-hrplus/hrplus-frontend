@@ -26,7 +26,7 @@ class HrInfo extends Component {
             data: [],
             rootUrl:"/api/v1/hrmaster",
             value: 0,
-            id:authService.getCurrentUser().id
+            id:null
         }
 
         console.log(this.state);
@@ -87,7 +87,11 @@ class HrInfo extends Component {
     }
 
     componentDidMount() {
-        this.getMyData();
+        const user = authService.getCurrentUser();  
+        if(user){
+            this.getMyData();
+            this.setState({id:authService.getCurrentUser().id});
+        }
     }
 
   
