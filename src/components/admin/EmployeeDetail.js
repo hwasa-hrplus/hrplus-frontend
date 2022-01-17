@@ -43,21 +43,22 @@ class EmployeeDetail extends Component {
             id: id,
             isFile : false,    
             data: [],
-            project:{},
+       
             updateStartDate:"",
             updateBirthDate:"",
             workType:false,
             rootUrl:"/api/v1"
         }
 
-        this.getTable();
     }
 
-     // select할 테이블 가져오기
-     getTable = async () =>{
+    getMyData = async () => {
+
+        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
+        data = data.data;
 
         let staffLevel = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/stafflevel', { headers: authHeader() });
-        const data = staffLevel.data;
+        const staffLevelData = staffLevel.data;
 
         let department = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/department', { headers: authHeader() });
         const departmentData = department.data;
@@ -73,18 +74,9 @@ class EmployeeDetail extends Component {
 
         let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id, { headers: authHeader() });
         const projectData = project.data;
-        console.log(projectData)
 
-        this.setState({staffLevel:data, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData, projectName:projectData.code})
+        this.setState({staffLevel:staffLevelData, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData, projectName:projectData.code})
 
-        
-    }
-
-
-    getMyData = async () => {
-
-        let data = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
-        data = data.data;
 
         this.updateBirthDate(data);
         this.updateStartDate(data)
@@ -92,7 +84,6 @@ class EmployeeDetail extends Component {
         this.searchAdmin(data);
         this.getImage()
 
-        console.log(data[0]);
         if(data[0].workType===true){
             this.setState({workName:'근무자'})
         }else{
@@ -125,8 +116,7 @@ class EmployeeDetail extends Component {
 
         if(this.state.content!==undefined){
             this.postImage();
-        }
-        console.log(this.state);      
+        }   
     };
 
     onChange = (e, type) =>{
@@ -160,7 +150,6 @@ class EmployeeDetail extends Component {
         }else if(type==='gender'){
             this.setState({gender:value})
         }else if (type==='workType'){
-            console.log(value);
             if(value==='근무자'){
                     this.setState({workType:true});
             } else {
@@ -187,7 +176,6 @@ class EmployeeDetail extends Component {
     }
 
     recvProjectData = (name)=>{
-        console.log('project code:' + name[0]);
         this.setState({projectName:name[0],costCenter:name[1]});
     }
     updateBirthDate = (data) => {
@@ -290,7 +278,6 @@ class EmployeeDetail extends Component {
       //화면 데이터 전송
       onSubmit = async (e)=>{
         e.preventDefault();
-        console.log(e.target)
         console.log("onSubmit event 발생");
         console.log(this.state);
 
@@ -325,6 +312,7 @@ class EmployeeDetail extends Component {
                 console.log(res)
             })
             .catch((error) => {
+                alert('입력 값을 확인해 주세요');  
                 console.log(error.response)
             })
 
@@ -346,7 +334,7 @@ class EmployeeDetail extends Component {
 
         const answer = window.confirm('사번('+this.state.id+')를 삭제하시겠습니까?')
         if(answer){
-            axios.delete(this.state.rootUrl+'/hrmaster/hradmin/'+this.state.id, { headers: authHeader() })
+            axios.delete(this.state.rootUrl+'/hrmaster/'+this.state.id, { headers: authHeader() })
             .then((res) => {alert('사원 삭제 완료')
             window.location.href='/admin/list';
 
@@ -629,7 +617,6 @@ class EmployeeDetail extends Component {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow >
-                                        {console.log(this.state.project.code)}
                                         <TableCell align='right'>프로젝트</TableCell>
                                         <TableCell align='center' colSpan = "4">
                                             <Input 

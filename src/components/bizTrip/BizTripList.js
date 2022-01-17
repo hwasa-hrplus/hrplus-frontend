@@ -19,7 +19,7 @@ class BizTripList extends Component {
     }
 
     getBizTripList = async()=>{
-        let p_data = await axios.get('/api/v1/biztrip/employee/300112');
+        let p_data = await axios.get('/api/v1/biztrip/employee/300108');
         p_data = p_data.data;
         console.log('this project data is ' + JSON.stringify(p_data));
         this.setState({p_data:p_data});
@@ -50,9 +50,14 @@ class BizTripList extends Component {
  
 
     getMyData = async () => {
-        let data = await axios.get('/api/v1/hrmaster/hradmin/300112', { headers: authHeader() });
+        let data = await axios.get('/api/v1/hrmaster/hrbasic/300108', { headers: authHeader() });
         data = data.data;
         console.log('this employee data is ' + JSON.stringify(data));
+
+        let admin = await axios.get('/api/v1/hrmaster/hrfixed/'+ data.bossId, { headers: authHeader() });
+        const adminData = admin.data;
+        console.log(adminData);
+        this.setState({adminData:adminData});
 
         this.setState({data});
         this.setState({startDate:new Date(this.state.startDate.getFullYear()-1, 0, 1)})
