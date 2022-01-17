@@ -14,25 +14,20 @@ import authHeader from '../../services/auth-header';
 class BizTripTab extends Component {
     constructor(props) {
         super(props);
-        console.log('in constructor');
-
+        const user = authService.getCurrentUser();  
         this.state = {
             modalOpen: false,
             isFile: false,
             data: [],
             rootUrl: "/api/v1/",
             value: 0,
-            id:null
+            id: user?user.id:null
         }
 
         console.log(this.state);
     }
     componentDidMount() {
-        const user = authService.getCurrentUser();  
-        if(user){
-            this.getMyData();
-            this.setState({id:authService.getCurrentUser().id});
-        }
+        this.getMyData();
     }
 
     getMyData = async () => {

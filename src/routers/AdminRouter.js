@@ -10,7 +10,7 @@ import ApproveBizTrip from '../components/admin/ApproveBizTrip';
 
 const AdminRouter = () => {
     return (
-        <div className='sideMenuContent'>            
+        <div className='sideMenuContent admin'>            
            <div className="sideMenu">
             <Nav className="d-md-block side" defaultActiveKey="link-1">
                 <Nav.Item>
