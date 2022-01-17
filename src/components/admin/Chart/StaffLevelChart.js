@@ -261,7 +261,7 @@ class StaffLevelChart extends Component {
                         { 
                             this.handlePagedData().map((data) => (
                                 <TableRow>
-                                    <TableCell align='center' color="blue"><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
+                                    <TableCell align='center'><Link to={`/admin/detail/${data.id}`}>{data.id}</Link></TableCell>
                                     <TableCell align='center'>{data.korName}</TableCell>
                                     <TableCell align='center'>{data.staffLevelName}</TableCell>
                                     <TableCell align='center'>{data.role}</TableCell>

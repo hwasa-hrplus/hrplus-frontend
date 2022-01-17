@@ -215,7 +215,7 @@ class ProjectChart extends Component {
                 <div className="ContentWrapper">
                     <div className='ChartWrapper'>
                         <div>
-                            <PieChart width={700} height={530} onMouseEnter={this.onPieEnter} style = {{flexDirection: 'row'}}>
+                            <PieChart width={700} height={480} onMouseEnter={this.onPieEnter} style = {{flexDirection: 'row'}}>
                                 <Pie 
                                 data={this.state.uniqueDataState}
                                 cx={300}
