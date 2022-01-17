@@ -312,6 +312,7 @@ class EmployeeDetail extends Component {
                 console.log(res)
             })
             .catch((error) => {
+                alert('입력 값을 확인해 주세요');  
                 console.log(error.response)
             })
 

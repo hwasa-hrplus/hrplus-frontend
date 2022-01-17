@@ -36,6 +36,9 @@ class RegistEmployee extends Component{
             detailAddress:"",
             filesId:"",
             role:"",
+            errorText: '',
+            idErrorText:'',
+            passwordErrorText:'',
             rootUrl:"/api/v1/"
         }
 
@@ -80,9 +83,28 @@ class RegistEmployee extends Component{
 
         if(type==='staffLevel'){
             this.setState({staffLevelName:value})
+        }else if(type==='email'){
+            if (value.includes('@gmail.com')) {
+                this.setState({ errorText: '' })
+                this.setState({email:value})
+              } else {
+                this.setState({ errorText: 'gmail로 작성해 주세요.' })
+              }
         }else if(type==='id'){
-            console.log(value);
-            this.setState({id:value})
+            if (!/[~!@#$%^&*()_+|<>?:{}.,/;='"ㄱ-ㅎ | ㅏ-ㅣ |가-힣]/.test(value)) {
+                this.setState({ idErrorText: '' })
+                this.setState({id:value})
+              } else {
+                this.setState({ idErrorText: '특수기호나 한글은 입력 하실 수 없습니다.' })
+              }
+          
+        }else if(type==='password'){
+            if (value.length>4) {
+                this.setState({ passwordErrorText: '' })
+                this.setState({password:value})
+              } else {
+                this.setState({ passwordErrorText: '비밀번호는 4글자 이상으로 입력해주세요' })
+              }
         }else if(type==='department'){
             console.log(value);
             this.setState({departmentName:value})
@@ -129,7 +151,7 @@ class RegistEmployee extends Component{
             const formData = new FormData();
             const file = e.target.files[0];
             const id = this.state.id
-            console.log(id);
+            console.log(file);
             formData.append("img", file);
             
             await axios.post(this.state.rootUrl+'hrmaster/hradmin/image/'+id, formData, { headers: authHeader() })
@@ -183,14 +205,14 @@ class RegistEmployee extends Component{
         console.log(this.state);
 
         const sendData ={
-                id:e.target.id.value, 
+                id:this.state.id, 
                 korName:e.target.korName.value,
                 engName:e.target.engName.value,
                 gender:e.target.gender.value,
                 age:e.target.age.value,
                 residentNum:e.target.residentNum.value,
-                email:e.target.email.value,
-                password:e.target.password.value,
+                email:this.state.email,
+                password:this.state.password,
                 role:this.state.role,
                 staffLevelName: this.state.staffLevelName,
                 departmentName: this.state.departmentName,
@@ -208,11 +230,13 @@ class RegistEmployee extends Component{
             } 
             console.log(sendData);
             axios.post(this.state.rootUrl+'hrmaster/hradmin', sendData, { headers: authHeader() })
-            .then((res) => {alert('사원 정보 추가 완료');      
-                 window.location.href='/admin/list';
+            .then((res) => {
+                alert('사원 정보 추가 완료');      
+                window.location.href='/admin/list';
                 console.log(res)
             })
             .catch((error) => {
+                alert('입력 값을 확인해 주세요');  
                 console.log(error.response)
             })
 
@@ -230,8 +254,6 @@ class RegistEmployee extends Component{
         })
     }
 
-
-
     render() {
     console.log(this.state.address)
     return (
@@ -244,9 +266,9 @@ class RegistEmployee extends Component{
                         <TableCell align='right'>사번</TableCell>
                         <TableCell>
                             <TextField
-                                error={this.state.id==''? true:false} 
-                                helperText='사번은 공백일 수 없습니다.'
-                                onChange={e => this.onChange(e,'id')} 
+                                error={this.state.idErrorText !=='' ? true: false }
+                                onChange={e => this.onChange(e,'id')}
+                                helperText={this.state.idErrorText} 
                                 name='id' 
                                 variant="outlined" 
                                 size="small"/>
@@ -381,8 +403,9 @@ class RegistEmployee extends Component{
                          <TableCell align='right'>이메일</TableCell>
                          <TableCell>
                              <TextField 
-                                error={this.state.email==''? true:false} 
-                                helperText='이메일을 입력해주세요'
+                                onChange={e=>this.onChange(e,'email')}
+                                error={this.state.errorText !=='' ? true: false }
+                                helperText={this.state.errorText}
                                 name='email' 
                                 variant="outlined" 
                                 size="small"/>
@@ -486,7 +509,13 @@ class RegistEmployee extends Component{
                         <TableCell align='right'>초기 비밀번호
                              </TableCell>
                         <TableCell colSpan='5' align = 'left'>
-                            <TextField name='password'   variant="outlined" size="small"/>
+                            <TextField 
+                                onChange={e=>this.onChange(e,'password')}
+                                error={this.state.passwordErrorText !=='' ? true: false }
+                                helperText={this.state.passwordErrorText}
+                                name='password'   
+                                variant="outlined" 
+                                size="small"/>
                         </TableCell>
                         
                      </TableRow>

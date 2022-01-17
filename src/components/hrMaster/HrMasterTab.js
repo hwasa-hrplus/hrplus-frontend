@@ -101,12 +101,9 @@ class HrMasterTab extends Component {
         searchAdmin = async (data)=>{
 
             const admin = data.bossId;
-            let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+admin ,{ headers: authHeader() });
-            bossData = bossData.data
-            console.log(bossData);
-    
-            const adminName = bossData.map((updateData) => updateData.korName);
-            this.setState({adminName:adminName})
+            let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hrfixed/'+admin ,{ headers: authHeader() });
+            console.log(bossData.data);
+            this.setState({adminName:bossData.data.korName})
         }
 
     //화면 데이터 전송

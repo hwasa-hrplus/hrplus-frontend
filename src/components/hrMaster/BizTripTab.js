@@ -56,12 +56,10 @@ class BizTripTab extends Component {
     searchAdmin = async (data)=>{
 
         const admin = data.map((updateData) => updateData.bossId);
-        let bossData = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/'+admin[0], { headers: authHeader() });
+        console.log(data)
+        let bossData = await axios.get(this.state.rootUrl+'hrmaster/hrfixed/'+admin[0], { headers: authHeader() });
         bossData = bossData.data
-        console.log(bossData);
-
-        const adminName = bossData.map((updateData) => updateData.korName);
-        this.setState({adminName:adminName})
+        this.setState({adminName:bossData.korName})
     }
 
 
