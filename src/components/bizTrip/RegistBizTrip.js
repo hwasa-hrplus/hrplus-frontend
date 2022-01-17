@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Table, TableBody, TableRow, TableCell, Input, Button, NativeSelect, } from '@material-ui/core';
+import { Table, TableBody, TableRow, TableCell, Input, NativeSelect, } from '@material-ui/core';
 import axios from 'axios';
 import ProjectList from './ProjectList';
 import PopupPostCode from './PopupPostCode';
 import authService from '../../services/auth.service';
 import ReactDatePicker from 'react-datepicker';
 import authHeader from '../../services/auth-header';
-
+import { Button } from '@mui/material';
 
 class RegistBizTrip extends Component {
 
@@ -52,6 +52,7 @@ constructor(props) {
             
                 }).then(res=>{alert('출장신청 완료');
                 })
+                window.location.reload();
 
 
                 console.log(this.state.adminData.map((employeeData) => employeeData.email)[0]);
@@ -62,14 +63,11 @@ constructor(props) {
                     projectName:this.state.projectName
                 })
                 .then((res)=>console.log('결재권자에게 메일발송 완료'))
-                window.location.reload();
         }
     }
 
 
-    onChange = (e)=>{
-        this.setState({text:e.target.value})
-    }
+   
     recvProjectData = (name)=>{
         console.log('project code:' + name);
         this.setState({projectName:name[0],costCenter:name[1]});    
@@ -85,11 +83,14 @@ constructor(props) {
     }
 
     getMyData = async () => {
+        console.log('getmyData!!!!!!');
 
         const user = authService.getCurrentUser();  
         // let data = await axios.get('/api/v1/hrmaster/hradmin/'+user.id);
 
-        let data = await axios.get('/api/v1/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
+        // let data = await axios.get('/api/v1/hrmaster/hradmin/'+user.id, { headers: authHeader() });
+        let data = await axios.get('/api/v1/hrmaster/hradmin/300112', { headers: authHeader() });
+
 
 
         data = data.data;
@@ -121,7 +122,7 @@ constructor(props) {
         this.setState({p_data});
     };
 
-    componentDidMoun = ()=> {
+    componentDidMount = ()=> {
     console.log('in componentDidMount');
     this.getMyPurposeData();
 

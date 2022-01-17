@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Table, TableBody, TableRow, TableCell, Button, } from '@material-ui/core';
+import { Table, TableBody, TableRow, TableCell,  } from '@material-ui/core';
 import axios from 'axios';
 import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import authService from '../../services/auth.service';
 import authHeader from '../../services/auth-header';
-
+import { Button } from '@mui/material';
 class BizTripList extends Component {
 
     
@@ -27,7 +27,8 @@ class BizTripList extends Component {
         const user = authService.getCurrentUser();  
         //let p_data = await axios.get('/api/v1/biztrip/employee/111111');
 
-       let p_data = await axios.get('/api/v1/biztrip/employee/'+user.id);
+    //    let p_data = await axios.get('/api/v1/biztrip/employee/'+user.id);
+    let p_data = await axios.get('/api/v1/biztrip/employee/300112');
         p_data = p_data.data;
         console.log('this project data is ' + JSON.stringify(p_data));
         this.setState({p_data:p_data});
@@ -36,25 +37,17 @@ class BizTripList extends Component {
             console.log('DB: '+ new Date(e.endDate) +'vs  <=  달력: '+ new Date(this.state.endDate));
             console.log( new Date(e.endDate).toString() <= new Date(this.state.endDate).toString());
 
-
-
             if((new Date(e.startDate) >= new Date(this.state.startDate)) 
                     &&  (new Date(e.endDate) <= new Date(this.state.endDate)))
             {
                 console.log('filer list id : '+e.id);
-                
                 return e;
             }
          })
          
          
-        console.log(list);
-        
+        console.log(list[0].bizPurpose.name);
         this.setState({selectList:list})
-
-        list.map((ProjectData, i) => 
-        console.log('map id '+ProjectData.id))
-    
     }
  
 
@@ -72,7 +65,7 @@ class BizTripList extends Component {
         console.log(this.state.startDate.getFullYear()-1);
 
 
-        let admin = await axios.get('/api/v1/hrmaster/hradmin/'+ this.state.data.map((employeeData) => employeeData.bossId)[0]);
+        let admin = await axios.get('/api/v1/hrmaster/hradmin/'+ this.state.data.map((employeeData) => employeeData.bossId)[0], { headers: authHeader() });
         const adminData = admin.data;
         console.log(adminData);
         this.setState({adminData:adminData});

@@ -49,6 +49,16 @@ class ApproveBizTrip extends Component {
         await axios.put(`/api/v1/biztrip/${id}`, approveData);
         data.splice(key, 1);       
         this.setState(data);
+
+
+        await axios.post('/api/v1/mail/sendApprove'
+        ,{
+            address:data[key].email,
+            name:data[key].korName,
+            projectName:data[key].project.name
+        })
+        .then((res)=>console.log('출장요청자에게 메일발송 완료'))
+
     }
 
     handleDelete =async (key) =>{        
