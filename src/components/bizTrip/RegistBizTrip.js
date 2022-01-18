@@ -44,7 +44,7 @@ constructor(props) {
             ,{
                 startDate:this.state.startDate,
                 endDate:this.state.endDate,
-                bossId: this.state.boss_id,
+                bossId: this.state.bid,
                 employeeId: this.state.id,
                 bizPurposeName:this.state.bizPurposeName,
                 projectName:this.state.projectName,
@@ -72,15 +72,6 @@ constructor(props) {
         this.setState({projectName:name[0],costCenter:name[1]});    
     }
 
-    datePickerFunc = (sd, ed) =>{
-        console.log('Rs startdate: '+ sd);
-        console.log('Rs enddate: '+ ed);
-
-        this.setState({startDate:sd});
-        this.setState({endDate:ed})
-        
-    }
-
     getMyData = async () => {
         console.log('getmyData!!!!!!');
 
@@ -89,7 +80,7 @@ constructor(props) {
         let data = await axios.get('/api/v1/hrmaster/hrfixed/'+user.id, { headers: authHeader() });
         data = data.data;
         console.log('this employee 고정data is ' + JSON.stringify(data));
-        this.setState({id:data.id});
+
         this.setState({korName:data.korName})
         this.setState({departmentName:data.departmentName})
         this.setState({role:data.role})
@@ -98,24 +89,29 @@ constructor(props) {
         let data2 = await axios.get('/api/v1/hrmaster/hrbasic/'+user.id, { headers: authHeader() });
         data2 = data2.data;
         console.log('this employee basic data is ' + JSON.stringify(data2));
-        this.setState({bossId:data2.bossId});
         this.setState({phone: data2.phone});
+
+        let data3 = await axios.get('/api/v1/biztrip/employeeboss/'+user.id, { headers: authHeader() });
+        data3 = data3.data;
+        console.log('this employee bossid data is ' + JSON.stringify(data3));
+        this.setState({bid:data3.bid});
+
+        console.log(this.state.bid+"bid!!!!!!!!!!!!");
         
-        let admin = await axios.get('/api/v1/hrmaster/hrfixed/'+data2.bossId,{ headers: authHeader() } );
+        
+        let admin = await axios.get('/api/v1/hrmaster/hrfixed/'+data3.bid,{ headers: authHeader() } );
         const adminData = admin.data;
         console.log( adminData);
         this.setState({boss_korName:adminData.korName});
-        this.setState({boss_id:adminData.id})
         
 
 
-        let admin2 = await axios.get('/api/v1/hrmaster/hrbasic/'+data2.bossId,{ headers: authHeader() } );
+        let admin2 = await axios.get('/api/v1/hrmaster/hrbasic/'+data3.bid,{ headers: authHeader() } );
         const adminData2 = admin2.data;
         this.setState({email:adminData2.email})
-        console.log(this.state.email+"이메일이랑께");
+        console.log(this.state.email+"boss-email");
     };
 
-    
 
     getMyPurposeData = async () => {
         console.log('in getmypurpose');
@@ -126,10 +122,10 @@ constructor(props) {
         this.setState({p_data});
     };
 
+
     componentDidMount = ()=> {
     console.log('in componentDidMount');
     this.getMyPurposeData();
-
     this.getMyData();
     }
 
@@ -249,7 +245,6 @@ constructor(props) {
         <TableRow>
         <TableCell align='center' >출장기간</TableCell>
         <TableCell align='center'  colSpan="3">
-            {/* <DatePicker datePickerFunc={this.datePickerFunc}/> */}
             <table >
             <tr >
                 <td>
