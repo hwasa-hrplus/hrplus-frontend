@@ -1,11 +1,11 @@
 .ContentWrapper{
-  
   width: 95%;
   justify-content: center;
   margin-left: 40px;
 }
 
 .ChartWrapper {
+
     display: flex;
     flex-direction: row;
     /* justify-content: space-around; */

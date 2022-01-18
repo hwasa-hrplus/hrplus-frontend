@@ -282,8 +282,8 @@ class RegistEmployee extends Component{
             <Table>
                 <TableBody>
                     <TableRow>
-                        <TableCell align='center'>사진</TableCell>
-                        <TableCell align='right'>사번</TableCell>
+                        <TableCell align='center' style={{fontWeight:'bold'}}>사진</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>사번</TableCell>
                         <TableCell>
                             <TextField
                                 error={this.state.idErrorText !=='' ? true: false }
@@ -293,7 +293,7 @@ class RegistEmployee extends Component{
                                 variant="outlined" 
                                 size="small"/>
                             </TableCell>
-                        <TableCell align='right'>성별</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>성별</TableCell>
                         <TableCell>
                             <TextField     
                                 name='gender' 
@@ -314,9 +314,9 @@ class RegistEmployee extends Component{
                                     width: "250px"
                                 }}></img>
                         </TableCell>
-                        <TableCell align='right'>성명</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>성명</TableCell>
                         <TableCell><TextField name='korName' variant="outlined" size="small"/></TableCell>
-                        <TableCell align='right'>입사일</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>입사일</TableCell>
                         <TableCell> 
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DesktopDatePicker
@@ -330,9 +330,9 @@ class RegistEmployee extends Component{
                     </TableRow>
                     <TableRow>
 
-                        <TableCell align='right'>영문성명</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>영문성명</TableCell>
                         <TableCell><TextField name='engName' variant="outlined" size="small"/></TableCell>
-                        <TableCell align='right'>직책</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>직책</TableCell>
                         <TableCell>
                             <Select 
                                 value={this.state.selectValue}
@@ -347,7 +347,7 @@ class RegistEmployee extends Component{
                     </TableRow>
                     <TableRow>
 
-                        <TableCell align='right'>직급</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>직급</TableCell>
                         <TableCell>
                             <Select 
                                 value={this.state.selectValue}
@@ -361,7 +361,7 @@ class RegistEmployee extends Component{
                                 )})}
                             </Select>
                             </TableCell>
-                        <TableCell align='right'>직무</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>직무</TableCell>
                         <TableCell> 
                         <Select 
                                 value={this.state.selectValue}
@@ -378,16 +378,16 @@ class RegistEmployee extends Component{
                     </TableRow>
                     <TableRow>
 
-                        <TableCell align='right'>주민번호</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>주민번호</TableCell>
                         <TableCell><TextField name='residentNum' variant="outlined" size="small"/></TableCell>
-                        <TableCell align='right'>연령</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>연령</TableCell>
                         <TableCell><TextField name='age' variant="outlined" size="small"/></TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align='center'>
                             <Input type="file" onChange={this.postImage}/> {/* <IconButton aria-label="upload picture" component="span"></IconButton> */}
                         </TableCell>
-                        <TableCell align='right'>부서</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>부서</TableCell>
                         <TableCell colSpan='3'>
                             <Select 
                                 value={this.state.selectValue}
@@ -409,7 +409,7 @@ class RegistEmployee extends Component{
              <Table>
                  <TableBody>
                      <TableRow>
-                         <TableCell align='right'>생년월일</TableCell>
+                         <TableCell align='right' style={{fontWeight:'bold'}}>생년월일</TableCell>
                          <TableCell>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DesktopDatePicker
@@ -420,7 +420,7 @@ class RegistEmployee extends Component{
                                 />
                             </LocalizationProvider>
                          </TableCell>
-                         <TableCell align='right'>이메일</TableCell>
+                         <TableCell align='right' style={{fontWeight:'bold'}}>이메일</TableCell>
                          <TableCell>
                              <TextField 
                                 onChange={e=>this.onChange(e,'email')}
@@ -430,11 +430,11 @@ class RegistEmployee extends Component{
                                 variant="outlined" 
                                 size="small"/>
                             </TableCell>
-                         <TableCell align='right'>휴대폰</TableCell>
+                         <TableCell align='right' style={{fontWeight:'bold'}}>휴대폰</TableCell>
                          <TableCell><TextField name='phone' variant="outlined" size="small"/></TableCell>
                      </TableRow>
                      <TableRow >
-                         <TableCell align='right'>주소</TableCell>
+                         <TableCell align='right' style={{fontWeight:'bold'}}>주소</TableCell>
 
                          <TableCell align='left' colSpan='5'>
                              <Button variant="contained" onClick={this.openModal}>우편번호 검색</Button>
@@ -470,7 +470,7 @@ class RegistEmployee extends Component{
 
                      </TableRow>
                      <TableRow>
-                         <TableCell align='right'>결재권자</TableCell>
+                         <TableCell align='right' style={{fontWeight:'bold'}}>결재권자</TableCell>
                          <TableCell>
                             <Select 
                                     value={this.state.selectValue}
@@ -484,7 +484,7 @@ class RegistEmployee extends Component{
                             )})}
                             </Select>
                          </TableCell>
-                         <TableCell align='right'>근무형태</TableCell>
+                         <TableCell align='right' style={{fontWeight:'bold'}}>근무형태</TableCell>
                          <TableCell>
                              <Select 
                                 value={this.state.selectValue}
@@ -496,7 +496,7 @@ class RegistEmployee extends Component{
                                 <MenuItem value='근무자'>근무자</MenuItem>                                              
                             </Select>
                          </TableCell>
-                         <TableCell align='right'>주재지</TableCell>
+                         <TableCell align='right' style={{fontWeight:'bold'}}>주재지</TableCell>
                          <TableCell>
                             <Select 
                                 value={this.state.selectValue}
@@ -513,7 +513,7 @@ class RegistEmployee extends Component{
                      </TableRow>
                      <TableRow >
 
-                         <TableCell align='right'>프로젝트</TableCell>
+                         <TableCell align='right' style={{fontWeight:'bold'}}>프로젝트</TableCell>
                          <TableCell align='center' colSpan = "4">
                             <Input align='center' readOnly='true' value={this.state.projectName} fullWidth={true}></Input>
                         
@@ -525,7 +525,7 @@ class RegistEmployee extends Component{
                             </TableCell>
                      </TableRow>
                      <TableRow>
-                        <TableCell align='right'>초기 비밀번호
+                        <TableCell align='right' style={{fontWeight:'bold'}}>초기 비밀번호
                              </TableCell>
                         <TableCell colSpan='5' align = 'left'>
                             <TextField 

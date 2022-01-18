@@ -17,6 +17,7 @@ const Styles = () => {
                 height: 70px;
             }
             .topBar.logo{
+                align: left;
                 color: white;
                 margin: auto;
                 height: auto;
@@ -45,9 +46,7 @@ const Styles = () => {
                 background-color: white;
                 color: #006399;
             }
-            .container, .container-lg, .container-md, .container-sm{
-                width: max;
-            }
+     
 
             .d-md-block.side.nav{
                 background-color: transparent;
@@ -96,6 +95,9 @@ const Styles = () => {
             }
             .content{
                 display:flex;
+                padding-top: 35px;
+            }
+            .content_footer{
                 padding-top: 35px;
             }
             .MuiTypography-body2 {

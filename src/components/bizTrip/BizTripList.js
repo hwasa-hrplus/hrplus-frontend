@@ -101,7 +101,7 @@ class BizTripList extends Component {
             <div className="ContentWrapper">
             <Table>
             
-                <TableBody align="center">
+                <TableBody>
               
                 <TableRow>
                     <TableCell align='right' style={{fontWeight:'bold'}}>사번</TableCell>
@@ -111,19 +111,9 @@ class BizTripList extends Component {
                     <TableCell align='right' style={{fontWeight:'bold'}}>부서</TableCell>
                     <TableCell align='left'>{this.state.departmentName}</TableCell>
                 </TableRow>
-            
-                </TableBody>
-            </Table>  
-
-            <Table style={{marginTop:"30px"}}>
-            
-            <TableBody>
-             <TableRow>
-                    <TableCell align='right' style={{fontWeight:'bold'}}>조회기간</TableCell>
-                    <TableCell align='center'>
-                       <td>
-                            <div >
-                  
+                <TableRow>
+                    <TableCell align='right' style={{fontWeight:'bold'}} colSpan='2'>조회기간</TableCell>
+                     <TableCell align='right' >
                             <ReactDatePicker
                                 dateFormat="yyyy년 MM월 dd일"
                                 selected={this.state.startDate}
@@ -136,11 +126,10 @@ class BizTripList extends Component {
                                 changeYear="true"
                                 showYearDropdown
                             />
-                            </div>
-                            </td>
-                            <td ><h5>&nbsp;&nbsp; ~ &nbsp;&nbsp;</h5></td>
-                            <td >
-                            <div>
+                            
+                        </TableCell>
+                        <TableCell align='center'><h3> ~</h3></TableCell>
+                        <TableCell align='left'>
                             <ReactDatePicker
                                 dateFormat="yyyy년 MM월 dd일"
                                 selected={this.state.endDate}
@@ -153,18 +142,16 @@ class BizTripList extends Component {
                                 changeYear="true"
                                 showYearDropdown
                             />
-                            </div>
-                            </td>
-                    </TableCell>
+                          </TableCell>
+            
                     <TableCell align='left'>
                     <Button  onClick={this.getBizTripList} variant="contained">조회</Button>
                     </TableCell>
                 </TableRow>
+            
                 </TableBody>
-            </Table>
-
-
-            <Table>
+            </Table>  
+            <Table style ={{marginTop:'100px'}}>
                 
                 <TableRow>
                     <TableCell align='center' style={{fontWeight:'bold'}}>요청번호</TableCell>

@@ -206,14 +206,14 @@ class JobCategoryChart extends Component {
         }
 
         return (
-            <div>
-                <div >
-                    <h2 align='center' style={{padding: 20}}>{departmentHead} 직무별 사원 현황</h2>
+            <div >
+                <div>
+                    <h3 align='center' style={{padding: 20}}>{departmentHead} 직무별 사원 현황</h3>
                 </div>
                 <div>
                     <div className='ChartWrapper'>
-                        <div>
-                            <PieChart width={700} height={480} onMouseEnter={this.onPieEnter} style = {{flexDirection: 'row'}}>
+                     <div style={{marginBottom:'20px'}}>
+                            <PieChart width={700} height={490} onMouseEnter={this.onPieEnter} style = {{flexDirection: 'row'}}>
                                 <Pie 
                                     data={this.state.uniqueDataState}
                                     cx={300}
@@ -270,8 +270,14 @@ class JobCategoryChart extends Component {
                         }
                     </div>
                 </div>
-                <div className="SearchBarWrapper" align="center" style={{padding: "20px"}}>
-                    <FormControl variant="standard">
+                
+                <div style={{ display:'flex', width: '100%', padding: "20px", marginTop:"20px"}}>        
+                <div align="left" style={{width:'50%'}}>
+                    <h4>{this.state.dataName ? this.state.dataName.replace(departmentHead+" ", "") : "None"}</h4>
+                </div> 
+                <div align="right" style={{marginLeft:'30%'}}>
+       
+                     <FormControl variant="standard">
                         <InputLabel htmlFor="input-with-icon-adornment">
                         사원 이름으로 조회
                         </InputLabel>
@@ -287,9 +293,8 @@ class JobCategoryChart extends Component {
                             }
                             />
                     </FormControl>
-                </div>
-                <div>
-                    <h3 style={{padding: 20}}>선택 직무: {this.state.dataName ? this.state.dataName.replace(departmentHead+" ", "") : "None"}</h3>
+                     </div>
+                     </div>
                 </div>
                 <div >
                 <Table >
@@ -343,7 +348,6 @@ class JobCategoryChart extends Component {
                     }
                 </nav>
             </div>
-        </div>
 
         );
     }

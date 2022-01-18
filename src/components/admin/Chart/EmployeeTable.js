@@ -29,7 +29,7 @@ class EmployeeTable extends Component {
         let projectData = await axios.get('/api/v1/biztrip/project/employee', { headers: authHeader() });
         let mergedEmployeeData = _.merge({}, employeeData.data, projectData.data);
 
-        console.log(mergedEmployeeData)
+        console.log(employeeData)
         for (let index = 0; index < employeeData.data.length; index++) {
             employeeArray.push(mergedEmployeeData[index]);
         }
@@ -102,9 +102,9 @@ class EmployeeTable extends Component {
         return (
             <>
                 <div className="ContentWrapper">
-                    <h2 align='center' style={{padding: 20}}>{departmentHead} 전체 사원 목록</h2>
+                    <h3 align='center' style={{padding: 20}}>{departmentHead} 전체 사원 목록</h3>
                 </div>
-                <div className="SearchBarWrapper" align="center" style={{marginBottom: "20px"}}>
+                <div className="SearchBarWrapper" align="right" style={{marginBottom: "20px"}}>
                     <FormControl variant="standard">
                         <InputLabel htmlFor="input-with-icon-adornment">
                         사원 이름으로 조회
