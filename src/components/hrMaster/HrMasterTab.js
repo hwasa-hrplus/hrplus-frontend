@@ -141,15 +141,15 @@ class HrMasterTab extends Component {
             <Table>
                 <TableBody>
                     <TableRow>
-                        <TableCell align='right'>생년월일</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>생년월일</TableCell>
                         <TableCell key ={this.state.updateBirthDate}>{this.state.updateBirthDate}</TableCell>
-                        <TableCell align='right'>이메일</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>이메일</TableCell>
                         <TableCell key ={this.state.data.email}>{this.state.data.email}</TableCell>
-                        <TableCell align='right'>휴대폰</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>휴대폰</TableCell>
                         <TableCell key ={this.state.data.phone}>{this.state.data.phone}</TableCell>
                     </TableRow>
                     <TableRow >
-                        <TableCell align='right'>주소</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>주소</TableCell>
 
                         <TableCell align='left' colSpan='5' key={this.state.address}>
                             <Button variant="contained" onClick={this.openModal}>우편번호 검색</Button>
@@ -165,6 +165,7 @@ class HrMasterTab extends Component {
                                     .state
                                     .addressCode[0]}
                                 variant="outlined"
+                                style ={{marginLeft:'10px'}}      
                                 size="small"/>
                             <span>
                                 <br/>
@@ -174,9 +175,7 @@ class HrMasterTab extends Component {
                                     .state
                                     .address[0]}
                                 variant="outlined"
-                                style={{
-                                    width: '53%'
-                                }}
+                                style ={{width: '53%', marginTop:'10px' }}
                                 size="small"/>
                             <span>
                                 <br/>
@@ -185,27 +184,25 @@ class HrMasterTab extends Component {
                                 label={this.state.addressDetail}
                                 onChange={e => this.onChange(e, 'addressDetail')}
                                 variant="outlined"
-                                style={{
-                                    width: '53%'
-                                }}
+                                style ={{width: '53%', marginTop:'10px' }}
                                 size="small"/>
 
                         </TableCell>
 
                     </TableRow>
                     <TableRow>
-                        <TableCell align='right'>결재권자</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>결재권자</TableCell>
                         <TableCell key={this.state.adminName}>{this.state.adminName}</TableCell>
-                        <TableCell align='right'>근무형태</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>근무형태</TableCell>
                         <TableCell key={this.state.workType}>{this.state.workType}</TableCell>
-                        <TableCell align='right'>주재지</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>주재지</TableCell>
                         <TableCell key={this.state.data.workPlaceName}>{this.state.data.workPlaceName}</TableCell>
                     </TableRow>
                     <TableRow >
 
-                        <TableCell align='right'>프로젝트</TableCell>
+                        <TableCell align='right' style={{fontWeight:'bold'}}>프로젝트</TableCell>
                         <TableCell key={this.state.project.code} align='left'>{this.state.project.code}</TableCell>
-                        <TableCell align='right' colSpan='3'>원부서</TableCell>
+                        <TableCell align='right' colSpan='3' style={{fontWeight:'bold'}}>원부서</TableCell>
                         <TableCell key={this.state.data.updateDepartment}>{this.state.updateDepartment}</TableCell>
                     </TableRow>
                 </TableBody>

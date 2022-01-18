@@ -43,8 +43,8 @@ class HrInfo extends Component {
         console.log(data)
     
         this.setState({
-            korName:data.korName,
-            engName:data.engName,
+            updateKorName:data.korName,
+            updateEngName:data.engName,
             filesId:data.filesId
         }
         )
@@ -89,9 +89,9 @@ class HrInfo extends Component {
     onChange = (e, type) => {
         const value = e.target.value;
         if (type === 'korName') {
-            this.setState({korName: value})
+            this.setState({updateKorName: value})
         }else if(type==='engName'){
-            this.setState({engName:value})
+            this.setState({updateEngName:value})
         }
     }
 
@@ -142,8 +142,8 @@ class HrInfo extends Component {
         console.log(this.state);
 
         const sendData = {
-            korName:this.state.korName,
-            engName:this.state.engName,
+            korName:this.state.updateKorName,
+            engName:this.state.updateEngName,
             filesId:this.state.filesId
         }
         console.log(sendData);
@@ -167,17 +167,16 @@ class HrInfo extends Component {
 
     render() {
         return (
-            <div>
-                <Table>
+            <div className="ContentWrapper">
 
                     <Table >
                         {/* <TableHead></TableHead> */}
                         <TableBody>
                             <TableRow>
-                                <TableCell align='center'>사진</TableCell>
-                                <TableCell align='right'>사번</TableCell>
+                                <TableCell align='center' style={{fontWeight:'bold'}}>사진</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>사번</TableCell>
                                 <TableCell key={this.state.data.id}>{this.state.data.id}</TableCell>
-                                <TableCell align='right'>성별</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>성별</TableCell>
                                 <TableCell key={this.state.data.gender}>{this.state.data.gender}</TableCell>
                             </TableRow>
 
@@ -191,44 +190,44 @@ class HrInfo extends Component {
                                             width: "250px"
                                         }}></img>
                                 </TableCell>
-                                <TableCell align='right'>성명</TableCell>
-                                <TableCell key={this.state.korName}>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>성명</TableCell>
+                                <TableCell key={this.state.data.korName}>
                                      <TextField 
                                                 name='korName' 
                                                 onChange={e => this.onChange(e,'korName')}
-                                                label={this.state.korName}
+                                                label={this.state.data.korName}
                                                 variant="outlined" 
                                                 size="small"/>
                                 </TableCell>
-                                <TableCell align='right'>입사일</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>입사일</TableCell>
                                 <TableCell key={this.state.updateStartDate}>{this.state.updateStartDate}</TableCell>
                             </TableRow>
                             <TableRow>
 
-                                <TableCell align='right'>영문성명</TableCell>
-                                <TableCell key={this.state.engName}>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>영문성명</TableCell>
+                                <TableCell key={this.state.data.engName}>
                                    <TextField 
                                                 name='engName' 
                                                 onChange={e => this.onChange(e,'engName')}
-                                                label={this.state.engName}
+                                                label={this.state.data.engName}
                                                 variant="outlined" 
                                                 size="small"/>
                                 </TableCell>
-                                <TableCell align='right'>직책</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>직책</TableCell>
                                 <TableCell key={this.state.data.role}>{this.state.data.role}</TableCell>
                             </TableRow>
                             <TableRow>
 
-                                <TableCell align='right'>직급</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>직급</TableCell>
                                 <TableCell key={this.state.data.staffLevelName}>{this.state.data.staffLevelName}</TableCell>
-                                <TableCell align='right'>직무</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>직무</TableCell>
                                 <TableCell key={this.state.data.jobCategoryName}>{this.state.data.jobCategoryName}</TableCell>
                             </TableRow>
                             <TableRow>
 
-                                <TableCell align='right'>주민번호</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>주민번호</TableCell>
                                 <TableCell key={this.state.data.residentNum}>{this.state.data.residentNum}</TableCell>
-                                <TableCell align='right'>연령</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>연령</TableCell>
                                 <TableCell key={this.state.data.age}>{this.state.data.age}</TableCell>
                             </TableRow>
                             <TableRow>
@@ -236,7 +235,7 @@ class HrInfo extends Component {
                                     <Input type="file" acept="img/*" onChange={this.postImage}/> {/* <IconButton aria-label="upload picture" component="span"></IconButton> */}
 
                                 </TableCell>
-                                <TableCell align='right'>부서</TableCell>
+                                <TableCell align='right' style={{fontWeight:'bold'}}>부서</TableCell>
                                 <TableCell colSpan='3' key={this.state.data.departmentName}>{this.state.data.departmentName}</TableCell>
                             </TableRow>
 
@@ -267,7 +266,6 @@ class HrInfo extends Component {
                         </TabPanel>
 
                     </Table>
-                </Table>
             </div>
         )
     }

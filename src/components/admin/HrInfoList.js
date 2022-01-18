@@ -121,20 +121,21 @@ export default class HrInfoList extends PureComponent {
   
   render() {
     return (
-      <div className="ContentWrapper" style={{width: 1700}}>
-        <div align="center" className='buttonWrapper' >
+      <div className="ContentWrapper">
+        <div className='buttonWrapper' >
           <ButtonGroup
             variant="contained"
-            align='center'
+            align='left'
             style={{ 
+              width:'350px',
               display: 'flex',
               }}
-            sx={{alignItems: 'center'}}>
-              <Button onClick={this.findTotalEmployee} variant={this.state.BtnVariantTotalEmployee}> 전체 </Button> 
-              <Button onClick={this.findByProject} variant={this.state.BtnVariantProject}> 프로젝트 </Button> 
-              <Button onClick={this.findByDepartment} variant={this.state.BtnVariantDepartment}> 부서 </Button> 
-              <Button onClick={this.findByStaffLevel} variant={this.state.BtnVariantStaffLevel}> 직급 </Button><br/>
-              <Button onClick={this.findByJobCategory} variant={this.state.BtnVariantJobCategory}> 직무 </Button><br/>
+            >
+              <Button style={{marginLeft:'3px'}} onClick={this.findTotalEmployee} variant={this.state.BtnVariantTotalEmployee}> 전체 </Button> 
+              <Button style={{marginLeft:'3px'}}onClick={this.findByProject} variant={this.state.BtnVariantProject}> 프로젝트 </Button> 
+              <Button style={{marginLeft:'3px'}}onClick={this.findByDepartment} variant={this.state.BtnVariantDepartment}> 부서 </Button> 
+              <Button style={{marginLeft:'3px'}} onClick={this.findByStaffLevel} variant={this.state.BtnVariantStaffLevel}> 직급 </Button>
+              <Button style={{marginLeft:'3px'}}onClick={this.findByJobCategory} variant={this.state.BtnVariantJobCategory}> 직무 </Button>
           </ButtonGroup>
         </div>
         <div>

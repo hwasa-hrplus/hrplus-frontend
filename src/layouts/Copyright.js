@@ -5,7 +5,7 @@ function Copyright(props) {
     return (
         <div className="footer">
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
-          <div className="content">
+          <div className="content_footer">
         {'Copyright © '}
         
           POSCO ICT Hwasa

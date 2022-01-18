@@ -196,11 +196,12 @@ class StaffLevelChart extends Component {
         return (
             <div>
                 <div>
-                    <h2 align='center' style={{padding: 20}}>{departmentHead} 직급별 사원 현황</h2>
+                    <h3 align='center' style={{padding: 20}}>{departmentHead} 직급별 사원 현황</h3>
                 </div>
-                <div className='ChartWrapperBar' align='center' alignItems='center'>
+                <div className='ChartWrapper' style={{justifyContent: 'space-around'}} >
+                <div style={{marginBottom:'20px'}}>    
                     <BarChart align="center" style={{ align: "center", display: "flex", alignItems: "center" }}
-                        width={1000} height={400} data={this.state.uniqueDataState} layout = 'horizontal'>
+                        width={1000} height={490} data={this.state.uniqueDataState} layout = 'horizontal'>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name"/>
                         <YAxis />
@@ -217,7 +218,12 @@ class StaffLevelChart extends Component {
                         </Bar>
                     </BarChart>
                 </div>
-                <div className="SearchBarWrapper" align="center" style={{padding: "20px"}}>
+                </div>
+                <div style={{ display:'flex', width: '100%', padding: "20px", marginTop:"20px"}}>        
+                <div align="left" style={{width:'50%'}}>
+                    <h4>{this.state.dataName ? this.state.dataName : "None"}</h4>
+                </div>
+                <div align="right" style={{marginLeft:'30%'}}>
                     <FormControl variant="standard">
                         <InputLabel htmlFor="input-with-icon-adornment">
                         사원 이름으로 조회
@@ -236,25 +242,23 @@ class StaffLevelChart extends Component {
                             />
                     </FormControl>
                 </div>
+                </div>    
+                            
                     
                 <div>
-                    <h3 style={{padding: 20}}>선택 직급: {this.state.dataName ? this.state.dataName : "None"}</h3>
-                </div>
-                    
-                <div className="TableWrapper">
-                    <Table style={{width: 1500}} >
+                    <Table>
                         <TableHead>
                         <TableRow style={{height: 35}}>
-                                <TableCell style={{width: 70, backgroundColor: '#A9A9A9', color:'white'}} align='center'><b>사번</b></TableCell>
-                                <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>성명</b></TableCell>
-                                <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직급</b></TableCell>
-                                <TableCell style={{width: 65, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직책</b></TableCell>
-                                <TableCell style={{width: 400, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>부서</b></TableCell>
-                                <TableCell style={{width: 150, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직무</b></TableCell>
-                                <TableCell style={{width: 400, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>프로젝트</b></TableCell>
-                                <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>이메일</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color:'white'}} align='center'><b>사번</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>성명</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직급</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직책</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>부서</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>직무</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>프로젝트</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>이메일</b></TableCell>
                                 {/* <TableCell style={{width: 130}} align='center'>휴대전화</TableCell> */}
-                                <TableCell style={{width: 90, backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>근무형태</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'><b>근무형태</b></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

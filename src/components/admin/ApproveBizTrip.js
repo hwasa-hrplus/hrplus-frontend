@@ -89,21 +89,21 @@ class ApproveBizTrip extends Component {
 
     render() {
     return (
-        <div>
+        <div className="ContentWrapper"> 
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell align='center'>사번</TableCell>
-                    <TableCell align='center'>이름</TableCell>
-                    <TableCell align='center'>직급</TableCell>
-                    <TableCell align='center'>프로젝트</TableCell>
-                    <TableCell align='center'>출장지역</TableCell>
-                    <TableCell align='center'>출장회사</TableCell>
-                    <TableCell align='center'>출장목적</TableCell>
-                    <TableCell align='center'>출장기간</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>사번</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>이름</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>직급</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>프로젝트</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장지역</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장회사</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장목적</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장기간</TableCell>
                     {/* <TableCell align='center'>출장종료일</TableCell> */}
-                    <TableCell align='center'>승인</TableCell>
-                    <TableCell align='center'>취소</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>승인</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>취소</TableCell>
                 </TableRow>
             </TableHead>
         <TableBody>
