@@ -165,6 +165,7 @@ class HrMasterTab extends Component {
                                     .state
                                     .addressCode[0]}
                                 variant="outlined"
+                                style ={{marginLeft:'10px'}}      
                                 size="small"/>
                             <span>
                                 <br/>
@@ -174,9 +175,7 @@ class HrMasterTab extends Component {
                                     .state
                                     .address[0]}
                                 variant="outlined"
-                                style={{
-                                    width: '53%'
-                                }}
+                                style ={{width: '53%', marginTop:'10px' }}
                                 size="small"/>
                             <span>
                                 <br/>
@@ -185,9 +184,7 @@ class HrMasterTab extends Component {
                                 label={this.state.addressDetail}
                                 onChange={e => this.onChange(e, 'addressDetail')}
                                 variant="outlined"
-                                style={{
-                                    width: '53%'
-                                }}
+                                style ={{width: '53%', marginTop:'10px' }}
                                 size="small"/>
 
                         </TableCell>

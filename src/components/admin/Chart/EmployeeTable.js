@@ -29,6 +29,7 @@ class EmployeeTable extends Component {
         let projectData = await axios.get('/api/v1/biztrip/project/employee', { headers: authHeader() });
         let mergedEmployeeData = _.merge({}, employeeData.data, projectData.data);
 
+        console.log(mergedEmployeeData)
         for (let index = 0; index < employeeData.data.length; index++) {
             employeeArray.push(mergedEmployeeData[index]);
         }

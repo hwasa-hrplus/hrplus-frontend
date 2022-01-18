@@ -5,6 +5,7 @@ const Styles = () => {
         <style type="text/css">
         {`
         body{
+            font-family: Arial, Helvetica, sans-serif;
             background-color: white;
         }
             .topBar {

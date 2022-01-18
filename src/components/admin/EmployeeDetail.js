@@ -18,6 +18,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import ProjectList from '../bizTrip/ProjectList';
 import authHeader from '../../services/auth-header';
+import './Modal.css';
 
 class EmployeeDetail extends Component {
 
@@ -360,10 +361,10 @@ class EmployeeDetail extends Component {
                                 {/* <TableHead></TableHead> */}
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell align='center'>사진</TableCell>
-                                        <TableCell align='right'>사번</TableCell>
+                                        <TableCell align='center' style={{fontWeight:'bold'}}>사진</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>사번</TableCell>
                                         <TableCell key={i}><TextField name='id' label={employeeData.id} variant="outlined" size="small"/></TableCell>
-                                        <TableCell align='right'>성별</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>성별</TableCell>
                                         <TableCell key={employeeData.gender}>
                                             <TextField 
                                                 onChange={e => this.onChange(e,'gender')}
@@ -376,7 +377,7 @@ class EmployeeDetail extends Component {
 
                                     <TableRow >     
                                         <TableCell align='center' rowSpan='4'><img src={this.state.setUrl} alt="" style={{height:"300px", width:"250px"}}></img></TableCell>                                     
-                                        <TableCell align='right'>성명</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>성명</TableCell>
                                         <TableCell key={employeeData.korName}>
                                             <TextField 
                                                 name='korName' 
@@ -385,7 +386,7 @@ class EmployeeDetail extends Component {
                                                 variant="outlined" 
                                                 size="small"/>
                                             </TableCell>
-                                        <TableCell align='right'>입사일</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>입사일</TableCell>
                                         <TableCell key={this.state.startDate}>
                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                             <DesktopDatePicker
@@ -400,7 +401,7 @@ class EmployeeDetail extends Component {
                                     </TableRow>
                                     <TableRow>
 
-                                        <TableCell align='right'>영문성명</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>영문성명</TableCell>
                                         <TableCell key={employeeData.engName}>
                                             <TextField 
                                                 name='engName' 
@@ -409,7 +410,7 @@ class EmployeeDetail extends Component {
                                                 variant="outlined" 
                                                 size="small"/>
                                             </TableCell>
-                                        <TableCell align='right'>직책</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>직책</TableCell>
                                         <TableCell key={employeeData.role}>
                                         <Select 
                                             value={this.state.selectValue}
@@ -424,7 +425,7 @@ class EmployeeDetail extends Component {
                                     </TableRow>
                                     <TableRow>
 
-                                        <TableCell align='right'>직급</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>직급</TableCell>
                                         <TableCell key={employeeData.staffLevelName}>
                                         <Select 
                                             value={this.state.selectValue}
@@ -439,7 +440,7 @@ class EmployeeDetail extends Component {
                                         </Select>
 
                                         </TableCell>
-                                        <TableCell align='right'>직무</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>직무</TableCell>
                                         <TableCell key={employeeData.jobCategoryName}>
                                         <Select 
                                             value={this.state.selectValue}
@@ -456,7 +457,7 @@ class EmployeeDetail extends Component {
                                     </TableRow>
                                     <TableRow>
 
-                                        <TableCell align='right'>주민번호</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>주민번호</TableCell>
                                         <TableCell key={employeeData.residentNum}>
                                             <TextField 
                                                 onChange={e => this.onChange(e,'residentNum')}
@@ -465,7 +466,7 @@ class EmployeeDetail extends Component {
                                                 variant="outlined" 
                                                 size="small"/>
                                             </TableCell>
-                                        <TableCell align='right'>연령</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>연령</TableCell>
                                         <TableCell key={employeeData.age}>
                                             <TextField 
                                                 name = 'age' 
@@ -481,7 +482,7 @@ class EmployeeDetail extends Component {
                                             {/* <IconButton aria-label="upload picture" component="span"></IconButton> */}
                                             
                                         </TableCell>
-                                        <TableCell align='right'>부서</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>부서</TableCell>
                                         <TableCell colSpan='3' key={employeeData.departmentName}>
                                             <Select 
                                                 value={this.state.selectValue}
@@ -511,7 +512,7 @@ class EmployeeDetail extends Component {
                             return <Table>
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell align='right'>생년월일</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>생년월일</TableCell>
                                         <TableCell key={this.state.updateBirthDate}>
                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                             <DesktopDatePicker
@@ -522,7 +523,7 @@ class EmployeeDetail extends Component {
                                                 />
                                             </LocalizationProvider>
                                         </TableCell>
-                                        <TableCell align='right'>이메일</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>이메일</TableCell>
                                         <TableCell key={employeeData.email}>
                                             <TextField 
                                                 name = 'email' 
@@ -530,7 +531,7 @@ class EmployeeDetail extends Component {
                                                 label={employeeData.email} 
                                                 variant="outlined" 
                                                 size="small"/></TableCell>
-                                        <TableCell align='right'>휴대폰</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}} >휴대폰</TableCell>
                                         <TableCell key={employeeData.phone}>
                                             <TextField 
                                                 name = 'phone' 
@@ -540,7 +541,7 @@ class EmployeeDetail extends Component {
                                                 size="small"/></TableCell>
                                     </TableRow>
                                     <TableRow >
-                                        <TableCell align='right'>주소</TableCell>
+                                        <TableCell align='right'style={{fontWeight:'bold'}}>주소</TableCell>
 
                                         <TableCell align='left' colSpan='5' key={employeeData.address}>
                                             <Button variant="contained" onClick={this.openModal}>우편번호 검색</Button>
@@ -551,31 +552,31 @@ class EmployeeDetail extends Component {
                                                 addressCode ={this.state.addressCode}
                                                 addressDetail ={this.state.addressDetail}
                                                 />
-                                            <div>
+                                          
                                                 <TextField
                                                   label={this.state.addressCode[0]}
-                                                  variant="outlined"                                                
+                                                  variant="outlined" 
+                                                  style ={{marginLeft:'10px'}}                                               
                                                   size="small"/>
                                               <span> <br/> </span>
                                               <TextField
                                                   label={this.state.address[0]}
                                                   variant="outlined"
-                                                  style ={{width: '53%'}}
+                                                  style ={{width: '53%', marginTop:'10px' }}
                                                   size="small"/>
                                               <span> <br/> </span>    
                                               <TextField
                                                   label={this.state.addressDetail}
                                                   onChange={e => this.onChange(e,'addressDetail')}
                                                   variant="outlined"
-                                                  style ={{width: '53%'}}
+                                                  style ={{width: '53%', marginTop:'10px'}}
                                                   size="small"/>
-                                            </div>
                                           
                                         </TableCell>
 
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell align='right'>결재권자</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>결재권자</TableCell>
                                         <TableCell key={this.state.adminName}>
                                         <Select 
                                             value={this.state.selectValue}
@@ -589,7 +590,7 @@ class EmployeeDetail extends Component {
                                             )})}
                                         </Select>
                                         </TableCell>
-                                        <TableCell align='right'>근무형태</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>근무형태</TableCell>
                                         <TableCell key={employeeData.workType}>
                                         <Select 
                                             value={this.state.selectValue}
@@ -601,7 +602,7 @@ class EmployeeDetail extends Component {
                                             <MenuItem value='근무자'>근무자</MenuItem>                                              
                                         </Select>
                                         </TableCell>
-                                        <TableCell align='right'>주재지</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>주재지</TableCell>
                                         <TableCell key={employeeData.workPlaceName}>
                                         <Select 
                                             value={this.state.selectValue}
@@ -617,7 +618,7 @@ class EmployeeDetail extends Component {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow >
-                                        <TableCell align='right'>프로젝트</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>프로젝트</TableCell>
                                         <TableCell align='center' colSpan = "4">
                                             <Input 
                                                 onChange={e => this.onChange(e,'project')}
@@ -634,7 +635,7 @@ class EmployeeDetail extends Component {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell align='right'>원부서</TableCell>
+                                        <TableCell align='right' style={{fontWeight:'bold'}}>원부서</TableCell>
                                         <TableCell key={this.state.updateDepartment}>
                                             <TextField
                                             label={this.state.updateDepartment}
@@ -642,7 +643,7 @@ class EmployeeDetail extends Component {
                                             size="small"
                                            />
                                         </TableCell>
-                                        <TableCell align='right'  colSpan='3'>비밀번호</TableCell>
+                                        <TableCell align='right' colSpan='3' style={{fontWeight:'bold'}}>비밀번호</TableCell>
                                         <TableCell align='left'><TextField
                                             label={employeeData.password}
                                             variant="outlined"
