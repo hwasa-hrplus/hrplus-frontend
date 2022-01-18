@@ -297,17 +297,17 @@ class ProjectChart extends Component {
                         <h3 style={{padding: 20}}>선택 프로젝트: {this.state.dataName ? this.state.dataName : "None"}</h3>
                     </div>
                 </div>
-                <div className="TableWrapper">
-                <Table style={{width: 1500}} >
+                <div>
+                <Table >
                         <TableHead>
                             <TableRow style={{height: 35}}>
-                                <TableCell style={{width: 70, backgroundColor: '#A9A9A9', color:'white'}} align='center'><b>사번</b></TableCell>
-                                <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'>성명</TableCell>
-                                <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'>직급</TableCell>
-                                <TableCell style={{width: 65, backgroundColor: '#A9A9A9', color: 'white'}} align='center'>직책</TableCell>
-                                <TableCell style={{width: 400, backgroundColor: '#A9A9A9', color: 'white'}} align='center'>부서</TableCell>
-                                <TableCell style={{width: 150, backgroundColor: '#A9A9A9', color: 'white'}} align='center'>직무</TableCell>
-                                <TableCell style={{width: 400, backgroundColor: '#A9A9A9', color: 'white'}} align='center'>프로젝트</TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color:'white'}} align='center'><b>사번</b></TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'>성명</TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'>직급</TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'>직책</TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'>부서</TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'>직무</TableCell>
+                                <TableCell style={{backgroundColor: '#A9A9A9', color: 'white'}} align='center'>프로젝트</TableCell>
                                 <TableCell style={{width: 80, backgroundColor: '#A9A9A9', color: 'white'}} align='center'>이메일</TableCell>
                                 {/* <TableCell style={{width: 130}} align='center'>휴대전화</TableCell> */}
                                 <TableCell style={{width: 90, backgroundColor: '#A9A9A9', color: 'white'}} align='center'>근무형태</TableCell>

@@ -277,7 +277,7 @@ class RegistEmployee extends Component{
     render() {
     console.log(this.state.address)
     return (
-        <div>
+        <div className="ContentWrapper">
             <form id="addPlayerFrm" onSubmit={this.onSubmit}>
             <Table>
                 <TableBody>

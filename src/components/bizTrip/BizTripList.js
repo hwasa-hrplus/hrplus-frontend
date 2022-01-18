@@ -90,24 +90,29 @@ class BizTripList extends Component {
     render() {
         
         return (
-            <div>
+            <div className="ContentWrapper">
             <Table>
             
-                <TableBody>
+                <TableBody align="center">
               
                 <TableRow>
-                    <TableCell align='right'>사번</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>사번</TableCell>
                     <TableCell align='left'>{this.state.id}</TableCell>
-                    <TableCell align='right'>성명</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>성명</TableCell>
                     <TableCell align='left'>{this.state.korName}</TableCell>
-                    <TableCell align='right'>부서</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>부서</TableCell>
                     <TableCell align='left'>{this.state.departmentName}</TableCell>
                 </TableRow>
-              
+            
+                </TableBody>
+            </Table>  
+
+            <Table style={{marginTop:"30px"}}>
+            
+            <TableBody>
              <TableRow>
-                    <TableCell align='right'>조회기간</TableCell>
-                    <TableCell></TableCell>
-                    <TableCell  colSpan='4' >
+                    <TableCell align='right' style={{fontWeight:'bold'}}>조회기간</TableCell>
+                    <TableCell align='center'>
                        <td>
                             <div >
                   
@@ -137,28 +142,22 @@ class BizTripList extends Component {
                             </div>
                             </td>
                     </TableCell>
-                   
-                </TableRow>
-                <span><br/></span>
-
-                <TableRow>
-                <td align ='right' colSpan='6'>
-                        <Button  onClick={this.getBizTripList} variant="contained">조회</Button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    </td>
+                    <TableCell align='left'>
+                    <Button  onClick={this.getBizTripList} variant="contained">조회</Button>
+                    </TableCell>
                 </TableRow>
                 </TableBody>
-                </Table>
+            </Table>
 
 
-                <Table>
+            <Table>
                 
                 <TableRow>
-                    <TableCell align='center'>요청번호</TableCell>
-                    <TableCell align='center'>프로젝트명</TableCell>
-                    <TableCell align='center'>출장기간</TableCell>
-                    <TableCell align='center'>출장목적</TableCell>
-                    <TableCell align='center'>승인여부</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>요청번호</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>프로젝트명</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장기간</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장목적</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>승인여부</TableCell>
                 </TableRow>
                 {
                 this.state.selectList.map((ProjectData, i) => 

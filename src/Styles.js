@@ -1,11 +1,15 @@
 import React from 'react';
 
+
 const Styles = () => {
     return (
         <style type="text/css">
+        <style>
+        @import url('https://fonts.googleapis.com/css?family=Nanum+Gothic|Nanum+Myeongjo&display=swap&subset=korean');
+        </style>
         {`
         body{
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Nanum Gothic', sans-serif;
             background-color: white;
         }
             .topBar {
@@ -81,9 +85,7 @@ const Styles = () => {
             .nav-link.active{
                 background-color:white;
             }
-            .MuiTable-root{
-                width:1400px;
-            }
+            
             .slideBox{                
                 width:1300px;
             }
@@ -93,6 +95,7 @@ const Styles = () => {
                 background-color: #006399;
             }
             .content{
+                display:flex;
                 padding-top: 35px;
             }
             .MuiTypography-body2 {

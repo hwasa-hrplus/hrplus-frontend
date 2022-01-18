@@ -350,7 +350,7 @@ class EmployeeDetail extends Component {
 
     render() {
         return (
-            <div>
+            <div className="ContentWrapper">
                 <form id="addPlayerFrm" onSubmit={this.onSubmit}>
                 {
                     this
@@ -663,6 +663,7 @@ class EmployeeDetail extends Component {
                             </Table>
                         })
                 }
+
                 </form>
             </div>
         );
