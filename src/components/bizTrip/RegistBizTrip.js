@@ -23,7 +23,8 @@ constructor(props) {
         text:'',
         id:authService.getCurrentUser().id,
         address:[],
-        adminData:[]
+        adminData:[],
+        bizPurposeName:"프로젝트 수행"
     };
     }
 
@@ -43,9 +44,9 @@ constructor(props) {
             ,{
                 startDate:this.state.startDate,
                 endDate:this.state.endDate,
-                bossId: this.state.data.map((employeeData) => employeeData.bossId)[0],
-                employeeId: this.state.data.map((employeeData) => employeeData.id)[0],
-                bizPurposeName:this.state.p_data.map((PurposeData) => PurposeData.name)[0],
+                bossId: this.state.boss_id,
+                employeeId: this.state.id,
+                bizPurposeName:this.state.bizPurposeName,
                 projectName:this.state.projectName,
                 companyName:this.state.costCenter,
                 location: this.state.address[0]
@@ -55,11 +56,10 @@ constructor(props) {
                 window.location.reload();
 
 
-                console.log(this.state.adminData.map((employeeData) => employeeData.email)[0]);
                 await axios.post('/api/v1/mail/send'
                 ,{
-                    address:this.state.adminData.map(e=>e.email)[0],
-                    name:this.state.data.map((employeeData) => employeeData.korName)[0],
+                    address:this.state.email,
+                    name:this.state.korName,
                     projectName:this.state.projectName
                 })
                 .then((res)=>console.log('결재권자에게 메일발송 완료'))
@@ -86,29 +86,34 @@ constructor(props) {
         console.log('getmyData!!!!!!');
 
         const user = authService.getCurrentUser();  
-        // let data = await axios.get('/api/v1/hrmaster/hradmin/'+user.id);
 
-        // let data = await axios.get('/api/v1/hrmaster/hradmin/'+user.id, { headers: authHeader() });
-        let data = await axios.get('/api/v1/hrmaster/hradmin/300112', { headers: authHeader() });
-
-
-
+        let data = await axios.get('/api/v1/hrmaster/hrfixed/'+user.id, { headers: authHeader() });
         data = data.data;
-        console.log('this employee data is ' + JSON.stringify(data));
+        console.log('this employee 고정data is ' + JSON.stringify(data));
+        this.setState({id:data.id});
+        this.setState({korName:data.korName})
+        this.setState({departmentName:data.departmentName})
+        this.setState({role:data.role})
 
-        this.setState({data});
-
-
-
-
-
-        console.log('boss id: '+this.state.data.map((employeeData) => employeeData.bossId)[0]);
         
-        let admin = await axios.get('/api/v1/hrmaster/hradmin/'+ this.state.data.map((employeeData) => employeeData.bossId)[0],{ headers: authHeader() } );
+        let data2 = await axios.get('/api/v1/hrmaster/hrbasic/'+user.id, { headers: authHeader() });
+        data2 = data2.data;
+        console.log('this employee basic data is ' + JSON.stringify(data2));
+        this.setState({bossId:data2.bossId});
+        this.setState({phone: data2.phone});
+        
+        let admin = await axios.get('/api/v1/hrmaster/hrfixed/'+data2.bossId,{ headers: authHeader() } );
         const adminData = admin.data;
         console.log( adminData);
-        this.setState({adminData:adminData});
-        console.log('boss email'+this.state.adminData.map(e=>e.email)[0]);
+        this.setState({boss_korName:adminData.korName});
+        this.setState({boss_id:adminData.id})
+        
+
+
+        let admin2 = await axios.get('/api/v1/hrmaster/hrbasic/'+data2.bossId,{ headers: authHeader() } );
+        const adminData2 = admin2.data;
+        this.setState({email:adminData2.email})
+        console.log(this.state.email+"이메일이랑께");
     };
 
     
@@ -137,6 +142,15 @@ constructor(props) {
     console.log('in componentWillUnmount');
     }
 
+    onChange=(e)=>{
+        console.log(e);
+        const name = e.target.value;
+        console.log(name+"!");
+        this.setState({bizPurposeName:name})
+        console.log('purposename:'+this.state.bizPurposeName);
+        
+        
+    }
 
 
     //주소 찾기 구현
@@ -152,36 +166,33 @@ constructor(props) {
 
         <div>
             <Table>
-            {
-                this.state.data.map((employeeData, i) => 
+       
                 <TableBody>
                 <TableRow>
                     <TableCell align='center'>성명</TableCell>
-                    <TableCell align='center'>{employeeData.korName}</TableCell>
+                    <TableCell align='center'>{this.state.korName}</TableCell>
                     <TableCell align='center'>사번</TableCell>
-                    <TableCell align='center'>{employeeData.id}</TableCell>
+                    <TableCell align='center'>{this.state.id}</TableCell>
                 </TableRow>
                 
                 <TableRow>
                     <TableCell align='center'>직책</TableCell>
-                    <TableCell align='center'>{employeeData.role}</TableCell>
+                    <TableCell align='center'>{this.state.role}</TableCell>
                     <TableCell align='center'>결재권자</TableCell>
-                    {this.state.adminData.map(ad=>
-                        <TableCell align='center'>{ad.korName}</TableCell>
-                    )}
+                    <TableCell align='center'>{this.state.boss_korName}</TableCell>
+                   
                 </TableRow>
             
         
     
                 <TableRow>
                     <TableCell align='center'>부서</TableCell>
-                    <TableCell align='center'>{employeeData.departmentName}</TableCell>
+                    <TableCell align='center'>{this.state.departmentName}</TableCell>
                     <TableCell align='center'>연락처</TableCell>
-                    <TableCell align='center'>{employeeData.phone}</TableCell>
+                    <TableCell align='center'>{this.state.phone}</TableCell>
                 </TableRow>
                 </TableBody>
-                )
-            }
+          
         <TableRow>
             <TableCell align='center' >프로젝트</TableCell>
             <TableCell align='center' colSpan = "2">
@@ -197,10 +208,13 @@ constructor(props) {
         <TableRow>
         <TableCell align='center'>출장목적</TableCell>
         <TableCell align='center'>
-        <NativeSelect>
-        {
+        <NativeSelect
+            onChange = {e =>this.onChange(e)} 
+            value={this.state.purposeName}
+            >
+             {
                 this.state.p_data.map((PurposeData, i) => 
-                <option key="PurposeName" value="PurposeName"> {PurposeData.name}</option>
+                <option key="PurposeName" > {PurposeData.name}</option>
             )
         }
         </NativeSelect>

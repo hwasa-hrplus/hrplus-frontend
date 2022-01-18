@@ -12,20 +12,19 @@ class BizTripList extends Component {
 
     this.state = {
         data: [],
+        data2:[],
+        minDate:0,
         startDate:new Date(),
         endDate:new Date(),
         p_data:[],
         selectList:[],
-        admindata:[]
         };
     }
 
     getBizTripList = async()=>{
         const user = authService.getCurrentUser();  
-        //let p_data = await axios.get('/api/v1/biztrip/employee/111111');
 
-    //    let p_data = await axios.get('/api/v1/biztrip/employee/'+user.id);
-    let p_data = await axios.get('/api/v1/biztrip/employee/300112');
+        let p_data = await axios.get('/api/v1/biztrip/employee/'+user.id);
         p_data = p_data.data;
         console.log('this project data is ' + JSON.stringify(p_data));
         this.setState({p_data:p_data});
@@ -43,34 +42,37 @@ class BizTripList extends Component {
          })
          
          
-        console.log(list[0].bizPurpose.name);
-        this.setState({selectList:list})
-
+       this.setState({selectList:list})
     }
- 
 
     getMyData = async () => {
         const user = authService.getCurrentUser();  
-        //let data = await axios.get('/api/v1/hrmaster/hradmin/111111',{withCredentials:true});
+        console.log(this.state.startDate)
 
-     
-        let data = await axios.get('/api/v1/hrmaster/hradmin/300112', { headers: authHeader() });
-        data = data.data;
-        console.log('this employee data is ' + JSON.stringify(data));
-
-        this.setState({data});
         this.setState({startDate:new Date(this.state.startDate.getFullYear()-1, 0, 1)})
-        console.log(this.state.startDate.getFullYear()-1);
+
+        let data2 =  await axios.get('/api/v1/hrmaster/hrfixed/'+user.id, { headers: authHeader() });
+        data2 = data2.data;
+        console.log('this employee fixed data is ' + JSON.stringify(data2));
+         this.setState({id:data2.id});
+         this.setState({korName:data2.korName})
+         this.setState({departmentName:data2.departmentName})
+         console.log("!!!!!!!!!!id"+this.state.id);
 
 
-        let admin = await axios.get('/api/v1/hrmaster/hradmin/'+ this.state.data.map((employeeData) => employeeData.bossId)[0], { headers: authHeader() });
-        const adminData = admin.data;
-        console.log(adminData);
-        this.setState({adminData:adminData});
-        
+
+        const date = this.state.startDate;
+        console.log("as: "+this.state.startDate)
+        this.getTest(date)
+
     };
 
-
+    getTest = (date) =>{
+        console.log('sd: '+ date);
+        
+        this.setState({minDate:new Date(date.getFullYear()-1, 0, 1)})
+        console.log(this.state.minDate)
+    }
 
     componentDidMount() {
         console.log('in componentDidMount');    
@@ -92,31 +94,29 @@ class BizTripList extends Component {
             <Table>
             
                 <TableBody>
-            {
-                this.state.data.map((employeeData, i) => 
+              
                 <TableRow>
                     <TableCell align='right'>사번</TableCell>
-                    <TableCell align='left'>{employeeData.id}</TableCell>
+                    <TableCell align='left'>{this.state.id}</TableCell>
                     <TableCell align='right'>성명</TableCell>
-                    <TableCell align='left'>{employeeData.korName}</TableCell>
+                    <TableCell align='left'>{this.state.korName}</TableCell>
                     <TableCell align='right'>부서</TableCell>
-                    <TableCell align='left'>{employeeData.departmentName}</TableCell>
+                    <TableCell align='left'>{this.state.departmentName}</TableCell>
                 </TableRow>
-                )
-            }
-                <TableRow>
+              
+             <TableRow>
                     <TableCell align='right'>조회기간</TableCell>
                     <TableCell></TableCell>
                     <TableCell  colSpan='4' >
                        <td>
                             <div >
-                           
+                  
                             <ReactDatePicker
                                 dateFormat="yyyy년 MM월 dd일"
-                                selected={this.state.startDate}
+                                selected={this.state.minDate}
                                 onChange={(date) => this.setState({startDate:date})}
                                 selectsStart
-                                minDate={new Date(this.state.startDate.getFullYear()-10, 0, 1)}
+                                minDate={this.state.minDate}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
                             />
@@ -130,7 +130,7 @@ class BizTripList extends Component {
                                 selected={this.state.endDate}
                                 onChange={(date) => this.setState({endDate:date})}
                                 selectsEnd
-                                minDate={this.state.startDate}
+                                minDate={this.state.minDate}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
                             />
@@ -158,13 +158,12 @@ class BizTripList extends Component {
                     <TableCell align='center'>프로젝트명</TableCell>
                     <TableCell align='center'>출장기간</TableCell>
                     <TableCell align='center'>출장목적</TableCell>
-                    <TableCell align='center'>결재권자</TableCell>
                     <TableCell align='center'>승인여부</TableCell>
                 </TableRow>
                 {
                 this.state.selectList.map((ProjectData, i) => 
+                
                 <TableRow>
-                   
                     <TableCell align='center' key ={i}>{ProjectData.id}</TableCell>
                     <TableCell align='center'>{ProjectData.project.name}</TableCell>
                     <TableCell align='center'>{new Date(ProjectData.startDate).toLocaleDateString('ko-KR', {
@@ -176,12 +175,10 @@ class BizTripList extends Component {
                                                     month: 'long',
                                                     day: 'numeric',
                                                   })}</TableCell>
-                    <TableCell align='center'>{ProjectData.bizPurpose.name}</TableCell>
-                    {this.state.adminData.map(ad=>
-                        <TableCell align='center'>{ad.korName}</TableCell>
-                    )}                    {ProjectData.approved === 0 ?
-                    <TableCell align='center'>승인</TableCell>
-                        :<TableCell align='center'>미승인</TableCell>
+                    <TableCell align='center' key={i}>{ProjectData.bizPurpose.name}</TableCell>                 
+                    {ProjectData.approved === false ?
+                    <TableCell align='center'>미승인</TableCell>
+                        :<TableCell align='center'>승인</TableCell>
 
                     }
                 </TableRow>
