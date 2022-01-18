@@ -6,6 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import authService from '../../services/auth.service';
 import authHeader from '../../services/auth-header';
 import { Button } from '@mui/material';
+
+
 class BizTripList extends Component {
     constructor(props) {
     super(props);
@@ -18,8 +20,14 @@ class BizTripList extends Component {
         endDate:new Date(),
         p_data:[],
         selectList:[],
+        
         };
     }
+
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        this.setState({activePage: pageNumber});
+      }
 
     getBizTripList = async()=>{
 
@@ -30,8 +38,8 @@ class BizTripList extends Component {
         this.setState({p_data:p_data});
 
          const list =  this.state.p_data.filter((e)=>{
-            console.log('DB: '+ new Date(e.endDate) +'vs  <=  달력: '+ new Date(this.state.endDate));
-            console.log( new Date(e.endDate).toString() <= new Date(this.state.endDate).toString());
+            console.log('DB: '+ new Date(e.startDate) +'vs  <=  달력: '+ new Date(this.state.startDate));
+            console.log( new Date(e.startDate).toString() <= new Date(this.state.startDate).toString());
 
             if((new Date(e.startDate) >= new Date(this.state.startDate)) 
                     &&  (new Date(e.endDate) <= new Date(this.state.endDate)))
@@ -70,7 +78,7 @@ class BizTripList extends Component {
     getTest = (date) =>{
         console.log('sd: '+ date);
         
-        this.setState({minDate:new Date(date.getFullYear()-1, 0, 1)})
+        this.setState({minDate:new Date(date.getFullYear()-10, 0, 1)})
         console.log(this.state.minDate)
     }
 
@@ -113,12 +121,15 @@ class BizTripList extends Component {
                   
                             <ReactDatePicker
                                 dateFormat="yyyy년 MM월 dd일"
-                                selected={this.state.minDate}
+                                selected={this.state.startDate}
                                 onChange={(date) => this.setState({startDate:date})}
                                 selectsStart
                                 minDate={this.state.minDate}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
+                                changeMonth="true"
+                                changeYear="true"
+                                showYearDropdown
                             />
                             </div>
                             </td>
@@ -133,6 +144,9 @@ class BizTripList extends Component {
                                 minDate={this.state.minDate}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
+                                changeMonth="true"
+                                changeYear="true"
+                                showYearDropdown
                             />
                             </div>
                             </td>
@@ -186,8 +200,7 @@ class BizTripList extends Component {
             }
             
         </Table>
-        
-
+   
         </div>
         );
     }

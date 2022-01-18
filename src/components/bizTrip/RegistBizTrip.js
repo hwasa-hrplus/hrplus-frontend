@@ -53,8 +53,7 @@ constructor(props) {
             
                 }).then(res=>{alert('출장신청 완료');
                 })
-                window.location.reload();
-
+                window.location.href='/biztrip/bizTripDetail';
 
                 await axios.post('/api/v1/mail/send'
                 ,{
@@ -263,6 +262,7 @@ constructor(props) {
                         minDate={new Date()}
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}
+                        showYearDropdown
                         />
                 </div>
                 </td>
@@ -277,6 +277,7 @@ constructor(props) {
                             minDate={this.state.startDate}
                             startDate={this.state.startDate}
                             endDate={this.state.endDate}
+                            showYearDropdown
                             />
                 </div>
                 </td>

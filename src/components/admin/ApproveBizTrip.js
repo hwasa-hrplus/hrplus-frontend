@@ -64,7 +64,7 @@ class ApproveBizTrip extends Component {
         //console.log('!!!!!!!'+data[key].project.name);
         
 
-        alert('승인완료')
+        alert('출장 승인 완료')
        
         await axios.post('/api/v1/mail/sendApprove'
         ,{
@@ -83,6 +83,8 @@ class ApproveBizTrip extends Component {
         await axios.delete(`/api/v1/biztrip/${id}`, approveData);
         data.splice(key, 1);       
         this.setState(data);
+
+        alert('출장 취소 완료')
     }
 
     render() {
@@ -94,13 +96,12 @@ class ApproveBizTrip extends Component {
                     <TableCell align='center'>사번</TableCell>
                     <TableCell align='center'>이름</TableCell>
                     <TableCell align='center'>직급</TableCell>
-                    <TableCell align='center'>이메일</TableCell>
                     <TableCell align='center'>프로젝트</TableCell>
                     <TableCell align='center'>출장지역</TableCell>
                     <TableCell align='center'>출장회사</TableCell>
                     <TableCell align='center'>출장목적</TableCell>
-                    <TableCell align='center'>출장시작일</TableCell>
-                    <TableCell align='center'>출장종료일</TableCell>
+                    <TableCell align='center'>출장기간</TableCell>
+                    {/* <TableCell align='center'>출장종료일</TableCell> */}
                     <TableCell align='center'>승인</TableCell>
                     <TableCell align='center'>취소</TableCell>
                 </TableRow>
@@ -114,13 +115,12 @@ class ApproveBizTrip extends Component {
                 <TableCell align='center'>{EmployeeData.employeeId}</TableCell>                
                 <TableCell align='center'>{EmployeeData.korName}</TableCell>
                 <TableCell align='center'>{EmployeeData.staffLevelName}</TableCell>
-                <TableCell align='center'>{EmployeeData.email}</TableCell>
                 <TableCell align='center'>{EmployeeData.project.name}</TableCell>
                 <TableCell align='center'>{EmployeeData.location}</TableCell>
                 <TableCell align='center'>{EmployeeData.companyName}</TableCell>            
                 <TableCell align='center'>{EmployeeData.bizPurpose.name}</TableCell>  
-                <TableCell align='center'>{EmployeeData.startDate}</TableCell>
-                <TableCell align='center'>{EmployeeData.endDate}</TableCell>
+                <TableCell align='center'>{EmployeeData.startDate} ~ {EmployeeData.endDate}</TableCell>
+                {/* <TableCell align='center'>{EmployeeData.endDate}</TableCell> */}
 
                 <TableCell  key = {index} align='center'>
                     <Link onClick={()=>{this.handleApprove(index)}}>승인하기</Link>
