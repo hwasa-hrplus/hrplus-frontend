@@ -1,5 +1,8 @@
-.contentWrapper{
+.ContentWrapper{
+  
+  width: 95%;
   justify-content: center;
+  margin-left: 40px;
 }
 
 .ChartWrapper {

@@ -121,7 +121,7 @@ export default class HrInfoList extends PureComponent {
   
   render() {
     return (
-      <div className="ContentWrapper" style={{width: 1700}}>
+      <div className="ContentWrapper">
         <div align="center" className='buttonWrapper' >
           <ButtonGroup
             variant="contained"

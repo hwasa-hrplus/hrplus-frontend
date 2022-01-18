@@ -163,37 +163,37 @@ constructor(props) {
 
     return (
 
-        <div>
+        <div className="ContentWrapper">
             <Table>
        
                 <TableBody>
                 <TableRow>
-                    <TableCell align='center'>성명</TableCell>
-                    <TableCell align='center'>{this.state.korName}</TableCell>
-                    <TableCell align='center'>사번</TableCell>
-                    <TableCell align='center'>{this.state.id}</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>성명</TableCell>
+                    <TableCell align='left'>{this.state.korName}</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>사번</TableCell>
+                    <TableCell align='left'>{this.state.id}</TableCell>
                 </TableRow>
                 
                 <TableRow>
-                    <TableCell align='center'>직책</TableCell>
-                    <TableCell align='center'>{this.state.role}</TableCell>
-                    <TableCell align='center'>결재권자</TableCell>
-                    <TableCell align='center'>{this.state.boss_korName}</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>직책</TableCell>
+                    <TableCell align='left'>{this.state.role}</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>결재권자</TableCell>
+                    <TableCell align='left'>{this.state.boss_korName}</TableCell>
                    
                 </TableRow>
             
         
     
                 <TableRow>
-                    <TableCell align='center'>부서</TableCell>
-                    <TableCell align='center'>{this.state.departmentName}</TableCell>
-                    <TableCell align='center'>연락처</TableCell>
-                    <TableCell align='center'>{this.state.phone}</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>부서</TableCell>
+                    <TableCell align='left'>{this.state.departmentName}</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>연락처</TableCell>
+                    <TableCell align='left'>{this.state.phone}</TableCell>
                 </TableRow>
                 </TableBody>
           
         <TableRow>
-            <TableCell align='center' >프로젝트</TableCell>
+            <TableCell align='right' style={{fontWeight:'bold'}}>프로젝트</TableCell>
             <TableCell align='center' colSpan = "2">
             <Input align='center' readOnly='true' value={this.state.projectName} fullWidth={true}></Input>
         
@@ -205,7 +205,7 @@ constructor(props) {
             </TableCell>
         </TableRow>
         <TableRow>
-        <TableCell align='center'>출장목적</TableCell>
+        <TableCell align='right' style={{fontWeight:'bold'}}>출장목적</TableCell>
         <TableCell align='center'>
         <NativeSelect
             onChange = {e =>this.onChange(e)} 
@@ -218,14 +218,14 @@ constructor(props) {
         }
         </NativeSelect>
         </TableCell>
-        <TableCell align='center'>출장기관</TableCell>
-        <TableCell align='center'>
+        <TableCell align='right' style={{fontWeight:'bold'}}>출장기관</TableCell>
+        <TableCell align='left'>
         <Input type = "text"   name="companyName" value={this.state.costCenter} />
         </TableCell>
 
         </TableRow>
         <TableRow>
-        <TableCell align='center'>출장지</TableCell>
+        <TableCell align='right' style={{fontWeight:'bold'}}>출장지</TableCell>
         <TableCell align='center' colSpan='2' >
             
             <PopupPostCode
@@ -247,7 +247,7 @@ constructor(props) {
         </TableRow>
 
         <TableRow>
-        <TableCell align='center' >출장기간</TableCell>
+        <TableCell align='right' style={{fontWeight:'bold'}}>출장기간</TableCell>
         <TableCell align='center'  colSpan="3">
             {/* <DatePicker datePickerFunc={this.datePickerFunc}/> */}
             <table >
@@ -294,16 +294,15 @@ constructor(props) {
         </TableCell>
         </TableRow>
 
-        <TableRow>
-        <TableCell align='right' colSpan='4'>
-        <Button onClick={this.regist} variant="contained">신청</Button>
-        </TableCell>
-
-        </TableRow>
-
-        {/* </TableHead> */}
-
         </Table>
+        <Button
+                        style={{
+                            marginTop: "20px",
+                            float: "right"
+                        }}
+                        onClick={this.regist}
+                        variant="contained">신청</Button>
+
         </div>
         
         );

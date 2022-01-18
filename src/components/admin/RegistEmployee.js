@@ -277,7 +277,7 @@ class RegistEmployee extends Component{
     render() {
     console.log(this.state.address)
     return (
-        <div>
+        <div className="ContentWrapper">
             <form id="addPlayerFrm" onSubmit={this.onSubmit}>
             <Table>
                 <TableBody>
@@ -445,19 +445,18 @@ class RegistEmployee extends Component{
                                  registAddressCode ={this.state.registAddressCode}
                                 
                                  />
-                                  {console.log(this.state)}
                              <TextField
                                  label={this.state.registAddressCode[0]}
                                  variant="outlined"
+                                 style ={{marginLeft:'10px'}}
                                  size="small"/>
-                             <span>
-                                 <br/>
+                             <span >
+                                <br/>
                              </span>
                              <TextField
                                  label={this.state.registAddress[0]}
-
                                  variant="outlined"
-                                 style ={{width: '53%'}}
+                                 style ={{width: '53%', marginTop:'10px'}}
                                  size="small"/>
                              <span>
                                  <br/>
@@ -465,7 +464,7 @@ class RegistEmployee extends Component{
                              <TextField
                                  onChange={e => this.onChange(e,'detailAddress')}
                                  variant="outlined"
-                                 style ={{width: '53%'}}
+                                 style ={{width: '53%', marginTop:'10px' }}
                                  size="small"/>
                          </TableCell>
 
