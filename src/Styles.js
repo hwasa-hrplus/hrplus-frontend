@@ -17,18 +17,17 @@ const Styles = () => {
                 height: 70px;
             }
             .topBar.logo{
-                align: left;
+
+                align: right;
                 color: white;
                 margin: auto;
                 height: auto;
                 font-size: 35px;
                 font-weight: bold;
             }
-
             .topBar.logo:hover{
                 color: white;
             }
-            
             a{ color: black; text-decoration: none;}
             a:visited { color: black; text-decoration: none;}
             a:hover { color: black; text-decoration: none;}
