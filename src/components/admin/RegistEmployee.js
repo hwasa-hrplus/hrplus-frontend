@@ -57,6 +57,7 @@ class RegistEmployee extends Component{
 
     // select할 테이블 가져오기
     getTable = async () =>{
+
         let staffLevel = await axios.get(this.state.rootUrl+'hrmaster/hradmin/stafflevel', { headers: authHeader() });
         const data = staffLevel.data;
         console.log(data);
@@ -261,7 +262,10 @@ class RegistEmployee extends Component{
             id:this.state.id
         }
 
-        axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData)
+
+
+        axios.post(this.state.rootUrl+'biztrip/project/insert', sendBizTripData, { headers: authHeader() })
+
         .then((res) => {    
             console.log(res)
         })

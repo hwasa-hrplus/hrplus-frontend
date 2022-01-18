@@ -15,6 +15,7 @@ class ApproveBizTrip extends Component {
 
     state = {
         data: [],
+        
     };
 
     getMyData = async () => {
@@ -27,14 +28,24 @@ class ApproveBizTrip extends Component {
             const employee = await axios.get(`/api/v1/hrmaster/hrfixed/${firstData.data[key].employeeId}`,  { headers: authHeader()});
             firstData.data[key]['korName'] = employee.data.korName;
             firstData.data[key]['staffLevelName'] = employee.data.staffLevelName;
-            firstData.data[key]['email'] = employee.data.email;
             firstData.data[key].startDate = firstData.data[key].startDate.split('T')[0];
             firstData.data[key].endDate = firstData.data[key].endDate.split('T')[0];
+
+            const employee2 = await axios.get(`/api/v1/hrmaster/hrbasic/${firstData.data[key].employeeId}`,  { headers: authHeader()});
+            console.log('~~~~~'+employee2.data.email); 
+            firstData.data[key]['email'] = employee2.data.email;
+            
             data.push(firstData.data[key]);
+            
            }
+          
         }
+
+   
         console.log(firstData);
-        this.setState({data});
+        this.setState({data:data});
+           
+        
     };
 
     componentDidMount() {
@@ -49,6 +60,20 @@ class ApproveBizTrip extends Component {
         await axios.put(`/api/v1/biztrip/${id}`, approveData);
         data.splice(key, 1);       
         this.setState(data);
+
+        //console.log('!!!!!!!'+data[key].project.name);
+        
+
+        alert('승인완료')
+       
+        await axios.post('/api/v1/mail/sendApprove'
+        ,{
+            address:data[key].email,
+            name:data[key].korName,
+            projectName:data[key].project.name
+        })
+        .then((res)=>console.log('출장요청자에게 메일발송 완료'))
+
     }
 
     handleDelete =async (key) =>{        
