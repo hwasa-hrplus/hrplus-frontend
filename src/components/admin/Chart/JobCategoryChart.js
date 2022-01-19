@@ -7,10 +7,16 @@ import { Cell, Pie, PieChart } from 'recharts';
 import './ChartCSS.css';
 import _ from 'lodash';
 import { paginate } from './pagination/paginate';
-import {departmentHead, pageSize, COLORS} from './commonData';
+import {departmentHead, pageSize} from './commonData';
 import authHeader from '../../../services/auth-header';
 import {Tooltip} from 'recharts';
 import { Link } from 'react-router-dom';
+
+const COLORS = ['#4f07eb', '#ea331d', '#ffea28', 
+                        '#00C49F', '#eb0eca', '#a8d790', 
+                        '#00ba25', '#ea33f2', '#2fd7f2', 
+                        '#EE6619', '#ee1688', '#CC7713',
+                        '#6bfb00', '#BB1213', '#f8d790', ];
 
 const CustomTooltip = ({ active, payload, name }) => {
     if (active && payload && payload.length) {

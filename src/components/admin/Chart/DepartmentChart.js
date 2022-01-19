@@ -242,9 +242,7 @@ class DepartmentChart extends Component {
                                             alignContent: 'left',
                                             width: 800,
                                             height: 30
-                                            
                                             }}>
-                                                
                                             <button style={{ backgroundColor: COLORS[index],
                                                             width: 50
                                                             }}

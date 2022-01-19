@@ -37,7 +37,7 @@ class HrMasterTab extends Component {
         let project = await axios.get(
             this.state.rootUrl + '/biztrip/project/' + this.state.id,
             {headers: authHeader()}
-        );
+        ); 
         const projectData = project.data;
         this.setState({project: projectData});
         console.log(this.state.project)

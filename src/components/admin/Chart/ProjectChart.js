@@ -180,6 +180,8 @@ class ProjectChart extends Component {
 
     handleClick = () => {
         let filteredData = this.state.employeeData.filter((data) =>{                   
+            console.log('this.state.dataName: ', this.state.dataName);
+            
             if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.code === this.state.dataName && this.state.dataName){
                 console.log('클릭로직');
                 return data;

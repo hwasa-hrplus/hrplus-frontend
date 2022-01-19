@@ -50,7 +50,6 @@ class EmployeeDetail extends Component {
             workType:false,
             rootUrl:"/api/v1"
         }
-
     }
 
     getMyData = async () => {
@@ -72,11 +71,17 @@ class EmployeeDetail extends Component {
 
         let admin = await axios.get(this.state.rootUrl+'/hrmaster/hradmin/boss', { headers: authHeader() });
         const adminData = admin.data;
+        let project="";
+        await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id, { headers: authHeader() })
+        .then((res)=>{
+            project=res.data.code;
+        })
+        .catch((error) => {
+            console.log(error.response)            
+        })
+        
 
-        let project = await axios.get(this.state.rootUrl+'/biztrip/project/'+this.state.id, { headers: authHeader() });
-        const projectData = project.data;
-
-        this.setState({staffLevel:staffLevelData, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData, projectName:projectData.code})
+        this.setState({staffLevel:staffLevelData, department:departmentData, workPlace:workplaceData, jobCategory:jobCategoryData, admin:adminData, projectName:project})
 
 
         this.updateBirthDate(data);
