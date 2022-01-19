@@ -274,7 +274,7 @@ class StaffLevelChart extends Component {
                                     <TableCell align='center'>{data.code}</TableCell>
                                     <TableCell align='center'>{data.email}</TableCell>
                                     {/* <TableCell align='center'>{data.phone}</TableCell> */}
-                                    <TableCell align='center'>{data.workType === false ? "근무" : "휴직"}</TableCell>
+                                    <TableCell align='center'>{data.workType === false ? "휴직자" : "근무자"}</TableCell>
                                 </TableRow>
                             ))
                             }
