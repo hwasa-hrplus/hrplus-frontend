@@ -69,10 +69,10 @@ class BizTripTab extends Component {
                 <Table>
                     <TableBody>
                         <TableRow>
-                            <TableCell align='center'>요청번호</TableCell>
-                            <TableCell align='center'>출장기간</TableCell>                 
-                            <TableCell align='center'>출장목적</TableCell>
-                            <TableCell align='center'>결재권자</TableCell>
+                            <TableCell align='center' style={{fontWeight:'bold'}}>요청번호</TableCell>
+                            <TableCell align='center' style={{fontWeight:'bold'}}>출장기간</TableCell>                 
+                            <TableCell align='center' style={{fontWeight:'bold'}}>출장목적</TableCell>
+                            <TableCell align='center' style={{fontWeight:'bold'}}>결재권자</TableCell>
                         </TableRow>
                         {   this
                             .state

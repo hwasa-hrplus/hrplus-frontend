@@ -98,27 +98,22 @@ class BizTripList extends Component {
     render() {
         
         return (
-            <div>
+            <div className="ContentWrapper">
             <Table>
             
                 <TableBody>
               
                 <TableRow>
-                    <TableCell align='right'>사번</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>사번</TableCell>
                     <TableCell align='left'>{this.state.id}</TableCell>
-                    <TableCell align='right'>성명</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>성명</TableCell>
                     <TableCell align='left'>{this.state.korName}</TableCell>
-                    <TableCell align='right'>부서</TableCell>
+                    <TableCell align='right' style={{fontWeight:'bold'}}>부서</TableCell>
                     <TableCell align='left'>{this.state.departmentName}</TableCell>
                 </TableRow>
-              
-             <TableRow>
-                    <TableCell align='right'>조회기간</TableCell>
-                    <TableCell></TableCell>
-                    <TableCell  colSpan='4' >
-                       <td>
-                            <div >
-                  
+                <TableRow>
+                    <TableCell align='right' style={{fontWeight:'bold'}} colSpan='2'>조회기간</TableCell>
+                     <TableCell align='right' >
                             <ReactDatePicker
                                 dateFormat="yyyy년 MM월 dd일"
                                 selected={this.state.startDate}
@@ -131,11 +126,10 @@ class BizTripList extends Component {
                                 changeYear="true"
                                 showYearDropdown
                             />
-                            </div>
-                            </td>
-                            <td ><h5>&nbsp;&nbsp; ~ &nbsp;&nbsp;</h5></td>
-                            <td >
-                            <div>
+                            
+                        </TableCell>
+                        <TableCell align='center'><h3> ~</h3></TableCell>
+                        <TableCell align='left'>
                             <ReactDatePicker
                                 dateFormat="yyyy년 MM월 dd일"
                                 selected={this.state.endDate}
@@ -148,31 +142,23 @@ class BizTripList extends Component {
                                 changeYear="true"
                                 showYearDropdown
                             />
-                            </div>
-                            </td>
+                          </TableCell>
+            
+                    <TableCell align='left'>
+                    <Button  onClick={this.getBizTripList} variant="contained">조회</Button>
                     </TableCell>
-                   
                 </TableRow>
-                <span><br/></span>
-
-                <TableRow>
-                <td align ='right' colSpan='6'>
-                        <Button  onClick={this.getBizTripList} variant="contained">조회</Button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    </td>
-                </TableRow>
+            
                 </TableBody>
-                </Table>
-
-
-                <Table>
+            </Table>  
+            <Table style ={{marginTop:'100px'}}>
                 
                 <TableRow>
-                    <TableCell align='center'>요청번호</TableCell>
-                    <TableCell align='center'>프로젝트명</TableCell>
-                    <TableCell align='center'>출장기간</TableCell>
-                    <TableCell align='center'>출장목적</TableCell>
-                    <TableCell align='center'>승인여부</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>요청번호</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>프로젝트명</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장기간</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장목적</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>승인여부</TableCell>
                 </TableRow>
                 {
                 this.state.selectList.map((ProjectData, i) => 
