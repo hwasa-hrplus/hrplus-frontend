@@ -23,8 +23,10 @@ class EmployeeTable extends Component {
         });
     }
 
-    requestData = async () => {        
+    requestData = async () => {  
         let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
+        console.log(employeeData);
+        
         this.setState({
             employeeData: employeeData.data,
         });
@@ -67,6 +69,7 @@ class EmployeeTable extends Component {
 
     searchEmployee = () => {
         let filteredData = this.state.employeeData.filter((data) =>{
+
             if (data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
                 console.log('검색로직');
                 return data;

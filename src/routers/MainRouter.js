@@ -1,4 +1,4 @@
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import authService from "../services/auth.service";
 import HomeRouter from "./HomeRouter";
 import Login from "../components/LoginForm";

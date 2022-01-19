@@ -36,7 +36,7 @@ class RegistEmployee extends Component{
             registAddressCode:[],
             detailAddress:"",
             filesId:"",
-            role:"",
+            role: "",
             errorText: '',
             idErrorText:'',
             passwordErrorText:'',
@@ -212,15 +212,8 @@ class RegistEmployee extends Component{
         e.preventDefault();
         console.log("onSubmit event 발생");
         console.log(this.state);
-        authService.register(
-            e.target.email.value,
-            e.target.password.value,
-            this.state.role==='팀장'? ['admin']:['user'],
-            e.target.id.value, 
-            e.target.korName.value                 
-        );
         const sendData ={
-                id:this.state.id, 
+                id:this.state.id,
                 korName:e.target.korName.value,
                 engName:e.target.engName.value,
                 gender:e.target.gender.value,
@@ -336,8 +329,8 @@ class RegistEmployee extends Component{
                                 onChange={e => this.onChange(e,'role')}
                                 defaultValue = ""
                             >
-                                <MenuItem value='팀장'>팀장</MenuItem>
-                                <MenuItem value='팀원'>팀원</MenuItem>                                              
+                                <MenuItem value='admin'>팀장</MenuItem>
+                                <MenuItem value='user'>팀원</MenuItem>                                              
                             </Select>
                         </TableCell>
                     </TableRow>

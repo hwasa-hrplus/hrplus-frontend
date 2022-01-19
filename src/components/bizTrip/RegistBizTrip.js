@@ -90,13 +90,16 @@ constructor(props) {
         let data = await axios.get('/api/v1/hrmaster/hradmin/'+this.state.id, { headers: authHeader() });
 
         data = data.data;
-        console.log('this employee data is ' + JSON.stringify(data));
+        
+        // console.log('ddddddddddddd ' + JSON.stringify(data));
+
+
 
         this.setState({data});
 
         let admin = await axios.get('/api/v1/hrmaster/hradmin/boss', { headers: authHeader() });
         const adminData = admin.data;
-        console.log(adminData);
+        console.log("ddddddddddddd",adminData);
 
     };
 
@@ -112,10 +115,10 @@ constructor(props) {
     };
 
     componentDidMount() {
-    console.log('in componentDidMount');
-    this.getMyPurposeData();
+        console.log('in componentDidMount');
+        this.getMyPurposeData();
 
-    this.getMyData();
+        this.getMyData();
     }
 
     componentDidUpdate() {
