@@ -15,6 +15,7 @@ class ApproveBizTrip extends Component {
 
     state = {
         data: [],
+        email:[]
         
     };
 
@@ -34,6 +35,8 @@ class ApproveBizTrip extends Component {
             const employee2 = await axios.get(`/api/v1/hrmaster/hrbasic/${firstData.data[key].employeeId}`,  { headers: authHeader()});
             console.log('~~~~~'+employee2.data.email); 
             firstData.data[key]['email'] = employee2.data.email;
+            //this.setState({email:employee2.data.email})
+           
             
             data.push(firstData.data[key]);
             
@@ -44,7 +47,8 @@ class ApproveBizTrip extends Component {
    
         console.log(firstData);
         this.setState({data:data});
-           
+        console.log('이멜: '+this.state.data[0].id);
+
         
     };
 
@@ -53,7 +57,9 @@ class ApproveBizTrip extends Component {
         this.getMyData();
     }
 
-    handleApprove =async (key) =>{        
+    handleApprove =async (key) =>{    
+        console.log('key: '+key);
+           
         let data=this.state.data;
         const id = data[key].id;
         const approveData = {approved:true};
@@ -61,11 +67,11 @@ class ApproveBizTrip extends Component {
         data.splice(key, 1);       
         this.setState(data);
 
-        //console.log('!!!!!!!'+data[key].project.name);
-        
-
+        console.log('data:'+this.state.data[key].email);
+   
         alert('출장 승인 완료')
-       
+        window.location.reload();
+
         await axios.post('/api/v1/mail/sendApprove'
         ,{
             address:data[key].email,
@@ -111,7 +117,8 @@ class ApproveBizTrip extends Component {
         {
 
         this.state.data.map( (EmployeeData, index) =>
-            <TableRow>
+        
+            <TableRow key={index}>
                 <TableCell align='center'>{EmployeeData.employeeId}</TableCell>                
                 <TableCell align='center'>{EmployeeData.korName}</TableCell>
                 <TableCell align='center'>{EmployeeData.staffLevelName}</TableCell>
@@ -122,11 +129,11 @@ class ApproveBizTrip extends Component {
                 <TableCell align='center'>{EmployeeData.startDate} ~ {EmployeeData.endDate}</TableCell>
                 {/* <TableCell align='center'>{EmployeeData.endDate}</TableCell> */}
 
-                <TableCell  key = {index} align='center'>
+                <TableCell   align='center'>
                     <Link onClick={()=>{this.handleApprove(index)}}>승인하기</Link>
                 </TableCell>
 
-                <TableCell  key = {index} align='center'>
+                <TableCell  align='center'>
                     <Link onClick={()=>{this.handleDelete(index)}}>취소하기</Link>
                 </TableCell>                           
             </TableRow>
