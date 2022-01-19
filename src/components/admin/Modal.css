@@ -8,6 +8,11 @@
     z-index: 99;
     background-color: rgba(0, 0, 0, 0.6);
 }
+
+.test {
+    border-radius: 0 10px 10px 0; border-left: inset; padding: 0.6em; background: #EBEEF0;
+  }
+
 .modal button {
     outline: none;
     cursor: pointer;

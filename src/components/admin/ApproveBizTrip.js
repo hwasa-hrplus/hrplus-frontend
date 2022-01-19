@@ -15,6 +15,7 @@ class ApproveBizTrip extends Component {
 
     state = {
         data: [],
+        
     };
 
     getMyData = async () => {
@@ -27,14 +28,24 @@ class ApproveBizTrip extends Component {
             const employee = await axios.get(`/api/v1/hrmaster/hrfixed/${firstData.data[key].employeeId}`,  { headers: authHeader()});
             firstData.data[key]['korName'] = employee.data.korName;
             firstData.data[key]['staffLevelName'] = employee.data.staffLevelName;
-            firstData.data[key]['email'] = employee.data.email;
             firstData.data[key].startDate = firstData.data[key].startDate.split('T')[0];
             firstData.data[key].endDate = firstData.data[key].endDate.split('T')[0];
+
+            const employee2 = await axios.get(`/api/v1/hrmaster/hrbasic/${firstData.data[key].employeeId}`,  { headers: authHeader()});
+            console.log('~~~~~'+employee2.data.email); 
+            firstData.data[key]['email'] = employee2.data.email;
+            
             data.push(firstData.data[key]);
+            
            }
+          
         }
+
+   
         console.log(firstData);
-        this.setState({data});
+        this.setState({data:data});
+           
+        
     };
 
     componentDidMount() {
@@ -49,6 +60,20 @@ class ApproveBizTrip extends Component {
         await axios.put(`/api/v1/biztrip/${id}`, approveData);
         data.splice(key, 1);       
         this.setState(data);
+
+        //console.log('!!!!!!!'+data[key].project.name);
+        
+
+        alert('출장 승인 완료')
+       
+        await axios.post('/api/v1/mail/sendApprove'
+        ,{
+            address:data[key].email,
+            name:data[key].korName,
+            projectName:data[key].project.name
+        })
+        .then((res)=>console.log('출장요청자에게 메일발송 완료'))
+
     }
 
     handleDelete =async (key) =>{        
@@ -58,26 +83,27 @@ class ApproveBizTrip extends Component {
         await axios.delete(`/api/v1/biztrip/${id}`, approveData);
         data.splice(key, 1);       
         this.setState(data);
+
+        alert('출장 취소 완료')
     }
 
     render() {
     return (
-        <div>
+        <div className="ContentWrapper"> 
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell align='center'>사번</TableCell>
-                    <TableCell align='center'>이름</TableCell>
-                    <TableCell align='center'>직급</TableCell>
-                    <TableCell align='center'>이메일</TableCell>
-                    <TableCell align='center'>프로젝트</TableCell>
-                    <TableCell align='center'>출장지역</TableCell>
-                    <TableCell align='center'>출장회사</TableCell>
-                    <TableCell align='center'>출장목적</TableCell>
-                    <TableCell align='center'>출장시작일</TableCell>
-                    <TableCell align='center'>출장종료일</TableCell>
-                    <TableCell align='center'>승인</TableCell>
-                    <TableCell align='center'>취소</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>사번</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>이름</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>직급</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>프로젝트</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장지역</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장회사</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장목적</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>출장기간</TableCell>
+                    {/* <TableCell align='center'>출장종료일</TableCell> */}
+                    <TableCell align='center' style={{fontWeight:'bold'}}>승인</TableCell>
+                    <TableCell align='center' style={{fontWeight:'bold'}}>취소</TableCell>
                 </TableRow>
             </TableHead>
         <TableBody>
@@ -89,13 +115,12 @@ class ApproveBizTrip extends Component {
                 <TableCell align='center'>{EmployeeData.employeeId}</TableCell>                
                 <TableCell align='center'>{EmployeeData.korName}</TableCell>
                 <TableCell align='center'>{EmployeeData.staffLevelName}</TableCell>
-                <TableCell align='center'>{EmployeeData.email}</TableCell>
                 <TableCell align='center'>{EmployeeData.project.name}</TableCell>
                 <TableCell align='center'>{EmployeeData.location}</TableCell>
                 <TableCell align='center'>{EmployeeData.companyName}</TableCell>            
                 <TableCell align='center'>{EmployeeData.bizPurpose.name}</TableCell>  
-                <TableCell align='center'>{EmployeeData.startDate}</TableCell>
-                <TableCell align='center'>{EmployeeData.endDate}</TableCell>
+                <TableCell align='center'>{EmployeeData.startDate} ~ {EmployeeData.endDate}</TableCell>
+                {/* <TableCell align='center'>{EmployeeData.endDate}</TableCell> */}
 
                 <TableCell  key = {index} align='center'>
                     <Link onClick={()=>{this.handleApprove(index)}}>승인하기</Link>

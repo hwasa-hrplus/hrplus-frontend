@@ -1,10 +1,15 @@
 import React from 'react';
 
+
 const Styles = () => {
     return (
         <style type="text/css">
+        <style>
+        @import url('https://fonts.googleapis.com/css?family=Nanum+Gothic|Nanum+Myeongjo&display=swap&subset=korean');
+        </style>
         {`
         body{
+            font-family: 'Nanum Gothic', sans-serif;
             background-color: white;
         }
             .topBar {
@@ -12,17 +17,17 @@ const Styles = () => {
                 height: 70px;
             }
             .topBar.logo{
+
+                align: right;
                 color: white;
                 margin: auto;
                 height: auto;
                 font-size: 35px;
                 font-weight: bold;
             }
-
             .topBar.logo:hover{
                 color: white;
             }
-            
             a{ color: black; text-decoration: none;}
             a:visited { color: black; text-decoration: none;}
             a:hover { color: black; text-decoration: none;}
@@ -40,9 +45,7 @@ const Styles = () => {
                 background-color: white;
                 color: #006399;
             }
-            .container, .container-lg, .container-md, .container-sm{
-                width: max;
-            }
+     
 
             .d-md-block.side.nav{
                 background-color: transparent;
@@ -80,9 +83,7 @@ const Styles = () => {
             .nav-link.active{
                 background-color:white;
             }
-            .MuiTable-root{
-                width:1400px;
-            }
+            
             .slideBox{                
                 width:1300px;
             }
@@ -92,6 +93,10 @@ const Styles = () => {
                 background-color: #006399;
             }
             .content{
+                display:flex;
+                padding-top: 35px;
+            }
+            .content_footer{
                 padding-top: 35px;
             }
             .MuiTypography-body2 {
