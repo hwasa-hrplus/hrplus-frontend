@@ -62,6 +62,7 @@ class ApproveBizTrip extends Component {
         this.setState(data);
 
         //console.log('!!!!!!!'+data[key].project.name);
+        console.log('mail: '+ data[key].email);
         
 
         alert('출장 승인 완료')
