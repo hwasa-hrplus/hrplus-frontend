@@ -26,10 +26,11 @@ class EmployeeTable extends Component {
     requestData = async () => {
         let employeeArray = []
         let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
-        console.log('employeeData: ', employeeData);
+        console.log('goaldae: ', employeeData);
         let projectData=[];
         await axios.get('/api/v1/biztrip/project/employee', { headers: authHeader() })
-        .then((res)=>{projectData = res.data.data})
+        .then((res)=>{projectData = res.data;
+            console.log("testgoaldae",res.data)})
         .catch((error)=>{console.log(error);})
         let mergedEmployeeData = _.merge({}, employeeData.data, projectData);
 
@@ -37,10 +38,6 @@ class EmployeeTable extends Component {
         for (let index = 0; index < employeeData.data.length; index++) {
             employeeArray.push(mergedEmployeeData[index]);
         }
-
-        // employeeArray = employeeArray.filter((data)=>{
-        //     return data.departmentName.includes(departmentHead);
-        // });
 
         this.setState({
             employeeData: employeeArray
