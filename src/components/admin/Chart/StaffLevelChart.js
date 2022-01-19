@@ -59,9 +59,9 @@ class StaffLevelChart extends Component {
             employeeArray.push(mergedEmployeeData[index]);
         }
 
-        employeeArray = employeeArray.filter((data)=>{
-            return data.departmentName.includes(departmentHead);
-        });
+        // employeeArray = employeeArray.filter((data)=>{
+        //     return data.departmentName.includes(departmentHead);
+        // });
         
         // 직급순 데이터 정렬
         let employeeDataSorted = this.sortByStaffLevel(employeeArray).sort( (a, b) => {
