@@ -101,10 +101,9 @@ constructor(props) {
         
         let admin = await axios.get('/api/v1/hrmaster/hrfixed/'+data3.bid,{ headers: authHeader() } );
         const adminData = admin.data;
+
         console.log( adminData);
         this.setState({boss_korName:adminData.korName});
-        
-
 
         let admin2 = await axios.get('/api/v1/hrmaster/hrbasic/'+data3.bid,{ headers: authHeader() } );
         const adminData2 = admin2.data;
@@ -122,11 +121,11 @@ constructor(props) {
         this.setState({p_data});
     };
 
-
     componentDidMount = ()=> {
     console.log('in componentDidMount');
     this.getMyPurposeData();
     this.getMyData();
+
     }
 
     componentDidUpdate = () =>{

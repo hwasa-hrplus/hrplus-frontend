@@ -34,7 +34,7 @@ class BizTripList extends Component {
         const user = authService.getCurrentUser();  
         let p_data = await axios.get('/api/v1/biztrip/employee/'+user.id);
         p_data = p_data.data;
-        console.log('this project data is ' + JSON.stringify(p_data));
+        console.log('aaaaaa ' + JSON.stringify(p_data));
         this.setState({p_data:p_data});
 
          const list =  this.state.p_data.filter((e)=>{

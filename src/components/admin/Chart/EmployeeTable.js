@@ -27,9 +27,11 @@ class EmployeeTable extends Component {
         let employeeArray = []
         let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
         console.log('employeeData: ', employeeData);
-        
-        let projectData = await axios.get('/api/v1/biztrip/project/employee', { headers: authHeader() });
-        let mergedEmployeeData = _.merge({}, employeeData.data, projectData.data);
+        let projectData=[];
+        await axios.get('/api/v1/biztrip/project/employee', { headers: authHeader() })
+        .then((res)=>{projectData = res.data.data})
+        .catch((error)=>{console.log(error);})
+        let mergedEmployeeData = _.merge({}, employeeData.data, projectData);
 
         console.log(employeeData)
         for (let index = 0; index < employeeData.data.length; index++) {
@@ -82,6 +84,7 @@ class EmployeeTable extends Component {
 
     searchEmployee = () => {
         let filteredData = this.state.employeeData.filter((data) =>{
+
             if (data.korName.toLowerCase().includes(this.state.searchingKeyword.toLowerCase())){
                 console.log('검색로직');
                 return data;
