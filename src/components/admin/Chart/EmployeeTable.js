@@ -34,9 +34,9 @@ class EmployeeTable extends Component {
             employeeArray.push(mergedEmployeeData[index]);
         }
 
-        employeeArray = employeeArray.filter((data)=>{
-            return data.departmentName.includes(departmentHead);
-        });
+        // employeeArray = employeeArray.filter((data)=>{
+        //     return data.departmentName.includes(departmentHead);
+        // });
 
         this.setState({
             employeeData: employeeArray
