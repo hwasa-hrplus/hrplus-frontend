@@ -59,9 +59,9 @@ class StaffLevelChart extends Component {
             employeeArray.push(mergedEmployeeData[index]);
         }
 
-        employeeArray = employeeArray.filter((data)=>{
-            return data.departmentName.includes(departmentHead);
-        });
+        // employeeArray = employeeArray.filter((data)=>{
+        //     return data.departmentName.includes(departmentHead);
+        // });
         
         // 직급순 데이터 정렬
         let employeeDataSorted = this.sortByStaffLevel(employeeArray).sort( (a, b) => {
@@ -129,15 +129,15 @@ class StaffLevelChart extends Component {
                     employeeData[index].staffLevel = "PLC004";
                     break;
 
-                case "리더":
+                case "리더대우":
                     employeeData[index].staffLevel = "PLC005";
                     break;
 
-                case "부장":
+                case "리더":
                     employeeData[index].staffLevel = "PLC006";
                     break;
 
-                case "상무보":
+                case "임원":
                     employeeData[index].staffLevel = "PLC007";
                     break;
 

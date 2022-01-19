@@ -26,6 +26,8 @@ class EmployeeTable extends Component {
     requestData = async () => {
         let employeeArray = []
         let employeeData = await axios.get('/api/v1/hrmaster/hradmin/list', { headers: authHeader() });
+        console.log('employeeData: ', employeeData);
+        
         let projectData = await axios.get('/api/v1/biztrip/project/employee', { headers: authHeader() });
         let mergedEmployeeData = _.merge({}, employeeData.data, projectData.data);
 
@@ -33,9 +35,9 @@ class EmployeeTable extends Component {
             employeeArray.push(mergedEmployeeData[index]);
         }
 
-        employeeArray = employeeArray.filter((data)=>{
-            return data.departmentName.includes(departmentHead);
-        });
+        // employeeArray = employeeArray.filter((data)=>{
+        //     return data.departmentName.includes(departmentHead);
+        // });
 
         this.setState({
             employeeData: employeeArray
@@ -98,6 +100,12 @@ class EmployeeTable extends Component {
     }
 
     render() {
+        if (this.state.isLoaded){
+            this.requestData();
+            this.setState({
+                isLoaded : false
+            });
+        }
         return (
             <>
                 <div >

@@ -69,9 +69,9 @@ class ProjectChart extends Component {
             employeeArray.push(mergedEmployeeData[index]);
         }
 
-        employeeArray = employeeArray.filter((data)=>{
-            return data.departmentName.includes(departmentHead);
-        });
+        // employeeArray = employeeArray.filter((data)=>{
+        //     return data.departmentName.includes(departmentHead);
+        // });
 
         
         // 직급순 데이터 정렬
@@ -180,6 +180,8 @@ class ProjectChart extends Component {
 
     handleClick = () => {
         let filteredData = this.state.employeeData.filter((data) =>{                   
+            console.log('this.state.dataName: ', this.state.dataName);
+            
             if (this.state.searchingKeyword === "사원 이름을 입력하세요." && data.code === this.state.dataName && this.state.dataName){
                 console.log('클릭로직');
                 return data;
